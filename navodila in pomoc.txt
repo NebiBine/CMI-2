@@ -1,0 +1,21 @@
+FRONTEND DIRECTORY HELP -- da se znajdem kako in kaj deluje
+src/
+ ├─ assets/          # CSS, SLIKE, FONTI...
+ │   ├─ fonts
+ │   ├─ images
+ │   └─ styles
+ ├─ components/      # komponente ki jih importam kot so npr. VueBits, Naiveui itd.
+ ├─ views/           # "pages" for routing
+ │   ├─ HomeView.vue
+ │   ├─ AboutView.vue
+ │   └─ NotFound.vue
+ │
+ ├─ layouts/         # Layouti (mini-app.vue) ubistvu s tem locujeva vsak "SPA" sort of.
+ │    ├─ MainLayout.vue
+ │    ├─ WelcomeLayout.vue
+ ├─ router/
+ │   └─ index.js     # definiram vse route skupaj z layouti itd. povem kater view uporabi kateri layout
+ ├─ App.vue          # global layout with <RouterView />
+ └─ main.js
+
+BACKEND DIRECTORY HELP -- da se znajdeva v backendu

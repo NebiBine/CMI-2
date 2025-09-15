@@ -1,0 +1,102 @@
+/* FONTI ITD. */
+@font-face {
+    font-family: "Figtree";
+    src: url("../fonts/Figtree-VariableFont_wght.ttf") format("truetype");
+    font-weight: bolder;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Inter";
+    src: url("../fonts/Inter_28pt-ExtraLight.ttf") format("truetype");
+    font-weight: bolder;
+    font-style: normal;
+  }
+/* -------------------- */
+
+
+.welcomePage-Background {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+  /* FORCE-AM FULLSCREEN ZA OZADJE NA WELCOME PAGE-U*/
+  .force-fs,
+  .force-fs * {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+  }
+  .dark-overlay{
+    position: fixed;                 /* Cover the viewport */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* 20% transparent black */
+  }
+  
+  .WelcomePage-Logo {
+    position: fixed;
+    top: -150px; 
+    left: 45%;
+    transform: translateX(-50%);
+    z-index: 20; /* nad overlayom + backgroundom */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+.WelcomePage-Logo img {
+    max-width: 500px; 
+    height: auto;
+}
+.WelcomeText {
+    position: relative;
+    top: -50px;                      
+    font-family: "Figtree", sans-serif;
+    font-weight: bolder;
+    font-size: 40px;
+    color: white;
+    justify-content: center;                
+}
+.WelcomePageDescription {
+    position: fixed;
+    top: 55%;                       
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 60%;
+    font-family: "Inter", sans-serif;
+    font-size: 18px;
+    color: #E5E7EB;
+    text-align: center;
+    z-index: 25;
+}
+.EnterButton {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    position: fixed;
+    bottom: 5rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .EnterButton .n-button {
+    color: white !important;
+    font-weight: 600;
+    padding: 0.7rem 1.8rem;
+    border-radius: 8px;
+    background: #374151;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: 0.25s;
+  }
+  
+  .EnterButton .n-button:hover {
+    background: #111827;
+  }
+  
