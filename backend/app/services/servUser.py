@@ -11,5 +11,5 @@ def registerUser(username, password, email):
         return
     user =User(username=username, email=email)
     user.MakePassword(password)
-    user.id = uuid.uuid4()
+    user.id = str(uuid.uuid4())
     register(user.id,user.username, user.passwordHash, user.email)
