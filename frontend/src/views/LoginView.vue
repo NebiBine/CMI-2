@@ -29,6 +29,24 @@ const rules = {
     }
   },
 };
+//axios post
+const login = async () => {
+  try {
+    const response = await axios.post("http://localhost:8080/auth/login", {
+      identifier: formValue.value.user.identifier,
+      password: formValue.value.user.password
+
+    })
+    console.log("✅ CMI Login success:", response.data)
+    //ustvarim cookie
+    document.cookie = "token=" + response.data.token + "; path=/; SameSite=Strict"
+    //message.success("Registration successful!") notify userju ce je registracija uspesna
+  } catch (error) {
+    console.error("❌ CMI Login error:", error)
+    //message.error("Registration failed") notify userju da registracija ni uspesna
+  }
+ 
+}
 </script>
 <template>
   <div class="auth-page">
@@ -44,8 +62,8 @@ const rules = {
           :rules="rules"
           :size="size"
         >
-          <n-form-item path="user.username">
-            <n-input v-model:value="formValue.user.username" placeholder="Username" />
+          <n-form-item path="user.identifier">
+            <n-input v-model:value="formValue.user.identifier" placeholder="Username" />
           </n-form-item>
 
           <n-form-item path="user.password">
