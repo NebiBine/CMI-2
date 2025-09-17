@@ -7,7 +7,7 @@ class User:
         self.email = email
         self.passwordHash = passwordHash
 
-    def MakePassword(self, password):
+    def hashPassword(self, password):
         self.passwordHash = generate_password_hash(password)
 
     
