@@ -2,10 +2,13 @@
 import { useMessage } from "naive-ui";
 import { ref } from "vue";
 import '../assets/styles/AUTHStyle.css'
+import { RouterLink } from "vue-router";
 
 const formRef = ref(null);
 const message = useMessage(); 
 const size = ref("medium");
+const value = ref(false)
+
 
 const formValue = ref({
   user: {
@@ -35,11 +38,13 @@ const login = async () => {
     const response = await axios.post("http://localhost:8080/auth/login", {
       identifier: formValue.value.user.identifier,
       password: formValue.value.user.password
-
+    },{
+      withCredentials: true
     })
     console.log("✅ CMI Login success:", response.data)
-    //ustvarim cookie
-    document.cookie = "token=" + response.data.token + "; path=/; SameSite=Strict"
+    //ob successfull loginu redirect na dashboard
+    router.push("/app/Dashboard");
+    
     //message.success("Registration successful!") notify userju ce je registracija uspesna
   } catch (error) {
     console.error("❌ CMI Login error:", error)
@@ -67,12 +72,16 @@ const login = async () => {
           </n-form-item>
 
           <n-form-item path="user.password">
-            <n-input
-              type="password"
-              v-model:value="formValue.user.password"
-              placeholder="Password"
-            />
+            <n-input type="password" v-model:value="formValue.user.password" placeholder="Password" />
           </n-form-item>
+          <n-space item-style="display: flex;" align="center">
+            <n-checkbox
+              checked-value="Oznaceno"
+              unchecked-value="Neoznaceno"
+              @update:checked="handleRememberMe">
+              Remember me
+            </n-checkbox>
+          </n-space>
 
           <n-button type="primary">Log In</n-button>
         </n-form>
