@@ -3,6 +3,7 @@ import { useMessage } from "naive-ui";
 import { ref } from "vue";
 import '../assets/styles/AUTHStyle.css'
 import { RouterLink } from "vue-router";
+import axios from 'axios';
 
 const formRef = ref(null);
 const message = useMessage(); 
@@ -83,7 +84,7 @@ const login = async () => {
             </n-checkbox>
           </n-space>
 
-          <n-button type="primary">Log In</n-button>
+          <n-button type="primary" @click = "login">Log In</n-button>
         </n-form>
 
         <div class="login-footer">

@@ -15,6 +15,8 @@ def register():
 @authBp.route("/login", methods=["POST"])
 def login():
     data = request.json
-    loginUser(data["identifier"], data["password"])
+    print(data)
+    return loginUser(data["identifier"], data["password"])
     #cooks
     #return
+    

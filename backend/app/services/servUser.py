@@ -16,29 +16,12 @@ def registerUser(username, password, email):
 def loginUser(identifier, password):
     emailPattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
     if re.match(emailPattern, identifier):
-        if not uporabnik:
-            return jsonify({"succes": False, "message": "račun ne obstaja"})
         uporabnik = getUserMail(identifier)
-        userId = uporabnik["userId"]
-        if check_password_hash(uporabnik["hashPass"],password):
-            response = make_response(jsonify({"succes":True, "message":"Login uspešen"}))
-            response.set_cookie(
-                "sessionId",
-                userId, 
-                httponly=True, 
-                secure=False, 
-                samesite="None", 
-                max_age=60*60*24     # 1 day expiration
-            )
-        else:
-            return jsonify({"succes": False, "message": "Napačno geslo"})
-    else:
         if not uporabnik:
-            return jsonify({"succes": False, "message": "račun ne obstaja"})
-        uporabnik = getUserUsername(identifier)
+            return jsonify({"success": False, "message": "račun ne obstaja"})
         userId = uporabnik["userId"]
         if check_password_hash(uporabnik["hashPass"],password):
-            response = make_response(jsonify({"succes":True, "message":"Login uspešen"}))
+            response = make_response(jsonify({"success":True, "message":"Login uspešen"}))
             response.set_cookie(
                 "sessionId",
                 userId, 
@@ -47,5 +30,24 @@ def loginUser(identifier, password):
                 samesite="None", 
                 max_age=60*60*24     # 1 day expiration
             )
+            return response
         else:
-            return jsonify({"succes": False, "message": "Napačno geslo"})
+            return jsonify({"success": False, "message": "Napačno geslo"})
+    else:
+        uporabnik = getUserUsername(identifier)
+        if not uporabnik:
+            return jsonify({"success": False, "message": "račun ne obstaja"})
+        userId = uporabnik["userId"]
+        if check_password_hash(uporabnik["hashPass"],password):
+            response = make_response(jsonify({"success":True, "message":"Login uspešen"}))
+            response.set_cookie(
+                "sessionId",
+                userId, 
+                httponly=True, 
+                secure=False, 
+                samesite="None", 
+                max_age=60*60*24     # 1 day expiration
+            )
+            return response
+        else:
+            return jsonify({"success": False, "message": "Napačno geslo"})
