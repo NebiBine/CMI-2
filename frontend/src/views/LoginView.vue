@@ -2,9 +2,12 @@
 import { useMessage } from "naive-ui";
 import { ref } from "vue";
 import '../assets/styles/AUTHStyle.css'
+import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
 import axios from 'axios';
 
+
+const router = useRouter();
 const formRef = ref(null);
 const message = useMessage(); 
 const size = ref("medium");
