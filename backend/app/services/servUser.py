@@ -5,41 +5,58 @@ import uuid
 import re
 
 def registerUser(username, password, email):
-    users = getAll("uporabniki")
     if getUserUsername(username):
-        return
+        return jsonify({"success": False, "message": "Username already exists"}), 409
     user =User(username=username, email=email)
     user.hashPassword(password)
     user.id = str(uuid.uuid4())
-    register(user.id,user.username, user.passwordHash, user.email)
+    try:
+        register(user.id,user.username, user.passwordHash, user.email)
+        response = make_response(jsonify({"success":True, "message": "You are now registred, make your profile!"}))
+        tempId = str(uuid.uuid4)
+        response.set_cookie(
+                "userId",
+                user.id, 
+                httponly=True, 
+                secure=False, 
+                samesite="None", 
+                max_age=60*60*24     # 1dan
+        )
+        response.status_code = 200
+        return response
+    except:
+        return jsonify({"success":False, "message": "There was an error, please try again."}), 400
+
 
 def loginUser(identifier, password):
-    emailPattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
-    if re.match(emailPattern, identifier):
+    EMAILPATTERN = r"^[\w\.-]+@[\w\.-]+\.\w+$"
+    if re.match(EMAILPATTERN, identifier):
         uporabnik = getUserMail(identifier)
         if not uporabnik:
-            return jsonify({"success": False, "message": "račun ne obstaja"})
+            return jsonify({"success": False, "message": "Account does not exist, please register!"}), 404
+        
         userId = uporabnik["userId"]
-        if check_password_hash(uporabnik["hashPass"],password):
-            response = make_response(jsonify({"success":True, "message":"Login uspešen"}))
+        if check_password_hash(uporabnik["hashPass"],password) == True:
+            response = make_response(jsonify({"success":True, "message":"You are logged in!"}))
             response.set_cookie(
                 "sessionId",
                 userId, 
                 httponly=True, 
                 secure=False, 
                 samesite="None", 
-                max_age=60*60*24     # 1 day expiration
+                max_age=60*60*24     # 1 dan
             )
+            response.status_code = 200
             return response
         else:
-            return jsonify({"success": False, "message": "Napačno geslo"})
+            return jsonify({"success": False, "message": "Wrong password"}), 401
     else:
         uporabnik = getUserUsername(identifier)
         if not uporabnik:
-            return jsonify({"success": False, "message": "račun ne obstaja"})
+            return jsonify({"success": False, "message": "Account does not exist, please register!"}), 404
         userId = uporabnik["userId"]
         if check_password_hash(uporabnik["hashPass"],password):
-            response = make_response(jsonify({"success":True, "message":"Login uspešen"}))
+            response = make_response(jsonify({"success":True, "message":"You are logged in!"}))
             response.set_cookie(
                 "sessionId",
                 userId, 
@@ -48,6 +65,7 @@ def loginUser(identifier, password):
                 samesite="None", 
                 max_age=60*60*24     # 1 day expiration
             )
+            response.status_code = 200
             return response
         else:
-            return jsonify({"success": False, "message": "Napačno geslo"})
+            return jsonify({"success": False, "message": "Napačno geslo"}), 401
