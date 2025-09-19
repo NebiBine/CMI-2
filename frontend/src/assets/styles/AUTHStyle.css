@@ -1,68 +1,79 @@
-@font-face {
-  font-family: "Figtree";
-  src: url("../fonts/Figtree-VariableFont_wght.ttf") format("truetype");
-  font-weight: bolder;
-  font-style: normal;
-}
-
+/* Reset */
 html, body {
-  height: 100%;
   margin: 0;
-  overflow: hidden;
-}
-
-.auth-page {
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  font-family: "Inter", sans-serif;
-}
-
-.auth-left {
-  flex: 7; 
-  display: flex;
-  justify-content: flex-start; 
-  align-items: center;
-  background: #ffffff;
-  padding-left: 1%; 
-}
-
-.login-container {
+  padding: 0;
   width: 100%;
-  max-width: 380px;
-  text-align: left; 
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
 }
 
-.login-container h1 {
+/* Main layout */
+.auth-layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Left side (form) */
+.auth-left {
+  flex: 2;             /* take up 50% */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 360px;    /* form stays compact */
+  text-align: center;
+}
+
+/* Right side (image) */
+.auth-right {
+  width: 60%;   /* slightly larger */
+  height: 100vh;
+  overflow: hidden;
+}
+
+.auth-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Headings + text */
+.auth-container h1 {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
   color: #111827;
 }
 
-.login-container p.subtitle {
+.auth-container p.subtitle {
   font-size: 1rem;
   color: #6b7280;
   margin-bottom: 2rem;
 }
 
+/* Inputs */
 .n-input {
   width: 100%;
   margin-bottom: 1rem;
-  background: #f9fafb !important;
-  color: #111827 !important;
   border-radius: 6px;
   border: 1px solid #d1d5db;
+  background: #f9fafb !important;
 }
 
-.n-input input::placeholder {
-  color: #9ca3af !important;
-}
-
+/* Button */
 .n-button {
   width: 100%;
-  padding: 0.85rem;
+  padding: 0.8rem;
   background: #f59e0b !important;
   color: #fff !important;
   font-weight: 600;
@@ -78,247 +89,51 @@ html, body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.login-footer {
+/* Footer */
+.auth-footer {
   margin-top: 1.5rem;
   font-size: 0.9rem;
   color: #6b7280;
 }
 
-.login-footer a {
+.auth-footer a {
   color: #f59e0b;
   text-decoration: none;
-  transition: 0.2s;
 }
 
-.login-footer a:hover {
+.auth-footer a:hover {
   text-decoration: underline;
 }
 
-.auth-right {
-  flex: 10; 
-  overflow: hidden;
-  background: #e5e7eb;
-}
-
-.auth-right img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; 
-}
-
-/* dodatki za register page */
-.auth-left .login-container h1 {
-  color: #1d4ed8; 
-}
-
-.auth-left .login-container .subtitle {
-  color: #374151;
-}
-
-/* ============================= */
-/*   FORGOT PASSWORD PAGE CSS    */
-/* ============================= */
-
-.forgot-page {
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  font-family: "Inter", sans-serif;
-  background: #ffffff;
-}
-
-/* LEFT SIDE (Form) */
-.forgot-left {
-  flex: 7;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding-left: 1%;
-}
-
-.forgot-container {
-  width: 100%;
-  max-width: 380px;
-  text-align: left;
-}
-
-.forgot-container h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #111827;
-}
-
-.forgot-container p.subtitle {
-  font-size: 1rem;
-  color: #6b7280;
-  margin-bottom: 2rem;
-  line-height: 1.4;
-}
-
-/* Inputs */
-.forgot-container .n-input {
-  width: 100%;
-  margin-bottom: 1rem;
-  background: #f9fafb !important;
-  color: #111827 !important;
-  border-radius: 6px;
-  border: 1px solid #d1d5db;
-}
-
-.forgot-container .n-input input::placeholder {
-  color: #9ca3af !important;
-}
-
-/* Button */
-.forgot-container .n-button {
-  width: 100%;
-  padding: 0.85rem;
-  background: #f59e0b !important;
-  color: #fff !important;
-  font-weight: 600;
-  font-size: 1rem;
-  border-radius: 6px;
-  transition: all 0.25s ease;
-  margin-top: 0.5rem;
-}
-
-.forgot-container .n-button:hover {
-  background: #d97706 !important;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-/* Footer link */
-.forgot-footer {
-  margin-top: 1.5rem;
-  font-size: 0.9rem;
-  color: #6b7280;
-}
-
-.forgot-footer a {
-  color: #f59e0b;
-  text-decoration: none;
-  transition: 0.2s;
-}
-
-.forgot-footer a:hover {
-  text-decoration: underline;
-}
-
-/* RIGHT SIDE (Illustration) */
-.forgot-right {
-  flex: 10;
-  overflow: hidden;
-  background: #e5e7eb;
-}
-
-.forgot-right img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Responsive for tablets */
+/* Mobile responsiveness */
 @media (max-width: 1024px) {
-  .forgot-page {
-    flex-direction: column;
-  }
-
-  .forgot-left,
-  .forgot-right {
-    flex: none;
-    width: 100%;
-  }
-
-  .forgot-right {
-    height: 220px;
-  }
-
-  .forgot-left {
-    justify-content: center;
-    padding: 2rem;
-  }
-
-  .forgot-container {
-    max-width: 90%;
-    margin: 0 auto;
-  }
-}
-
-/* Responsive for mobile */
-@media (max-width: 640px) {
-  .forgot-right {
-    display: none;
-  }
-
-  .forgot-left {
-    justify-content: center;
-    padding: 1.5rem;
-  }
-
-  .forgot-container h1 {
-    font-size: 1.5rem;
-  }
-
-  .forgot-container p.subtitle {
-    font-size: 0.9rem;
-  }
-
-  .forgot-container .n-button {
-    font-size: 0.9rem;
-    padding: 0.7rem;
-  }
-}
-
-/* DODATEK DA JE NAREJENO ZA VSE NAPRAVE      */
-@media (max-width: 1024px) {
-  .auth-page {
+  .auth-layout {
     flex-direction: column;
   }
 
   .auth-left, .auth-right {
     flex: none;
     width: 100%;
+    height: auto;
   }
 
   .auth-right {
-    height: 220px; 
-  }
-
-  .auth-left {
-    justify-content: center;
-    padding: 2rem;
-  }
-
-  .login-container {
-    max-width: 90%;
-    margin: 0 auto;
+    height: 200px;
   }
 }
 
-/* Mobile */
 @media (max-width: 640px) {
   .auth-right {
-    display: none; 
+    display: none;
   }
 
   .auth-left {
+    width: 100%;
     justify-content: center;
     padding: 1.5rem;
   }
 
-  .login-container h1 {
-    font-size: 1.5rem;
-  }
-
-  .login-container p.subtitle {
-    font-size: 0.9rem;
-  }
-
-  .n-button {
-    font-size: 0.9rem;
-    padding: 0.7rem;
+  .auth-container {
+    max-width: 90%;
   }
 }

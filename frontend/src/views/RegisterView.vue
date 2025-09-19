@@ -82,10 +82,5 @@ const register = async () => {
         </div>
       </div>
     </div>
-
-    <!-- Right Side -->
-    <div class="auth-right">
-      <img src="../assets/images/login_photo.jpg" alt="City Services Illustration" />
-    </div>
   </div>
 </template>
