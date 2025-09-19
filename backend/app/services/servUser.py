@@ -6,7 +6,7 @@ import re
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, To, DynamicTemplateData
 
-api = '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'
+
 
 def registerUser(username, password, email):
     if getUserUsername(username):
