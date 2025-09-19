@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.services.servUser import registerUser, loginUser, forgotPass
+from app.services.servUser import registerUser, loginUser, forgotPassword
 
 
 authBp = Blueprint("auth", __name__, url_prefix="/auth")
@@ -21,7 +21,7 @@ def login():
 def forgotPass():
     data = request.json
     print(data)
-    forgotPass(data["email"], data["resetlink"])
+    forgotPassword(data["email"], data["resetlink"])
     return jsonify({"message": "Email sent succesfully", "success":True})
 
 @authBp.route("resetPassword", methods=["POST"])

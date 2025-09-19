@@ -5,8 +5,9 @@ import uuid
 import re
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, To, DynamicTemplateData
+import os
 
-
+SENDGRID_API_KEY = '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'
 
 def registerUser(username, password, email):
     if getUserUsername(username):
@@ -74,19 +75,24 @@ def loginUser(identifier, password):
         else:
             return jsonify({"success": False, "message": "Napačno geslo"}), 401
 
-def forgotPass(email, link):
+#setx SENDGRID_API_KEY "SG.XXXX"
+def forgotPassword(email, link): #naredi da preverja če mail sploh obstaja v bazi, pol pa da ga spremeni v reset
+    SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+
     message = Mail(
-    from_email='cmi.city.eu@gmail.com', 
-    to_emails=email,
+        from_email='cmi.city.eu@gmail.com',
+        to_emails=email,
     )
     message.template_id = 'd-a2cf4800999b4d3b9ab3f8c62e511206'
     message.dynamic_template_data = {
-    'link': link
+        'link': link
     }
 
     try:
         sg = SendGridAPIClient(SENDGRID_API_KEY)
         response = sg.send(message)
-        print(f'Status code: {response.status_code}')
-    except:
-        print(f'Status code: {response.status_code}')
+        print("Status code:", response.status_code)
+        return response
+    except Exception as e:
+        print("ERROR:", e)
+        raise
