@@ -1,4 +1,7 @@
 
+<script setup>
+import '../assets/styles/AUTHStyle.css'
+</script>
 <template>
     <div class="welcome-layout">
       <main>

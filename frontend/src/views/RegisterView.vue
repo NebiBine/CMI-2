@@ -48,34 +48,44 @@ const register = async () => {
 </script>
 
 <template>
-    <div class="app">
-  <div class="text">
-    <h1>Join CMI – Your City, Smarter</h1>
-  </div>
-  <div class = "RegisterDescription">
-    <p>Sign up to access city services and personalized updates.</p>
-</div>
+  <div class="auth-page">
+    <!-- Left Side -->
+    <div class="auth-left">
+      <div class="login-container">
+        <h1>Join CMI – Your City, Smarter</h1>
+        <p class="subtitle">Sign up to access city services and personalized updates.</p>
 
-  <div class="register-form">
-    <n-form
-      ref="formRef"
-      :label-width="80"
-      :model="formValue"
-      :rules="rules"
-      :size="size"
+        <n-form
+          ref="formRef"
+          :label-width="0"
+          :model="formValue"
+          :rules="rules"
+          :size="size"
         >
-      <n-form-item label="Username" path="user.username">
-        <n-input v-model:value="formValue.user.username" placeholder="Username" />
-      </n-form-item>
-      <n-form-item label="Email" path="user.username">
-        <n-input v-model:value="formValue.user.email" placeholder="Email" />
-      </n-form-item>
-      <n-form-item label="Password" path="user.password">
-        <n-input v-model:value="formValue.user.password" placeholder="Password" />
-      </n-form-item>
-      <n-button @click="register">Create Account</n-button>
-    </n-form>
-    <p>Already registered? <router-link to="/auth/login">Log in here</router-link></p>
+          <n-form-item path="user.username">
+            <n-input v-model:value="formValue.user.username" placeholder="Username" />
+          </n-form-item>
+
+          <n-form-item path="user.email">
+            <n-input v-model:value="formValue.user.email" placeholder="Email" />
+          </n-form-item>
+
+          <n-form-item path="user.password">
+            <n-input type="password" v-model:value="formValue.user.password" placeholder="Password" />
+          </n-form-item>
+
+          <n-button type="primary" @click="register">Create Account</n-button>
+        </n-form>
+
+        <div class="login-footer">
+          <p>Already registered? <RouterLink to="/auth/login">Log in here</RouterLink></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side -->
+    <div class="auth-right">
+      <img src="../assets/images/login_photo.jpg" alt="City Services Illustration" />
+    </div>
   </div>
-</div>
 </template>

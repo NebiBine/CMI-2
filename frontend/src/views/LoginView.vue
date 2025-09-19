@@ -5,6 +5,7 @@ import '../assets/styles/AUTHStyle.css'
 import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
 import axios from 'axios';
+import { error } from "naive-ui/es/_utils/naive/warn";
 
 
 const router = useRouter();
@@ -12,7 +13,7 @@ const formRef = ref(null);
 const message = useMessage(); 
 const size = ref("medium");
 const value = ref(false)
-
+const errorMessage = ref("");
 
 const formValue = ref({
   user: {
@@ -47,15 +48,17 @@ const login = async () => {
     })
     console.log("✅ CMI Login success:", response.data)
     //ob successfull loginu redirect na dashboard
-    router.push("/app/Dashboard");
-    
-    //message.success("Registration successful!") notify userju ce je registracija uspesna
+    if (response.data.success === true) {
+      router.push("/app/Dashboard");
+    } else {
+      errorMessage.value = "Invalid credentials. Please try again.";
+    }
   } catch (error) {
-    console.error("❌ CMI Login error:", error)
-    //message.error("Registration failed") notify userju da registracija ni uspesna
+    console.error("❌ CMI Login error:", error);
+    errorMessage.value = "Login failed. Please check your connection or credentials.";
   }
  
-}
+};
 </script>
 <template>
   <div class="auth-page">
@@ -99,6 +102,9 @@ const login = async () => {
         </div>
       </div>
     </div>
+    <n-alert title="Error Text" type="error" closable v-if="errorMessage">
+      I{{errorMessage}}
+    </n-alert>
 
     <div class="auth-right">
       <img src="../assets/images/login_photo.jpg" alt="City Infrastructure Map" />

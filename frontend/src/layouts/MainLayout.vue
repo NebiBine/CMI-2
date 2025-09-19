@@ -1,6 +1,8 @@
+<script setup>
+</script>
 <template>
     <div class="welcome-layout">
-      <header>🌍 Welcome</header>
+      <header></header>
       <main>
         <router-view />
       </main>
