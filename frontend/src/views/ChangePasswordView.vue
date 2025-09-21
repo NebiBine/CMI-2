@@ -83,7 +83,7 @@ const passwordReset = async () => {
             <n-input v-model:value="formValue.user.confirmNewPassword" placeholder="Confirm new password" />
           </n-form-item>
 
-          <n-button type="primary">Reset Password</n-button>
+          <n-button type="primary" @click="passwordReset">Reset Password</n-button>
         </n-form>
 
         <div class="login-footer">
