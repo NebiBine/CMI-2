@@ -3,8 +3,6 @@ from .servDb import getAll, register, getUserUsername, getUserMail, newPassword
 from flask import jsonify, make_response
 import uuid
 import re
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail, To, DynamicTemplateData
 import os
 
 def registerUser(username, password, email):
@@ -16,7 +14,6 @@ def registerUser(username, password, email):
     try:
         register(user.id,user.username, user.passwordHash, user.email)
         response = make_response(jsonify({"success":True, "message": "You are now registred, make your profile!"}))
-        tempId = str(uuid.uuid4)
         response.set_cookie(
                 "userId",
                 user.id, 
@@ -31,7 +28,8 @@ def registerUser(username, password, email):
         return jsonify({"success":False, "message": "There was an error, please try again."}), 400
 
 
-def loginUser(identifier, password):
+def loginUser(identifier, password, remember):
+    print(remember)
     EMAILPATTERN = r"^[\w\.-]+@[\w\.-]+\.\w+$"
     if re.match(EMAILPATTERN, identifier):
         uporabnik = getUserMail(identifier)
@@ -41,16 +39,27 @@ def loginUser(identifier, password):
         userId = uporabnik["userId"]
         if check_password_hash(uporabnik["hashPass"],password) == True:
             response = make_response(jsonify({"success":True, "message":"You are logged in!"}))
-            response.set_cookie(
-                "sessionId",
-                userId, 
-                httponly=True, 
-                secure=False, 
-                samesite="None", 
-                max_age=60*60*24     # 1 dan
-            )
-            response.status_code = 200
-            return response
+            if remember == True:
+                response.set_cookie(
+                    "sessionId",
+                    userId, 
+                    httponly=True, 
+                    secure=False, 
+                    samesite="Lax", 
+                    max_age=60*60*24*30     # 1 mesec
+                )
+                response.status_code = 200
+                return response
+            else:
+                response.set_cookie(
+                    "sessionId",
+                    userId, 
+                    httponly=True, 
+                    secure=False, 
+                    samesite="Lax", 
+                )
+                response.status_code = 200
+                return response
         else:
             return jsonify({"success": False, "message": "Wrong password"}), 401
     else:
@@ -62,16 +71,27 @@ def loginUser(identifier, password):
         if check_password_hash(uporabnik["hashPass"],password):
             print("if chech pass hash")
             response = make_response(jsonify({"success":True, "message":"You are logged in!"}))
-            response.set_cookie(
-                "sessionId",
-                userId, 
-                httponly=True, 
-                secure=False, 
-                samesite="None", 
-                max_age=60*60*24     # 1 day expiration
-            )
-            response.status_code = 200
-            return response
+            if remember == True:
+                response.set_cookie(
+                    "sessionId",
+                    userId, 
+                    httponly=True, 
+                    secure=False, 
+                    samesite="Lax", 
+                    max_age=60*60*24*30     # 1 mesec
+                )
+                response.status_code = 200
+                return response
+            else:
+                response.set_cookie(
+                    "sessionId",
+                    userId, 
+                    httponly=True, 
+                    secure=False, 
+                    samesite="Lax", 
+                )
+                response.status_code = 200
+                return response
         else:
             print("napačno geslo")
             return jsonify({"success": False, "message": "Napačno geslo"}), 401

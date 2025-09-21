@@ -15,7 +15,7 @@ def register():
 def login():
     data = request.json
     print(data)
-    return loginUser(data["identifier"], data["password"])
+    return loginUser(data["identifier"], data["password"],data["remember"])
 
 @authBp.route("forgotPassword", methods=["POST"])
 def forgotPass():
