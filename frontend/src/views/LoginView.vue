@@ -11,6 +11,7 @@ const formRef = ref(null);
 const message = useMessage(); 
 const size = ref("medium");
 const errorMessage = ref("");
+const rememberState = ref(false);
 
 // ✅ keep consistent: using username everywhere
 const formValue = ref({
@@ -40,7 +41,8 @@ const login = async () => {
   try {
     const response = await axios.post("http://localhost:8080/auth/login", {
       identifier: formValue.value.user.username, // ✅ now matches
-      password: formValue.value.user.password
+      password: formValue.value.user.password,
+      remember: rememberState.value
     },{
       withCredentials: true
     })
@@ -56,6 +58,10 @@ const login = async () => {
     errorMessage.value = "Login failed. Please check your connection or credentials.";
   }
 };
+function remember(checked){
+  rememberState.value = checked;
+  console.log("Remember me stanje:", rememberState.value);
+}
 </script>
 
 <template>
@@ -81,7 +87,7 @@ const login = async () => {
           </n-form-item>
 
           <n-space item-style="display: flex;" align="center">
-            <n-checkbox>Remember me</n-checkbox>
+            <n-checkbox @update:checked="remember">Remember me</n-checkbox>
           </n-space>
 
           <n-button type="primary" @click="login">Log In</n-button>
