@@ -56,9 +56,11 @@ def loginUser(identifier, password):
     else:
         uporabnik = getUserUsername(identifier)
         if not uporabnik:
+            print("if not uporabnik")
             return jsonify({"success": False, "message": "Account does not exist, please register!"}), 404
         userId = uporabnik["userId"]
         if check_password_hash(uporabnik["hashPass"],password):
+            print("if chech pass hash")
             response = make_response(jsonify({"success":True, "message":"You are logged in!"}))
             response.set_cookie(
                 "sessionId",
@@ -71,6 +73,7 @@ def loginUser(identifier, password):
             response.status_code = 200
             return response
         else:
+            print("napačno geslo")
             return jsonify({"success": False, "message": "Napačno geslo"}), 401
 
 

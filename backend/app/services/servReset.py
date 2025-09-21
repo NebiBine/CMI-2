@@ -20,6 +20,6 @@ def resetPassword(resetId, password):
 
     hashPass = generate_password_hash(password)
     print("hashpass v resetpassword"+ hashPass)
-    newPassword(uporabnik["email"], hashPass)
+    newPassword(hashPass, uporabnik["email"])
     delResetId(resetId)
     return "dela"
