@@ -74,35 +74,5 @@ def loginUser(identifier, password):
             return jsonify({"success": False, "message": "Napačno geslo"}), 401
 
 
-
-
-from werkzeug.security import generate_password_hash
-        
-
-    
-
-
-class PasswordResetManager:
-    def __init__(self):
-        self.pendingReset = {} #email: true
-
-    def requestReset(self, email, link):
-        user = getUserMail(email)
-        if not user:
-            return print("ne obstaja")
-        self.pendingReset[email] = True
-
-        sendEmail(email, link)
-
-    def resetPassword(self, email, password):
-        if self.pendingReset.get(email):
-            hashPass = generate_password_hash(password)
-            newPassword(hashPass, email)
-            del self.pendingReset[email]
-            return
-        else:
-            return "glupa napaka!"
-password_reset_manager = PasswordResetManager()
-
         
         
