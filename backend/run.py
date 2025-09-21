@@ -3,6 +3,7 @@ from flask_cors import CORS
 app = createApp()
 
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, allow_headers="*")
+CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
 #Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 if __name__ == "__main__":
     app.run(debug=True, port="8080")

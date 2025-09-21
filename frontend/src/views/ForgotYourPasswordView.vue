@@ -32,7 +32,7 @@ const forgotPassword = async () => {
   const token = uuidv4()
   const resetlink = `http://localhost:5173/auth/PasswordReset/${token}`
   try {
-    const response = await axios.post("http://localhost:8080/auth/ForgotPassword", {
+    const response = await axios.post("http://localhost:8080/auth/forgotPassword", {
       email: formValue.value.user.email,
       resetlink,
       token
