@@ -16,6 +16,7 @@ const size = ref("medium");
 const formValue = ref({
   user: {
     newPassword: "",
+    confirmNewPassword:""
   },
 });
 
@@ -26,19 +27,32 @@ const rules = {
       message: "Please input your new password",
       trigger: "blur"
     },
-    confirmNewPassword: {
-      required: true,
-      message: "Please confirm your new password",
-      trigger: "blur"
-    }
+    confirmNewPassword: [
+      {
+        required: true,
+        message: "Please confirm your new password",
+        trigger: "blur"
+      },
+      {
+        validator: (rule, value) => { //rule passa naiveui value je pa value vnosnega polja confirm new password
+          if (value !== formValue.value.user.newPassword) { //ce je value (kar je vneseno v polju drugacno od zgornjega polja)
+            return new Error("Both passwords must be the same"); //returnam ta error
+          }
+          return true; //v nasprotnem primeru all good
+        },
+        trigger: "blur"
+      }
+    ]
   },
 };
 
 // axios
 const passwordReset = async () => {
   try {
-    const response = await axios.post("http://localhost:8080/auth/PasswordReset", {
-      newPassword: formValue.value.user.newPassword
+    await formRef.value?.validate(); // validiraj form da je vse kot mora bit potem pojdi naprej
+    const response = await axios.post(`http://localhost:8080/auth/PasswordReset/${token}`, {
+      newPassword: formValue.value.user.newPassword,
+      token
     },{
       withCredentials: true
     })

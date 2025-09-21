@@ -65,11 +65,6 @@ const login = async () => {
         <h1>Welcome Back to CMI!</h1>
         <p class="subtitle">Log in to manage your city services and stay updated.</p>
 
-        <!-- ✅ Error alert now above the form -->
-        <n-alert v-if="errorMessage" type="error" title="Login Error" closable style="margin-bottom: 1rem">
-          {{ errorMessage }}
-        </n-alert>
-
         <n-form
           ref="formRef"
           :label-width="0"

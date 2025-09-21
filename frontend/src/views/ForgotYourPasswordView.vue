@@ -11,7 +11,6 @@ const formRef = ref(null);
 const size = ref("medium");
 
 
-// ✅ keep consistent: using username everywhere
 const formValue = ref({
   user: {
     email: "",
@@ -35,7 +34,8 @@ const forgotPassword = async () => {
   try {
     const response = await axios.post("http://localhost:8080/auth/ForgotPassword", {
       email: formValue.value.user.email,
-      resetlink
+      resetlink,
+      token
     },{
       withCredentials: true
     })

@@ -11,6 +11,7 @@ import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
 import ForgotYourPasswordView from '../views/ForgotYourPasswordView.vue'
 import ChangePasswordView from '../views/ChangePasswordView.vue'
+import ProfileCreationView from '../views/ProfileCreationView.vue'
   //main page dashboard etc.
 import DashboardView from '../views/DashboardView.vue'
 //import HomeView from '../views/HomeView.vue'
@@ -30,15 +31,15 @@ const routes = [
     children: [
       {path:'login',component: LoginView},
       {path:'register',component: RegisterView},
+      {path:'ProfileCreation',component: ProfileCreationView},
       {path:'ForgotPassword',component: ForgotYourPasswordView},
       {
         path: "/auth/PasswordReset/:token",
-        //name: "ResetPassword", ne rabim za zacetek bo samo olajsava ce bom kaj uporabljal se ta subpage
+        name: "ResetPassword",// ne rabim za zacetek bo samo olajsava ce bom kaj uporabljal se ta subpage
         component: (ChangePasswordView),
         props: true
-      }
-      ,
-    ]
+      },
+      ]
   },
   {
     path:'/app',
