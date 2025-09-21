@@ -12,12 +12,14 @@ def requestPassReset(email, resetId, link):
 def resetPassword(resetId, password):
     uporabnik = getResetId(resetId)
     if not uporabnik:
-        return "invalid or expired Id"
+        return print("invalid or expired Id")
     
     if datetime.now() > datetime.fromisoformat(uporabnik["expire"]):
         delResetId(resetId)
+        print( "expired")
 
     hashPass = generate_password_hash(password)
+    print("hashpass v resetpassword"+ hashPass)
     newPassword(uporabnik["email"], hashPass)
     delResetId(resetId)
     return "dela"
