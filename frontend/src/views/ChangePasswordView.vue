@@ -50,7 +50,7 @@ const rules = {
 const passwordReset = async () => {
   try {
     await formRef.value?.validate(); // validiraj form da je vse kot mora bit potem pojdi naprej
-    const response = await axios.post(`http://localhost:8080/auth/PasswordReset/${token}`, {
+    const response = await axios.post(`http://localhost:8080/auth/resetPassword/${token}`, {
       newPassword: formValue.value.user.newPassword,
       token
     },{
@@ -59,6 +59,7 @@ const passwordReset = async () => {
     console.log("✅ Success:", response.data)
   } catch (error) {
     console.error("❌ Error:", error);
+    console.log(token);
   }
 };
 </script>
@@ -83,7 +84,7 @@ const passwordReset = async () => {
             <n-input v-model:value="formValue.user.confirmNewPassword" placeholder="Confirm new password" />
           </n-form-item>
 
-          <n-button type="primary">Reset Password</n-button>
+          <n-button type="primary" @click="passwordReset">Reset Password</n-button>
         </n-form>
 
         <div class="login-footer">

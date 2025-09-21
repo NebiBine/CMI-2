@@ -40,5 +40,5 @@ def getResetId(resetId):
 
 def delResetId(resetId):
     Id = Query()
-    reset.remove(Id,resetId == resetId)
+    reset.remove(Id.resetId == resetId)
 

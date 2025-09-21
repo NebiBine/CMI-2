@@ -24,10 +24,10 @@ def forgotPass():
     requestPassReset(data["email"], data["token"], data["resetlink"])
     return jsonify({"message": "Email sent succesfully", "success":True})
 
-@authBp.route("resetPassword", methods=["POST"])
-def resetPass():
+@authBp.route("resetPassword/<token>", methods=["POST"])
+def resetPass(token):
     data = request.json
-    resetPassword(data["resetId"], data["password"])
+    resetPassword(token, data["newPassword"])
     print(data)
     return jsonify({"success":True, "message": "dela"})
 
