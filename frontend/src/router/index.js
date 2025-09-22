@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import axios from "axios";
 //LAYOUTS
 import WelcomeLayout from '../layouts/WelcomeLayout.vue'
 import AuthLayout from '../layouts/AuthLayout.vue'
@@ -29,7 +30,7 @@ const routes = [
     path:'/auth',
     component: AuthLayout,
     children: [
-      {path:'login',component: LoginView, meta: { requiresAuth: true }},
+      {path:'login',component: LoginView},
       {path:'register',component: RegisterView},
       {path:'ProfileCreation',component: ProfileCreationView},
       {path:'ForgotPassword',component: ForgotYourPasswordView},
@@ -77,6 +78,7 @@ router.beforeEach(async (to, from, next) => {
 
       if (res.data.loggedIn) {
         next(); // ce je logged in true dovolim userju da gre naprej na /app/dashboard recimo
+        console.log(res.data.loggedIn)
       } else {
         next("/auth/login"); 
       }
