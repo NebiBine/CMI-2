@@ -18,4 +18,6 @@ src/
  ├─ App.vue          # global layout with <RouterView />
  └─ main.js
 
+installiran vuebits, tailwind css,naiveui,vue-tel-input
+
 BACKEND DIRECTORY HELP -- da se znajdeva v backendu

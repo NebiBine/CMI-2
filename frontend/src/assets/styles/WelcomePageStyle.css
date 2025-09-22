@@ -56,14 +56,17 @@
     height: auto;
 }
 .WelcomeText {
-    position: relative;
-    top: -50px;                      
-    font-family: "Figtree", sans-serif;
-    font-weight: bolder;
-    font-size: 40px;
-    color: white;
-    justify-content: center;                
+  position: fixed;      
+  top: 38%;             
+  left: 50%;
+  transform: translateX(-50%);  
+  text-align: center;
+  font-family: "Figtree", sans-serif;
+  font-weight: bolder;
+  font-size: 40px;
+  color: #fff;
 }
+
 .WelcomePageDescription {
     position: fixed;
     top: 55%;                       

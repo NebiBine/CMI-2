@@ -1,5 +1,7 @@
 <script setup>
 import '../assets/styles/AUTHStyle.css'
+
+
 </script>
 
 <template>

@@ -13,7 +13,6 @@ const size = ref("medium");
 const errorMessage = ref("");
 const rememberState = ref(false);
 
-// ✅ keep consistent: using username everywhere
 const formValue = ref({
   user: {
     username: "",
@@ -40,7 +39,7 @@ const rules = {
 const login = async () => {
   try {
     const response = await axios.post("http://localhost:8080/auth/login", {
-      identifier: formValue.value.user.username, // ✅ now matches
+      identifier: formValue.value.user.username,
       password: formValue.value.user.password,
       remember: rememberState.value
     },{
@@ -62,6 +61,10 @@ function remember(checked){
   rememberState.value = checked;
   console.log("Remember me stanje:", rememberState.value);
 }
+//dodaj da ce user ze ima cookije da direktno pusham na dashboard router.push("/app/Dashboard");
+
+
+
 </script>
 
 <template>

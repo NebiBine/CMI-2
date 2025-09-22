@@ -29,7 +29,7 @@ const routes = [
     path:'/auth',
     component: AuthLayout,
     children: [
-      {path:'login',component: LoginView},
+      {path:'login',component: LoginView, meta: { requiresAuth: true }},
       {path:'register',component: RegisterView},
       {path:'ProfileCreation',component: ProfileCreationView},
       {path:'ForgotPassword',component: ForgotYourPasswordView},
@@ -45,7 +45,7 @@ const routes = [
     path:'/app',
     component: MainLayout,
     children: [
-      {path:'Dashboard',component: DashboardView}
+      {path:'Dashboard',component: DashboardView, meta: { requiresAuth: true }}
     ]
   }
 
@@ -63,5 +63,31 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 })
+//requires auth
+
+//to - kam hocem it recimo /app/dashboard
+// from - iz kje prihajam recimo /auth/login
+//next - funkcija ki jo moram klicat da vue routerju povem kaj naj naredi (continue,redirect, cancel)
+router.beforeEach(async (to, from, next) => {
+  if (to.meta.requiresAuth) { //ce to ima meta requiresauth potem preveri ce ne samo dovoli da gre dalje 
+    try {
+      const res = await axios.get("http://localhost:8080/auth/check", { //getam iz backenda
+        withCredentials: true, // pove da zahtevam cookije
+      });
+
+      if (res.data.loggedIn) {
+        next(); // ce je logged in true dovolim userju da gre naprej na /app/dashboard recimo
+      } else {
+        next("/auth/login"); 
+      }
+    } catch (err) {
+      next("/auth/login"); //ce je error sklepam da user ni loggan in in ga pustim na loginu
+    }
+  } else {
+    next();
+  }
+});
+
+
 //export
 export default router

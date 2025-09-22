@@ -14,15 +14,18 @@
     "axios": "^1.12.2",
     "gsap": "^3.13.0",
     "motion-v": "^1.7.1",
-    "tailwindcss": "^4.1.13",
     "three": "^0.178.0",
     "uuid": "^13.0.0",
     "vue": "^3.5.18",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "vue-tel-input": "^9.5.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.1",
+    "autoprefixer": "^10.4.21",
     "naive-ui": "^2.43.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.13",
     "vite": "^7.1.5"
   }
 }
