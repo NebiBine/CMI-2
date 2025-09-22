@@ -2,6 +2,8 @@
 import { ref } from "vue";
 import "../assets/styles/AUTHStyle.css";
 import Stepper from "../components/Stepper/Stepper/Stepper.vue";
+import { useRouter } from "vue-router";
+import { RouterLink } from "vue-router";
 
 
 const fullName = ref("");
@@ -24,9 +26,7 @@ const handleStepChange = (step) => {
 const handleFinalStepCompleted = () => {
     console.log("Stepper completed");
 };
-if(document.cookie){
-    router.push('/app/Dashboard')
-}
+
 
 </script>
 
