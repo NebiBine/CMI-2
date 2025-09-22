@@ -34,6 +34,7 @@ def newPassword(hashPass, mail):
 def requestReset(resetId,email,expire):
     reset.insert({"resetId":resetId, "email":email, "expire": expire.isoformat()})
 
+
 def getResetId(resetId):
     Id = Query()
     return reset.get(Id.resetId == resetId)

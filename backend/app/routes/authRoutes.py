@@ -4,7 +4,13 @@ from app.services.servReset import requestPassReset, resetPassword
 
 authBp = Blueprint("auth", __name__, url_prefix="/auth")
 
-
+@authBp.route("/check", methods=["GET"])
+def check_auth():
+    userId = request.cookies.get("sessionId") 
+    if userId:
+        return jsonify({"loggedIn": True, "userId": userId}), 200
+    else:
+        return jsonify({"loggedIn": False}), 401
 
 @authBp.route("/register", methods=["POST"])
 def register():
@@ -14,20 +20,22 @@ def register():
 @authBp.route("/login", methods=["POST"])
 def login():
     data = request.json
-    print(data)
+
     return loginUser(data["identifier"], data["password"],data["remember"])
 
 @authBp.route("forgotPassword", methods=["POST"])
 def forgotPass():
     data = request.json
-    print(data)
-    requestPassReset(data["email"], data["token"], data["resetlink"])
-    return jsonify({"message": "Email sent succesfully", "success":True})
+
+    return requestPassReset(data["email"], data["token"], data["resetlink"])
 
 @authBp.route("resetPassword/<token>", methods=["POST"])
 def resetPass(token):
     data = request.json
-    resetPassword(token, data["newPassword"])
-    print(data)
-    return jsonify({"success":True, "message": "dela"})
+    return resetPassword(token, data["newPassword"])
+
+@authBp.route("newProfile", methods=["POST"])
+def newProfile():
+    pass
+
 

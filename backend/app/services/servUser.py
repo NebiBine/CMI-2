@@ -17,9 +17,9 @@ def registerUser(username, password, email):
         response.set_cookie(
                 "userId",
                 user.id, 
-                httponly=True, 
+                httponly=False, 
                 secure=False, 
-                samesite="None", 
+                samesite="Lax", 
                 max_age=60*60*24     # 1dan
         )
         response.status_code = 200
@@ -43,7 +43,7 @@ def loginUser(identifier, password, remember):
                 response.set_cookie(
                     "sessionId",
                     userId, 
-                    httponly=True, 
+                    httponly=False, 
                     secure=False, 
                     samesite="Lax", 
                     max_age=60*60*24*30     # 1 mesec
@@ -54,7 +54,7 @@ def loginUser(identifier, password, remember):
                 response.set_cookie(
                     "sessionId",
                     userId, 
-                    httponly=True, 
+                    httponly=False, 
                     secure=False, 
                     samesite="Lax", 
                 )
@@ -75,7 +75,7 @@ def loginUser(identifier, password, remember):
                 response.set_cookie(
                     "sessionId",
                     userId, 
-                    httponly=True, 
+                    httponly=False, 
                     secure=False, 
                     samesite="Lax", 
                     max_age=60*60*24*30     # 1 mesec
@@ -86,7 +86,7 @@ def loginUser(identifier, password, remember):
                 response.set_cookie(
                     "sessionId",
                     userId, 
-                    httponly=True, 
+                    httponly=False, 
                     secure=False, 
                     samesite="Lax", 
                 )

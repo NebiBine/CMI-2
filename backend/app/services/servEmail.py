@@ -10,7 +10,6 @@ def sendEmail(email, link):
     #setx je permamently
     #set env je za ta session
 
-
     uporabnik = getUserMail(email)
     if not uporabnik:
         print("error")
