@@ -4,6 +4,7 @@ import "../assets/styles/AUTHStyle.css";
 import Stepper from "../components/Stepper/Stepper/Stepper.vue";
 import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
+import axios from 'axios';
 
 
 const fullName = ref("");
@@ -14,30 +15,53 @@ const street = ref("");
 const city = ref("");
 const country = ref("");
 const zip = ref("");
-
-
-
-
+const profilePicture = ref(null);
 const fileList = ref([]);
+
+
+//router
+const router = useRouter();
+
 
 // dummy handlers
 const handleStepChange = (step) => {
     console.log("Step changed:", step);
 };
+const handleFileChange = (options) => {
+  profilePicture.value = options.file.file;
+};
 
 //na koncu zajamem vse podatke
-const handleFinalStepCompleted = () => {
-    const userData ={
-        fullname : fullName.value,
-        username : username.value,
-        dateOfBirth : dob.value,
-        phoneNumber : phone.value,
-        address_Street : street.value,
-        address_City : city.value,
-        address_Country : country.value,
-        address_ZIP : zip.value
+const handleFinalStepCompleted = async () => {
+    try{
+        const formData = new formData();
+            formData.append("fullname", fullName.value);
+            formData.append("username", username.value);
+            formData.append("dateOfBirth", dob.value);
+            formData.append("phoneNumber", phone.value);
+            formData.append("address_Street", street.value);
+            formData.append("address_City", city.value);
+            formData.append("address_Country", country.value);
+            formData.append("address_ZIP", zip.value);
+
+                if(profilePicture.value){
+                    formData.append("profilePicture", profilePicture.value);
+                }
+                    //axios post method
+                    const response = await axios.post('http://localhost:8080/auth/newProfile',
+                    userData, //posljem userdata cez
+                    {withCredentials: true} //cookije tudi dam cez
+                    );
+                    console.log('successfuly completed profile',response)
+                    if(response.data.ssuccess === true){
+                        router.push('/app/Dashboard')
+                    }
+        }
+
+
+    catch(error){
+        console.log('Napaka axios klic',response)
     }
-    //router.push()
 };
 
 
@@ -75,7 +99,7 @@ const handleFinalStepCompleted = () => {
                 <div class="step4">
                     <h2>Upload your profile picture</h2>
                     <n-upload  
-                    :default-file-list="fileList"
+                    :on-change="handleFileChange"
                     list-type="image-card">
                         Click to Upload
                     </n-upload>

@@ -37,9 +37,10 @@ const register = async () => {
     const response = await axios.post("http://localhost:8080/auth/register", {
       username: formValue.value.user.username,
       email : formValue.value.user.email,
-      password: formValue.value.user.password
-
-    })
+      password: formValue.value.user.password,
+    },{
+      withCredentials: true
+    });
     console.log("✅ CMI Register success:", response.data)
     if(response.data.success === true){
       router.push('/auth/ProfileCreation');
