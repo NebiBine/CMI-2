@@ -1,0 +1,10 @@
+{
+  "uporabniki": {
+    "1": {
+      "userId": "7112dccf-c17f-4af8-b5fe-502c898f41d8",
+      "username": "nace",
+      "hashPass": "scrypt:32768:8:1$NliQyj6FO0OPFBD5$00e9a012d6aa4a8d9c8b43f9b351d14fe16a3ec9d2ac8e7f75a4789dfe95b260054e8dd936e6da6832eb43fc9be11eb07147187773652a6f229185db400f3f2e",
+      "email": "nacerozman3@gmail.com"
+    }
+  }
+}

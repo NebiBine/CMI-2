@@ -33,35 +33,25 @@ const handleFileChange = (options) => {
 
 //na koncu zajamem vse podatke
 const handleFinalStepCompleted = async () => {
-    try{
-        const formData = new formData();
-            formData.append("fullname", fullName.value);
-            formData.append("username", username.value);
-            formData.append("dateOfBirth", dob.value);
-            formData.append("phoneNumber", phone.value);
-            formData.append("address_Street", street.value);
-            formData.append("address_City", city.value);
-            formData.append("address_Country", country.value);
-            formData.append("address_ZIP", zip.value);
-
-                if(profilePicture.value){
-                    formData.append("profilePicture", profilePicture.value);
-                }
-                    //axios post method
-                    const response = await axios.post('http://localhost:8080/auth/newProfile',
-                    userData, //posljem userdata cez
-                    {withCredentials: true} //cookije tudi dam cez
-                    );
-                    console.log('successfuly completed profile',response)
-                    if(response.data.ssuccess === true){
-                        router.push('/app/Dashboard')
-                    }
-        }
-
-
-    catch(error){
-        console.log('Napaka axios klic',response)
-    }
+    try {
+        const response = await axios.post(
+    "http://localhost:8080/auth/newProfile",
+    {
+        fullname: fullName.value,
+        username: username.value,
+        dateOfBirth: dob.value,
+        phoneNumber: phone.value,
+        address_Street: street.value,
+        address_City: city.value,
+        address_Country: country.value,
+        address_ZIP: zip.value,
+    },
+    { withCredentials: true }
+    );
+}
+catch(error){
+    console.log('axios error',error)
+}
 };
 
 
@@ -93,16 +83,7 @@ const handleFinalStepCompleted = async () => {
                     <n-input type="text" v-model:value="street" placeholder="Street Address"></n-input>
                     <n-input type="text" v-model:value="city" placeholder="City"></n-input>
                     <n-input type="text" v-model:value="country" placeholder="Country"></n-input>
-                    <n-input type="number" v-model:value="zip" placeholder="ZIP / Postal Code"></n-input>
-                </div>
-
-                <div class="step4">
-                    <h2>Upload your profile picture</h2>
-                    <n-upload  
-                    :on-change="handleFileChange"
-                    list-type="image-card">
-                        Click to Upload
-                    </n-upload>
+                    <n-input type="text" v-model:value="zip" placeholder="ZIP / Postal Code"></n-input>
                 </div>
                 <div class="step5">
                     <h2>Review your details</h2>
