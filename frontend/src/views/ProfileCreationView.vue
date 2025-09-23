@@ -48,6 +48,10 @@ const handleFinalStepCompleted = async () => {
     },
     { withCredentials: true }
     );
+    console.log("Profile creation success",response)
+    if(response.data.success===true){
+        router.push('/app/Dashboard')
+    }
 }
 catch(error){
     console.log('axios error',error)
