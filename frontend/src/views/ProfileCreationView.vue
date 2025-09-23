@@ -16,6 +16,8 @@ const country = ref("");
 const zip = ref("");
 
 
+
+
 const fileList = ref([]);
 
 // dummy handlers
@@ -23,8 +25,19 @@ const handleStepChange = (step) => {
     console.log("Step changed:", step);
 };
 
+//na koncu zajamem vse podatke
 const handleFinalStepCompleted = () => {
-    console.log("Stepper completed");
+    const userData ={
+        fullname : fullName.value,
+        username : username.value,
+        dateOfBirth : dob.value,
+        phoneNumber : phone.value,
+        address_Street : street.value,
+        address_City : city.value,
+        address_Country : country.value,
+        address_ZIP : zip.value
+    }
+    //router.push()
 };
 
 
@@ -32,6 +45,10 @@ const handleFinalStepCompleted = () => {
 
 <template>
     <div class="auth-left">
+        <div class = "Welcoming-Message">
+            <h1>Welcome! Let’s get you set up</h1>
+            <p>This will only take a couple of minutes.</p>
+        </div>
         <div class="stepper-container">
             <Stepper :initial-step="1" :on-step-change="handleStepChange"
                 :on-final-step-completed="handleFinalStepCompleted" back-button-text="Go Back" next-button-text="Next">
@@ -71,7 +88,7 @@ const handleFinalStepCompleted = () => {
                     <p><b>Phone:</b> {{ phone }}</p>
                     <p><b>Street:</b> {{ street }}</p>
                     <p><b>City:</b> {{ city }}</p>
-                    <p><b>Country:</b> {{ state }}</p>
+                    <p><b>Country:</b> {{ country }}</p>
                     <p><b>ZIP:</b> {{ zip }}</p>
                 </div>
             </Stepper>

@@ -25,7 +25,9 @@ html, body {
   display: flex;
   width: 100vw;
   height: 100vh;
+  
 }
+
 
 .auth-left {
   flex: 1;             
@@ -33,9 +35,10 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #fff;
+  background: #fff; 
   padding: 40px;
   box-sizing: border-box;
+  
 }
 
 .auth-container {
@@ -47,6 +50,7 @@ html, body {
   width: 50%;   
   height: 100vh;
   overflow: hidden;
+  
 }
 
 .auth-right img {
@@ -83,7 +87,7 @@ html, body {
 .n-button {
   width: 100%;
   padding: 0.8rem;
-  background: #f59e0b !important;
+  background: black!important;
   color: #fff !important;
   font-weight: 600;
   font-size: 1rem;
@@ -92,11 +96,6 @@ html, body {
   margin-top: 0.5rem;
 }
 
-.n-button:hover {
-  background: #d97706 !important;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
 
 /* Footer */
 .auth-footer {
@@ -109,6 +108,7 @@ html, body {
   color: #f59e0b;
   text-decoration: none;
 }
+
 
 .auth-footer a:hover {
   text-decoration: underline;
@@ -146,10 +146,68 @@ html, body {
     max-width: 90%;
   }
 }
-.stepper-container{
-  width: 500px;
+/* Welcoming text */
+.Welcoming-Message {
+  text-align: center;
+  margin-bottom: 2rem;
 }
-.stepper-container .step1{
-  position: relative;
+
+.Welcoming-Message h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.Welcoming-Message p {
+  font-size: 1rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+
+.stepper-container {
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  max-width: 500px;
+  margin: 0 auto;
+
+  /* remove box look */
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.stepper-container .step1,
+.stepper-container .step2,
+.stepper-container .step3,
+.stepper-container .step4,
+.stepper-container .step5 {
+  text-align: left;
+  padding: 1rem 0;
+}
+
+.stepper-container h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   color: #111827;
 }
+
+
+.stepper-container .n-input,
+.stepper-container .n-date-picker,
+.stepper-container .n-upload {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.stepper-container .n-button {
+  min-width: 100px;
+  margin-top: 1rem;
+}
+
+
+/* POPRAVI BARVE NA LOGIN,REGISTER,RESET,CHANGE PASSWORD KER JE PREVEC CRNO VSE*/

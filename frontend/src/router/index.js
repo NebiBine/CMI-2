@@ -32,7 +32,7 @@ const routes = [
     children: [
       {path:'login',component: LoginView},
       {path:'register',component: RegisterView},
-      {path:'ProfileCreation',component: ProfileCreationView, meta: { requiresAuth: true }},
+      {path:'ProfileCreation',component: ProfileCreationView, meta: { requiresAuth: false }},
       {path:'ForgotPassword',component: ForgotYourPasswordView},
       {
         path: "/auth/PasswordReset/:token",

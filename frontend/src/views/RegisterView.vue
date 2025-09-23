@@ -3,7 +3,10 @@ import { useMessage } from "naive-ui";
 import { ref } from "vue";
 import '../assets/styles/AUTHStyle.css'
 import axios from 'axios';
+import { useRouter } from "vue-router";
+import { RouterLink } from "vue-router";
 
+const router = useRouter();
 const formRef = ref(null);
 const message = useMessage(); 
 const size = ref("medium");
@@ -38,6 +41,9 @@ const register = async () => {
 
     })
     console.log("✅ CMI Register success:", response.data)
+    if(response.data.success === true){
+      router.push('/auth/ProfileCreation');
+    }
     //message.success("Registration successful!") notify userju ce je registracija uspesna
   } catch (error) {
     console.error("❌ CMI Register error:", error)

@@ -2,7 +2,7 @@
   <div class="flex justify-center items-center w-full h-full" v-bind="$attrs">
     <div
       :class="`w-full max-w-md p-8 rounded-[2rem] shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1),0_10px_10px_-5px_rgba(0,0,0,0.04)] ${stepCircleContainerClassName}`"
-      style="border: 1px solid #222"
+      style=""
     >
       <div
         :class="`flex items-center justify-center w-full ${stepContainerClassName}`"
@@ -63,11 +63,11 @@
             <Motion
               as="div"
               class="absolute left-0 top-0 h-full"
-              :initial="{ width: 0, backgroundColor: '#52525b' }"
+              :initial="{ width: 0, backgroundColor: '#ffddd2' }"
               :animate="
                 currentStep > index + 1
-                  ? { width: '100%', backgroundColor: '#27ff64' }
-                  : { width: 0, backgroundColor: '#52525b' }
+                  ? { width: '100%', backgroundColor: '#ffddd2' }
+                  : { width: 0, backgroundColor: '#ffddd2' }
               "
               :transition="{
                 type: 'spring',
@@ -131,7 +131,7 @@
             v-if="currentStep !== 1"
             @click="handleBack"
             :disabled="backButtonProps?.disabled"
-            :class="`text-zinc-400 bg-transparent cursor-pointer transition-all duration-[350ms] rounded px-2 py-1 border-none hover:text-white ${currentStep === 1 ? 'opacity-50 cursor-not-allowed' : ''}`"
+            :class="`text-white bg-transparent cursor-pointer transition-all duration-[350ms] rounded px-2 py-1 border-none hover:text-white ${currentStep === 1 ? 'opacity-50 cursor-not-allowed' : ''}`"
             v-bind="backButtonProps"
           >
             {{ backButtonText }}
@@ -139,7 +139,7 @@
           <button
             @click="isLastStep ? handleComplete() : handleNext()"
             :disabled="nextButtonProps?.disabled"
-            :class="`border-none bg-[#27ff64] transition-all duration-[350ms] flex items-center justify-center rounded-full text-black font-medium tracking-tight px-3.5 py-1.5 cursor-pointer hover:bg-[#22e55c] disabled:opacity-50 disabled:cursor-not-allowed`"
+            :class="`border-none bg-[#27ff64] transition-all duration-[350ms] flex items-center justify-center rounded-full text-white font-medium tracking-tight px-3.5 py-1.5 cursor-pointer hover:bg-[#22e55c] disabled:opacity-50 disabled:cursor-not-allowed`"
           >
             {{ isLastStep ? "Complete" : nextButtonText }}
           </button>
@@ -222,7 +222,7 @@ const getStepIndicatorStyle = (step: number) => {
   switch (status) {
     case "active":
     case "complete":
-      return { backgroundColor: "#27FF64", color: "#fff" };
+      return { backgroundColor: "#4cc9f0", color: "#fff" };
     default:
       return { backgroundColor: "#222", color: "#a3a3a3" };
   }
