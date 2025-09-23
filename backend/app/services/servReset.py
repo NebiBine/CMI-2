@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from .servDb import requestReset, getResetId, delResetId, newPassword
+from .servAuthDb import requestReset, getResetId, delResetId, newPassword
 from .servEmail import sendEmail
 from werkzeug.security import generate_password_hash
 from flask import jsonify

@@ -1,5 +1,5 @@
 from app.model.user import User, check_password_hash
-from .servDb import getAll, register, getUserUsername, getUserMail, newPassword
+from .servAuthDb import getAll, register, getUserUsername, getUserMail, newPassword
 from flask import jsonify, make_response
 import uuid
 import re
@@ -15,7 +15,7 @@ def registerUser(username, password, email):
         register(user.id,user.username, user.passwordHash, user.email)
         response = make_response(jsonify({"success":True, "message": "You are now registred, make your profile!"}))
         response.set_cookie(
-                "userId",
+                "sessionId",
                 user.id, 
                 httponly=False, 
                 secure=False, 

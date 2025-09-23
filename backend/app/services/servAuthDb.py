@@ -1,9 +1,10 @@
 from tinydb import TinyDB, Query
 from datetime import datetime
 
-database = TinyDB("database.json")
+database = TinyDB("databases/authDatabase.json")
 uporabniki = database.table('uporabniki') #userId, name, password, email
 reset = database.table('reset')# id, email, expire
+
 
 User = Query()
 

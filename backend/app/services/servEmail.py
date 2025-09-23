@@ -1,7 +1,7 @@
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, To, DynamicTemplateData
 import os
-from .servDb import getUserMail
+from .servAuthDb import getUserMail
 def sendEmail(email, link):
     SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY") 
 

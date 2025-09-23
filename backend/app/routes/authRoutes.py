@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app.services.servUser import registerUser, loginUser 
 from app.services.servReset import requestPassReset, resetPassword
+from app.services.servProfile import servNewProfile
 
 authBp = Blueprint("auth", __name__, url_prefix="/auth")
 
@@ -36,6 +37,8 @@ def resetPass(token):
 
 @authBp.route("newProfile", methods=["POST"])
 def newProfile():
-    pass
+    data = request.json
+    userId = request.cookies.get("sessionId")
+    return servNewProfile(userId, data["fullname"],data["username"],data["dateOfBirth"],data["phoneNumber"],data["address_Street"],data["address_City"],data["address_Country"],data["address_ZIP"],)
 
 
