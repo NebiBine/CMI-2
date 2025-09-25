@@ -1,0 +1,28 @@
+|||						|||||CHOOSE YOUR CITY(LJUBLJANA),(AMSTERDAM)||||||				Nebi(o_o)
+|||
+Dashboard
+Events
+Social
+Traffic -> general, jams, accidents, works, blocks....
+Polls --> Polls, rewards, info
+Weather
+public tranzit
+guides --> reviews, local places to explore...
+Electrical info (eco)...
+-----------------------
+settings
+about us --> about us, our mission....
+profile
+
+
+---------------------------------------------------------------------------------------------------------
+APIs
+Events -> admin add, possible(https://serpapi.com/google-events-api)
+Social -> social ni apija
+Traffic -> tomtom, https://developer.mapquest.com/documentation/api/traffic/, https://developers.google.com/maps/documentation/javascript/examples/layer-traffic
+Polls -> ni apija
+Weather -> kerkol
+public transport -> https://www.here.com/docs/bundle/public-transit-api-developer-guide/page/station-search/README.html, https://lyko.tech/en/public-transit-api/
+guides -> reviews(https://developers.google.com/my-business/content/review-data), places, nevem
+Electrical info -> https://ember-energy.org/countries-and-regions/europe/ -- zelo profesionalen
+
