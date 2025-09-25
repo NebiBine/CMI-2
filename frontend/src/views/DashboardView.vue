@@ -26,7 +26,7 @@ onMounted(() => {
 
 </script>
 <template>
-<h1>{{greeting}}</h1>
+<h1>{{greeting}}, {{ username }}</h1>
 
 
 </template>

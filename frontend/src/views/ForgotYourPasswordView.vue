@@ -70,7 +70,7 @@ const forgotPassword = async () => {
 
         <div class="login-footer">
           <p><i>Make sure to check <b>spam inbox</b> aswell!</i></p>
-          <p><RouterLink to="/auth/login">← Back to Login</RouterLink></p>
+          <p><RouterLink to="/auth/login" class="povezave">← Back to Login</RouterLink></p>
         </div>
       </div>
     </div>

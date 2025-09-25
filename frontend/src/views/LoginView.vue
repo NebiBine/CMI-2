@@ -90,7 +90,7 @@ function remember(checked){
           </n-form-item>
 
           <n-space item-style="display: flex;" align="center">
-            <n-checkbox @update:checked="remember">Remember me</n-checkbox>
+            <n-checkbox color="#4cc9f0" @update:checked="remember" >Remember me</n-checkbox>
           </n-space>
 
           <n-button type="primary" @click="login">Log In</n-button>
@@ -99,9 +99,9 @@ function remember(checked){
         <div class="login-footer">
           <p>
             Don’t have an account?
-            <RouterLink to="/auth/register">Register here</RouterLink>
+            <RouterLink to="/auth/register" class = "povezave">Register here</RouterLink>
           </p>
-          <p><RouterLink to="/auth/ForgotPassword">Forgot your password?</RouterLink></p>
+          <p><RouterLink to="/auth/ForgotPassword" class = "povezave">Forgot your password?</RouterLink></p>
         </div>
       </div>
     </div>

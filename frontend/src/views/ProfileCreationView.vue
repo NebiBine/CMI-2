@@ -72,7 +72,7 @@ catch(error){
                 :on-final-step-completed="handleFinalStepCompleted" back-button-text="Go Back" next-button-text="Next">
                 <div class="step1">
                     <h2><b>Let’s set up your profile</b></h2>
-                    <n-input type="text" v-model:value="fullName" placeholder="Full Name"></n-input>
+                    <n-input type="text" v-model:value="fullName" placeholder="Full Name" ></n-input>
                     <n-input type="text" v-model:value="username" placeholder="Username / Display Name"></n-input>
                 </div>
 

@@ -70,7 +70,7 @@ const register = async () => {
           :size="size"
         >
           <n-form-item path="user.username">
-            <n-input v-model:value="formValue.user.username" placeholder="Username" />
+            <n-input v-model:value="formValue.user.username"  placeholder="Username" />
           </n-form-item>
 
           <n-form-item path="user.email">
@@ -85,7 +85,7 @@ const register = async () => {
         </n-form>
 
         <div class="login-footer">
-          <p>Already registered? <RouterLink to="/auth/login">Log in here</RouterLink></p>
+          <p>Already registered? <RouterLink to="/auth/login" class="povezave">Log in here</RouterLink></p>
         </div>
       </div>
     </div>
