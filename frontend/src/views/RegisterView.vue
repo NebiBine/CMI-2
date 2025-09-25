@@ -58,10 +58,9 @@ const register = async () => {
   <div class="auth-page">
     <!-- Left Side -->
     <div class="auth-left">
+      <h1>Join CMI – Your City, Smarter</h1>
       <div class="login-container">
-        <h1>Join CMI – Your City, Smarter</h1>
         <p class="subtitle">Sign up to access city services and personalized updates.</p>
-
         <n-form
           ref="formRef"
           :label-width="0"

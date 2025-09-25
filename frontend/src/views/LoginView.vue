@@ -70,8 +70,9 @@ function remember(checked){
 <template>
   <div class="auth-page">
     <div class="auth-left">
+      <h1>Welcome Back to CMI!</h1>
       <div class="login-container">
-        <h1>Welcome Back to CMI!</h1>
+        
         <p class="subtitle">Log in to manage your city services and stay updated.</p>
 
         <n-form

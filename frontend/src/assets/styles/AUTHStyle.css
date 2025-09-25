@@ -40,6 +40,7 @@ html, body {
   flex: 1;             
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background: #f5f5f5; 
@@ -88,7 +89,7 @@ html, body {
 }
 
 .n-input {
-  width: 100%;
+  width: 456px !important;
   margin-bottom: 1rem;
   border-radius: 6px;
   border: 1px solid #d1d5db;
