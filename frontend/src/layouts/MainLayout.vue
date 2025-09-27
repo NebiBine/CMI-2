@@ -11,10 +11,72 @@ const menuOptions = [
   {
     label: "Dashboard",
     key: "dashboard",
+//    children: [
+//      {
+//        label: 'Test'
+//      }
+//    ]
   },
   {
-    label: "Blank",
-    key: "blank",
+    label: "Social",
+    key: "social",
+  },
+  {
+    label: "Traffic Updates",
+    key: "trafficUpdates",
+    children: [
+      {
+        label:'General',
+        key:'trafficGeneral'
+      },
+      {
+        label:'Jams',
+        key:'trafficJams'
+      },
+      {
+        label:'Accidents',
+        key:'trafficAccidents'
+      },
+      {
+        label:'Works',
+        key:'trafficWorks'
+      },
+      {
+        label:'Blocks',
+        key:'trafficBlocks'
+      }
+
+    ]
+  },
+  {
+    label: "Polls & Insights",
+    key: "polls",
+  },
+  {
+    label: "Weather",
+    key: "weather",
+  },
+  {
+    label: "Public Transit",
+    key: "publicTransit",
+  },
+  {
+    label: "City Guides",
+    key: "cityGuides",
+    children:[
+      {
+        label:'Reviews',
+        key:'cityReviews'
+      },
+      {
+        label:'Points of Interest',
+        key:'cityPointsOfInterest'
+      }
+    ]
+  },
+  {
+    label: "Energy Info",
+    key: "energyInfo",
   },
   {
     type: "divider",
@@ -23,7 +85,26 @@ const menuOptions = [
   {
     label: "Settings",
     key: "settings",
+  },
+  {
+    label:'About Us',
+    key:'aboutUs',
+    children: [
+      {
+        label:'Our Mission',
+        key:'aboutMission'
+      },
+      {
+        label:'Our Story',
+        key:'aboutStory'
+      }
+    ]
+  },
+  {
+    label:'Account',
+    key:'account'
   }
+
 ]
 </script>
 
