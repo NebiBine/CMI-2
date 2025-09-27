@@ -19,3 +19,10 @@ def newProfile(userId, name, username, birth, phone, street, city, country, zip)
         "zip":zip
     })
     return
+
+def getProfileInfo(userId):
+    try:
+        data = profile.get(User.userId == userId)
+        return data
+    except:
+        return "vrjetn profil ne obstaja alpa nis loginan"
