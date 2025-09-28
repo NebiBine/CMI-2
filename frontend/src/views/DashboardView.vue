@@ -7,6 +7,7 @@ import axios from 'axios';
 import { TorusGeometry } from "three";
 
 const greeting = ref("")
+const username = ref("")
 
 function setGreeting() {
   const hour = new Date().getHours()
@@ -34,6 +35,8 @@ async function profilData() {
         })
         //vzamem username 
         username.value = response.data.username
+
+        
     }
     catch(error){
         console.log('Napaka pri pridobivanju podatkov profila - preveri dashboardview.vue');

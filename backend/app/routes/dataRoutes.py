@@ -5,4 +5,5 @@ dataBp = Blueprint("data", __name__, url_prefix="/data")
 @dataBp.route("/getProfile", methods=["GET"])
 def getProfile():
     userId = request.cookies.get("sessionId")
+    print(userId)
     return getProfileInfo(userId)
