@@ -80,7 +80,7 @@ const menuOptions = [
   },
   {
     type: "divider",
-    key: "divider-1"
+    key: "divider-1",
   },
   {
     label: "Settings",

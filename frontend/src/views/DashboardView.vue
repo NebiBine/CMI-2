@@ -4,6 +4,7 @@ import '../assets/styles/mainStyle.css'
 import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
 import axios from 'axios';
+import { TorusGeometry } from "three";
 
 const greeting = ref("")
 
@@ -21,8 +22,28 @@ function setGreeting() {
   }
 }
 onMounted(() => {
-  setGreeting();
+  setGreeting()
+  profilData()
 });
+
+async function profilData() {
+    try{
+        const response = await axios.get(
+        'http://localhost:8080/data/getProfile',{
+            withCredentials: true
+        })
+        //vzamem username 
+        username.value = response.data.username
+    }
+    catch(error){
+        console.log('Napaka pri pridobivanju podatkov profila - preveri dashboardview.vue');
+        console.log(error);
+    }
+
+
+
+};
+
 
 </script>
 <template>
