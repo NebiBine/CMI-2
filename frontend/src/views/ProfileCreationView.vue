@@ -34,28 +34,35 @@ const handleFileChange = (options) => {
 //na koncu zajamem vse podatke
 const handleFinalStepCompleted = async () => {
     try {
+        const formdata = new FormData();
+        formdata.append("fullname",fullName.value);
+        formdata.append("username",username.value);
+        formdata.append("dateOfBirth",dob.value);
+        formdata.append("phoneNumber",phone.value);
+        formdata.append("street",street.value);
+        formdata.append("city",city.value);
+        formdata.append("country",country.value);
+        formdata.append("zip",zip.value);
+
+        if(profilePicture.value){
+            formdata.append("profilePicture",profilePicture.value);
+        }
+
         const response = await axios.post(
-    "http://localhost:8080/auth/newProfile",
-    {
-        fullname: fullName.value,
-        username: username.value,
-        dateOfBirth: dob.value,
-        phoneNumber: phone.value,
-        address_Street: street.value,
-        address_City: city.value,
-        address_Country: country.value,
-        address_ZIP: zip.value,
-    },
-    { withCredentials: true }
+            "http://localhost:8080/auth/newProfile",
+            formdata,
+            { withCredentials: true }
     );
+    //success
     console.log("Profile creation success",response)
     if(response.data.success===true){
         router.push('/app/Dashboard')
     }
-}
-catch(error){
-    console.log('axios error',error)
-}
+    }
+    //error
+    catch(error){
+        console.log('axios error',error)
+    }
 };
 
 
@@ -88,6 +95,17 @@ catch(error){
                     <n-input type="text" v-model:value="city" placeholder="City"></n-input>
                     <n-input type="text" v-model:value="country" placeholder="Country"></n-input>
                     <n-input type="text" v-model:value="zip" placeholder="ZIP / Postal Code"></n-input>
+                </div>
+                <div class="step4">
+                    <h2>Upload your profile picture</h2>
+                    <n-upload  
+                    :default-file-list="fileList"
+                    list-type="image-card"
+                    :on-change="handleFileChange"
+                    :max="1"
+                    >
+                        Click to Upload
+                    </n-upload>
                 </div>
                 <div class="step5">
                     <h2>Review your details</h2>

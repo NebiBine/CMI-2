@@ -79,6 +79,10 @@ const menuOptions = [
     key: "energyInfo",
   },
   {
+    label:"Rewards",
+    key:"rewards"
+  },
+  {
     type: "divider",
     key: "divider-1",
   },
