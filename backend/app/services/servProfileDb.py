@@ -6,7 +6,7 @@ profile = database.table('profile') #userId, name, password, email
 
 User = Query()
 
-def newProfile(userId, name, username, birth, phone, street, city, country, zip):
+def newProfile(userId, name, username, birth, phone, street, city, country, zip, path):
     profile.insert({
         "userId":userId,
         "fullName": name, 
@@ -16,7 +16,8 @@ def newProfile(userId, name, username, birth, phone, street, city, country, zip)
         "street": street,
         "city": city,
         "country": country,
-        "zip":zip
+        "zip":zip,
+        "pfpPath":path
     })
     return
 
@@ -27,3 +28,5 @@ def getProfileInfo(userId):
         return data
     except:
         return "vrjetn profil ne obstaja alpa nis loginan"
+
+    
