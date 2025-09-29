@@ -35,11 +35,10 @@ async function profilData() {
         })
         //vzamem username 
         username.value = response.data.username
-
         
     }
     catch(error){
-        console.log('Napaka pri pridobivanju podatkov profila - preveri dashboardview.vue');
+        console.log('Napaka pri pridobivanju podatkov profila');
         console.log(error);
     }
 
@@ -47,6 +46,7 @@ async function profilData() {
 
 };
 
+// DODAJ DA SE USERNAME PRIKAZE DESNO ZGORAJ V NAVBARU IN IMA TOOLTIP KI UPORABNIKA PREUSMERJA NA SIDEBAR KJER LAHKO UREJA PROFIL
 
 </script>
 <template>

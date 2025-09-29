@@ -37,7 +37,7 @@ const handleFinalStepCompleted = async () => {
         const formdata = new FormData();
         formdata.append("fullname",fullName.value);
         formdata.append("username",username.value);
-        formdata.append("dateOfBirth",dob.value);
+        formdata.append("dateOfBirth",new Date(dob.value).toLocaleDateString("sl-SI"));
         formdata.append("phoneNumber",phone.value);
         formdata.append("street",street.value);
         formdata.append("city",city.value);
@@ -47,7 +47,7 @@ const handleFinalStepCompleted = async () => {
         if(profilePicture.value){
             formdata.append("profilePicture",profilePicture.value);
         }
-
+        //axios post vseh podatkov vkljucno z sliko
         const response = await axios.post(
             "http://localhost:8080/auth/newProfile",
             formdata,
@@ -103,6 +103,7 @@ const handleFinalStepCompleted = async () => {
                     list-type="image-card"
                     :on-change="handleFileChange"
                     :max="1"
+                    accept=".jpg,.jpeg,.png,.gif,.webp,.jp2,.heif,.heic"
                     >
                         Click to Upload
                     </n-upload>
