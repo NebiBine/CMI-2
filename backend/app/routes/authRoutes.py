@@ -39,6 +39,6 @@ def resetPass(token):
 def newProfile():
     data = request.json
     userId = request.cookies.get("sessionId")
-    return servNewProfile(userId, data["fullname"],data["username"],data["dateOfBirth"],data["phoneNumber"],data["address_Street"],data["address_City"],data["address_Country"],data["address_ZIP"],)
+    return servNewProfile(userId, data["fullname"],data["username"],data["dateOfBirth"],data["phoneNumber"],data["street"],data["addressCity"],data["country"],data["zip"],)
 
 
