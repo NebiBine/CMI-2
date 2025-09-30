@@ -4,6 +4,7 @@ from datetime import datetime
 database = TinyDB("databases/authDatabase.json")
 uporabniki = database.table('uporabniki') #userId, name, password, email
 reset = database.table('reset')# id, email, expire
+admins = database.table('admins') # id
 
 
 User = Query()
@@ -43,4 +44,14 @@ def getResetId(resetId):
 def delResetId(resetId):
     Id = Query()
     reset.remove(Id.resetId == resetId)
+
+def addAdminDb(userId):
+    admins.insert({"userId":userId})
+
+def checkAdmin(userId):
+    #admin = admins.get(User.userId == userId)
+    if admins.get(User.userId == userId) != None:
+        return True
+    else:
+        return False
 
