@@ -1,5 +1,5 @@
 from app.model.user import User, check_password_hash
-from .servAuthDb import getAll, register, getUserUsername, getUserMail, newPassword
+from .servAuthDb import getAll, register, getUserUsername, getUserMail, checkAdmin, addAdminDb
 from flask import jsonify, make_response
 import uuid
 import re
@@ -96,6 +96,13 @@ def loginUser(identifier, password, remember):
             print("napačno geslo")
             return jsonify({"success": False, "message": "Napačno geslo"}), 401
 
+def addAdmin(username):
+    userId = getUserUsername(username)["userId"]
+    if checkAdmin(userId) ==True:
+        #addAdminDb(userId)
+        return jsonify({"success":True, "message":"admin added succesfuly"}),200
+    else:
+        return jsonify({"success":False, "message":"already admin"}),500
 
         
         
