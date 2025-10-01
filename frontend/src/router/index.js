@@ -15,6 +15,9 @@ import ChangePasswordView from '../views/ChangePasswordView.vue'
 import ProfileCreationView from '../views/ProfileCreationView.vue'
   //main page dashboard etc.
 import DashboardView from '../views/DashboardView.vue'
+
+//admin
+import AdminPanelView from '../views/AdminPanelView.vue';
 //import HomeView from '../views/HomeView.vue'
 //import AboutView from '../views/AboutView.vue'
 
@@ -46,7 +49,14 @@ const routes = [
     path:'/app',
     component: MainLayout,
     children: [
-      {path:'Dashboard',component: DashboardView, meta: { requiresAuth: true }}
+      {path:'Dashboard',name:'dashboard',component: DashboardView, meta: { requiresAuth: true }}
+    ]
+  },
+  {
+    path:'/admin',
+    component: MainLayout,
+    children: [
+      {path:'AdminPanel',component: AdminPanelView, name:'adminPanel'}
     ]
   }
 

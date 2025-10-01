@@ -1,13 +1,14 @@
 <script setup>
-import { ref } from "vue"
+import { onMounted, ref } from "vue"
 import "../assets/styles/mainStyle.css"
 import { useRouter } from "vue-router"
-
+import axios from "axios";
 
 const router = useRouter();
 const activeKey = ref("dashboard")
+const admin = ref(false)
 
-const menuOptions = [
+const menuOptions = ref([
   {
     label: "Dashboard",
     key: "dashboard",
@@ -109,7 +110,31 @@ const menuOptions = [
     key:'account'
   }
 
-]
+])
+const admincheck = async() =>{
+  try{
+    const response = await axios.get(
+      "http://localhost:8080/auth/checkAdmin",
+      {withCredentials:true}
+    )
+    admin.value = response.data.admin
+    console.log(admin.value)
+    if(admin.value === true){
+      menuOptions.value.push(
+        {
+          label:'Admin Panel',
+          key:'adminPanel'
+        }
+      )
+    }
+  }
+  catch(error){
+    console.log(error)
+  }
+}
+onMounted(()=>{
+  admincheck()
+})
 </script>
 
 <template>
@@ -135,7 +160,7 @@ const menuOptions = [
         show-trigger="bar"
         class="sidebar"
       >
-        <n-menu v-model:value="activeKey" :options="menuOptions" />
+        <n-menu v-model:value="activeKey" :options="menuOptions" @update:value="key => router.push({ name: key })"/>
       </n-layout-sider>
 
       <!-- CONTENT -->
