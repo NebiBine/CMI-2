@@ -4,7 +4,7 @@ import '../assets/styles/mainStyle.css'
 import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
 import axios from 'axios';
-import { TorusGeometry } from "three";
+
 
 const greeting = ref("")
 const username = ref("")
@@ -41,12 +41,9 @@ async function profilData() {
         console.log('Napaka pri pridobivanju podatkov profila');
         console.log(error);
     }
-
-
-
 };
 
-// DODAJ DA SE USERNAME PRIKAZE DESNO ZGORAJ V NAVBARU IN IMA TOOLTIP KI UPORABNIKA PREUSMERJA NA SIDEBAR KJER LAHKO UREJA PROFIL
+
 
 </script>
 <template>
