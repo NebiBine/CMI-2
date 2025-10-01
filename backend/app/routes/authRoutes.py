@@ -52,7 +52,8 @@ def newProfile():
 @authBp.route("addAdmin", methods=["POST"])
 def addAdminR():
     data = request.json
-
     return addAdmin(data["username"])
+
+
 
 

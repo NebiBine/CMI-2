@@ -1,13 +1,16 @@
 from tinydb import TinyDB, Query
 from datetime import datetime
 
-database = TinyDB("databases/authDatabase.json")
+database = TinyDB("databases/authDatabase.json",encoding="utf-8")
 uporabniki = database.table('uporabniki') #userId, name, password, email
 reset = database.table('reset')# id, email, expire
 admins = database.table('admins') # id
 
 
+
 User = Query()
+
+
 
 def getAll(table):
     return database.table(table)
@@ -55,3 +58,4 @@ def checkAdmin(userId):
     else:
         return False
 
+#addAdminDb("userId")
