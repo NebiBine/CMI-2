@@ -12,11 +12,12 @@ def servNewProfile(userId, name, username, birth, phone, street, city, country, 
         pfp.save(pfpPath)
         pfpPathg = f"../../databases/pfps{pfpName}"
     except:
-        pass
+        print("erorr serv new profile")
         
     try:
         newProfile(userId, name, username, birth, phone, street, city, country, zip, pfpPath)
         return jsonify({"success": True, "message":"Profile added!"}), 200
     except:
+        print("eror v drugmui exceptu")
         return jsonify({"success": False, "message": "Error with adding the profile!"}), 501
     

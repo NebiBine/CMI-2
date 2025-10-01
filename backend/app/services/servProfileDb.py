@@ -1,24 +1,27 @@
 from tinydb import TinyDB, Query
 from datetime import datetime
 
-database = TinyDB("databases/profileDatabase.json")
+database = TinyDB("databases/profileDatabase.json",encoding="utf-8")
 profile = database.table('profile') #userId, name, password, email
 
 User = Query()
 
 def newProfile(userId, name, username, birth, phone, street, city, country, zip, path):
-    profile.insert({
-        "userId":userId,
-        "fullName": name, 
-        "username": username,
-        "birth": birth,
-        "phone":phone,
-        "street": street,
-        "city": city,
-        "country": country,
-        "zip":zip,
-        "pfpPath":path
-    })
+    try:
+        profile.insert({
+            "userId":userId,
+            "fullName": name, 
+            "username": username,
+            "birth": birth,
+            "phone":phone,
+            "street": street,
+            "city": city,
+            "country": country,
+            "zip":zip,
+            "pfpPath":path
+        })
+    except Exception as e:
+        print(e)
     return
 
 def getProfileInfo(userId):

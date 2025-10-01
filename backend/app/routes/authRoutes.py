@@ -46,11 +46,13 @@ def resetPass(token):
 @authBp.route("newProfile", methods=["POST"])
 def newProfile():
     userId = request.cookies.get("sessionId")
+    print(userId+"dsdsdsdsds")
     return servNewProfile(userId, request.form.get("fullname"),request.form.get("username"),request.form.get("dateOfBirth"),request.form.get("phoneNumber"),request.form.get("street"),request.form.get("city"),request.form.get("country"),request.form.get("zip"),request.files.get("profilePicture"))
 
 @authBp.route("addAdmin", methods=["POST"])
 def addAdminR():
     data = request.json
+
     return addAdmin(data["username"])
 
 
