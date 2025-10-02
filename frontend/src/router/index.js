@@ -18,6 +18,8 @@ import DashboardView from '../views/DashboardView.vue'
 
 //admin
 import AdminPanelView from '../views/AdminPanelView.vue';
+import AdminDashboard from '../views/AdminDashboardView.vue';
+import AdminUserManagementView from '../views/AdminUserManagementView.vue';
 //import HomeView from '../views/HomeView.vue'
 //import AboutView from '../views/AboutView.vue'
 
@@ -56,7 +58,9 @@ const routes = [
     path:'/admin',
     component: MainLayout,
     children: [
-      {path:'AdminPanel',component: AdminPanelView, name:'adminPanel'}
+      {path:'AdminPanel',component: AdminPanelView, name:'adminPanel'},
+      {path:'AdminDashboard',component: AdminDashboard, name:'adminDashboard'},
+      {path:'UserManagement',component: AdminUserManagementView, name:'userManagement'}
     ]
   }
 

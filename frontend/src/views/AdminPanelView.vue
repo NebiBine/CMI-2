@@ -1,3 +1,7 @@
+<script setup>
+
+
+</script>
 <template>
-    <h1>admin panel</h1>
+    <h1>Admin Panel</h1>
 </template>

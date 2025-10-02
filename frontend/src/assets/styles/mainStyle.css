@@ -62,3 +62,10 @@ html, body, #app {
     --n-item-color-active: blue;
   }
 
+/* DASHBOARD DODATEN CSS*/
+.welcoming-block p{
+  margin-top: 20px;
+  color:gray;
+  font-size: 15px;
+  margin-left: 15px;
+}

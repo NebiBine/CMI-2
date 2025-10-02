@@ -11,4 +11,5 @@ def getProfile():
 
 @dataBp.route("/getAllUsers", methods=["GET"])
 def getAllUsers():
-    return getAll
+    print(getAll("uporabniki"))
+    return getAll("uporabniki")

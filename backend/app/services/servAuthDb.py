@@ -1,5 +1,6 @@
 from tinydb import TinyDB, Query
 from datetime import datetime
+from flask import jsonify
 
 database = TinyDB("databases/authDatabase.json",encoding="utf-8")
 uporabniki = database.table('uporabniki') #userId, name, password, email
@@ -13,7 +14,7 @@ User = Query()
 
 
 def getAll(table):
-    return database.table(table)
+    return jsonify({"tabela":database.table(table)})
 
 def getUserUsername(username):
     return uporabniki.get(User.username == username)

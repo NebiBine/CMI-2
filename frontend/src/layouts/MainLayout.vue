@@ -123,7 +123,22 @@ const admincheck = async() =>{
       menuOptions.value.push(
         {
           label:'Admin Panel',
-          key:'adminPanel'
+          key:'adminPanel',
+          children: [
+            {
+              label:'Admin Dashboard',
+              key:'adminDashboard'
+            },
+            {
+              label:'User Management',
+              key:'userManagement'
+            },
+      //      {
+        //      label:'Data Management',
+          //    key:'dataManagement'
+            //}
+
+          ]
         }
       )
     }
