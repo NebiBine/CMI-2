@@ -14,7 +14,10 @@ User = Query()
 
 
 def getAll(table):
-    return jsonify({"tabela":database.table(table)})
+    return database.table(table)
+
+def getAllTables():
+    return uporabniki.all()
 
 def getUserUsername(username):
     return uporabniki.get(User.username == username)
