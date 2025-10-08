@@ -51,10 +51,12 @@ async function profilData() {
     <h1>{{ greeting }}, {{ username }}!</h1>
     <p>Your starting point for everything in CMI.</p>
   </div>
+
   <div class = "intro-block">
     <p>CMI connects you with essential urban services — from traffic updates and public transit to energy info and city guides. 
     Everything you need in one place.</p>
   </div>
+
   <div class = "quick-access">
     <h3>Quick Access</h3>
     <ul>
