@@ -4,12 +4,16 @@ import '../assets/styles/mainStyle.css'
 import axios from 'axios'
 import { NModal, NButton } from "naive-ui";
 
-const users = ref([])
+
+const admins = ref([]);
+const uporabniki = ref([]);
 const showModal = ref(false);
 const selectedUser = ref(null);
 
-const openUserModal = (user) => {
-    selectedUser.value = user;
+const openUserModal = (uporabnik) => {
+    selectedUser.value = uporabnik;
+    selectedUser.value.isAdmin = admins.value.some(admin => admin.userId === uporabnik.userId)
+    console.log("Is admin = ",selectedUser.value.isAdmin,uporabnik.userId)
     showModal.value = true;
 };
 function closeModal(){
@@ -37,13 +41,21 @@ const getAllUsers = async () => {
             'http://localhost:8080/data/getAllUsers', {
             withCredentials: true
         })
-        console.log(response.data)
-        users.value = response.data
+        //console.log(response.data)
+        uporabniki.value = response.data.uporabniki
+        admins.value = response.data.admins
+
+        //console.log(admins.value)
     }
     catch (error) {
         console.log(error)
     }
 }
+
+
+
+
+
 onMounted(() => {
     getAllUsers()
 });
@@ -54,11 +66,11 @@ onMounted(() => {
     <!--LISTAM USE USERJE-->
     <div class="users_list">
         <ul>
-            <li v-for="user in users" :key="user.id">
+            <li v-for="uporabnik in uporabniki" :key="uporabnik.userId">
                 <b>Username:</b>
-                {{ user.username }}
-                <b> Email: </b>{{ user.email }}
-                <a href="#" @click.prevent="openUserModal(user)">
+                {{ uporabnik.username }}
+                <b> Email: </b>{{ uporabnik.email }}
+                <a href="#" @click.prevent="openUserModal(uporabnik)">
                     More Info
                 </a>
             </li>
