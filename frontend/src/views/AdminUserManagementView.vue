@@ -18,7 +18,7 @@ function closeModal(){
 
 const update = async() =>{
     try{
-        const response = await axios.post("https://localhost:8080/auth/updateUser",
+        const response = await axios.post("http://localhost:8080/auth/updateUser",
         selectedUser.value,
         {withCredentials:true});
         console.log("Successfuly updated user", response.data);

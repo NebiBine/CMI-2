@@ -98,8 +98,8 @@ def loginUser(identifier, password, remember):
 
 def addAdmin(username):
     userId = getUserUsername(username)["userId"]
-    if checkAdmin(userId) ==True:
-        #addAdminDb(userId)
+    if checkAdmin(userId) ==False:
+        addAdminDb(userId)
         return jsonify({"success":True, "message":"admin added succesfuly"}),200
     else:
         return jsonify({"success":False, "message":"already admin"}),500

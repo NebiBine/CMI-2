@@ -11,6 +11,5 @@ def getProfile():
 
 @dataBp.route("/getAllUsers", methods=["GET"])
 def getAllUsers():
-    print(getAllTables())
     return getAllTables()
     

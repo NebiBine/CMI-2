@@ -17,7 +17,12 @@ def getAll(table):
     return database.table(table)
 
 def getAllTables():
-    return uporabniki.all()
+    allTables = {
+        "uporabniki": uporabniki.all(),
+        "admins":admins.all()
+    }
+
+    return allTables
 
 def getUserUsername(username):
     return uporabniki.get(User.username == username)
