@@ -102,6 +102,10 @@ const menuOptions = ref([
       {
         label:'Our Story',
         key:'aboutStory'
+      },
+      {
+        label:'FAQ',
+        key:'faq'
       }
     ]
   },
@@ -118,7 +122,7 @@ const admincheck = async() =>{
       {withCredentials:true}
     )
     admin.value = response.data.admin
-    console.log(admin.value)
+    console.log("IS CURRENT USER ADMIN",admin.value)
     if(admin.value === true){
       menuOptions.value.push(
         {

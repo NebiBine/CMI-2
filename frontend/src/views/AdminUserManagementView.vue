@@ -12,6 +12,8 @@ const selectedUser = ref(null);
 
 const openUserModal = (uporabnik) => {
     selectedUser.value = uporabnik;
+    console.log("TEST",selectedUser.value.userId)
+    //razlaga za spodnjo vrstico
     selectedUser.value.isAdmin = admins.value.some(admin => admin.userId === uporabnik.userId)
     console.log("Is admin = ",selectedUser.value.isAdmin,uporabnik.userId)
     showModal.value = true;
@@ -28,7 +30,7 @@ const update = async() =>{
         console.log("Successfuly updated user", response.data);
         showModal.value = false; //zaprem modal
         await getAllUsers(); //poklicem funkcijo da dobim nove osvežene podatke
-
+        
     }
     catch(error){
         console.log(error);
@@ -51,8 +53,32 @@ const getAllUsers = async () => {
         console.log(error)
     }
 }
+//posljem userId ko admin klikne na more info da iz backenda prejmem podatke za dolocen userId
+const userIdSend = async () => {
+    try {
+        const response = await axios.post("http://localhost:8080/auth/updateUser",
+        selectedUser.value.userId,
+        {withCredentials:true});
+    }
+    catch (error) {
+        console.log(error)
+    }
+}
+// getam podatke iz backenda za profil data ki so bili vneseni v profilecreationu
+const profileData = async() => {
+    try{
+        const response = await axios.get(
+        'http://localhost:8080/auth/POSODOBI_ENDPOINT',
+        {withCredentials:true}
+        )
+        profil.value = response.data;
+        console.log(profil.value);
+    }
+    catch(error){
+        console.log(error);
+    }
 
-
+}
 
 
 
@@ -65,16 +91,26 @@ onMounted(() => {
 
     <!--LISTAM USE USERJE-->
     <div class="users_list">
-        <ul>
-            <li v-for="uporabnik in uporabniki" :key="uporabnik.userId">
-                <b>Username:</b>
-                {{ uporabnik.username }}
-                <b> Email: </b>{{ uporabnik.email }}
-                <a href="#" @click.prevent="openUserModal(uporabnik)">
-                    More Info
-                </a>
-            </li>
-        </ul>
+        <n-table :bordered="true" :single-line="false">
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>UserId</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="uporabnik in uporabniki" :key="uporabnik.userId">
+      <td>{{ uporabnik.username }}</td>
+      <td>{{ uporabnik.email }}</td>
+      <td>{{ uporabnik.userId }}</td>
+      <td>
+        <n-button text @click="() => { openUserModal(uporabnik); userIdSend(); }" >More Info</n-button>
+      </td>
+    </tr>
+  </tbody>
+</n-table>
     </div>
     <n-modal v-model:show="showModal" preset="dialog" title="Edit or View User">
         <template #default>
@@ -83,7 +119,7 @@ onMounted(() => {
                 <n-input id="username" placeholder="" v-model:value="selectedUser.username"></n-input>
             </label>
             <label for id="password"> Password (Encrypted):
-                <n-input id="password" placeholder="" v-model:value="selectedUser.hashPass"></n-input>
+                <n-input id="password" placeholder="" v-model:value="selectedUser.email"></n-input>
             </label>
             <label for id="username"> User ID:
                 <n-input id="username" placeholder=""v-model:value="selectedUser.userId"></n-input>
