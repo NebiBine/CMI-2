@@ -54,14 +54,7 @@ def addAdminR():
     data = request.json
     return addAdmin(data["username"])
 
-@authBp.route("updateUser", methods=["POST"])
-def updateUser():
-    data=request.json
-    print(data)
 
-    if data["isAdmin"] == True:
-        addAdmin(data["username"])
-    return "lala"
 
 
 

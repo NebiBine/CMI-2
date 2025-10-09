@@ -37,6 +37,61 @@ const update = async() =>{
     }
 }
 
+/*
+1.---------------------------------------------------------------------
+
+GET ALL USERS TI POSLE ZDEJ TO:
+[
+   {
+      "userId":"3cb33496-96dc-493d-8842-78ff8ff0b96c",
+      "username":"bine",
+      "hashPass":"scrypt:32768:8:1$D7x098jYSoywOz7I$efc7849879a54a02fc619e0fb2ee5226b8d0080bcaf725d7148806314aa164f7208692db79102672b9bd1e6be14f286896c83042c742d490f7669e6c2be59265",
+      "email":"bine.tavcar@gmail.com"
+   },
+   {
+      "userId":"89f644c0-336f-4cc5-92d7-02dc83df3f2a",
+      "username":"nace",
+      "hashPass":"scrypt:32768:8:1$nnuzbDrZGZi6Guaq$268306560e7d925e15bead2710f00b13358607264555c458cf350b2e4f0c571c27ba982e3a772a9ae39e4d7497aadb72e072438e3aa9134059d644874d6460da",
+      "email":"nacerozman3@gmail.com"
+   }
+]
+BREZ ADMINA,!!!!
+
+
+2.--------------------------------------------------
+ADMIN BO ZDEJ V TVOJI FUNKCIJI userIdSend V /DATA/GETPROFILE IN SICER: pocakat rabm tebe za test dase lahko prkaze da vids kasn json drgac vrjetn bo tko
+
+{
+   "userId":"3cb33496-96dc-493d-8842-78ff8ff0b96c",
+   "username":"bine",
+   "hashPass":"scrypt:32768:8:1$D7x098jYSoywOz7I$efc7849879a54a02fc619e0fb2ee5226b8d0080bcaf725d7148806314aa164f7208692db79102672b9bd1e6be14f286896c83042c742d490f7669e6c2be59265",
+   "email":"bine.tavcar@gmail.com",
+   "isAdmin":true/false --> za checkbox k bos odpru view more
+}
+
+3.--------------------------------------------------
+ideja: 
+    pr actions lahko dava se delete user, da ga zbriseva, ni velka zadeva sam da vec funkcionalnosti
+
+4.---------------------------------------------------
+K BOS UPDEJTU USER NA /data/updateUser PRCAKUJE TA DATA, LAHKO DAVA KEJ STRAN TO NI PROBLEM, DODT PA TESKO, PLUS ADMIN
+updateUser prcakuje:
+    data = {
+    "userId":123,
+    "Fullname":fullName,
+    "username":username,
+    "birth":birth,
+    "phone":phone,
+    "street":street,
+    "city":city,
+    "country":country,
+    "zip":zip,
+    "isAdmin":isAdmin --> true/false, ali je checked al ni tojto
+    }
+
+VRNE TI PA ISTI JSON KSI MI GA POSLOU, IDENTITIČEN, POD POGOJEM DA NI BLO ERRORJA, SEPRAV PO ŽE NARJENE UPDEJTU V DB
+
+*/
 const getAllUsers = async () => {
     try {
         const response = await axios.get(
@@ -56,7 +111,7 @@ const getAllUsers = async () => {
 //posljem userId ko admin klikne na more info da iz backenda prejmem podatke za dolocen userId
 const userIdSend = async () => {
     try {
-        const response = await axios.post("http://localhost:8080/auth/updateUser",
+        const response = await axios.post("http://localhost:8080/data/getProfile", //||BACK POSLE ISTO ZADEVO K U DASHBOARD VIEW + ISADMIN, SAM PRKAZ PODATKE, poglej gor||
         selectedUser.value.userId,
         {withCredentials:true});
     }
@@ -65,10 +120,11 @@ const userIdSend = async () => {
     }
 }
 // getam podatke iz backenda za profil data ki so bili vneseni v profilecreationu
+//||TEGA POMOJE NE RABS, DODT RABS ZA UPDATE GUMB FUNKCIJO, K POSLE CELO FORMO, LAHKO JE ISTO ALPA NI, VRNIL TI BO NOVE REFRESHANE UPDTEJTANE PODATKE||
 const profileData = async() => {
     try{
         const response = await axios.get(
-        'http://localhost:8080/auth/POSODOBI_ENDPOINT',
+        'http://localhost:8080',
         {withCredentials:true}
         )
         profil.value = response.data;

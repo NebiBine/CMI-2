@@ -96,13 +96,12 @@ def loginUser(identifier, password, remember):
             print("napačno geslo")
             return jsonify({"success": False, "message": "Napačno geslo"}), 401
 
-def addAdmin(username):
-    userId = getUserUsername(username)["userId"]
+def addAdmin(userId):
     if checkAdmin(userId) ==False:
         addAdminDb(userId)
-        return jsonify({"success":True, "message":"admin added succesfuly"}),200
+        return True
     else:
-        return jsonify({"success":False, "message":"already admin"}),500
+        return False
 
         
         

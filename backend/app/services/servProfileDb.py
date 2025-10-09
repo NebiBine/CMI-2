@@ -31,5 +31,21 @@ def getProfileInfo(userId):
         return data
     except:
         return "vrjetn profil ne obstaja alpa nis loginan"
-
     
+def updateUser(userId, name, username, birth, phone, street, city, country, zip):
+
+    try:
+        profile.update({
+            "fullName": name, 
+            "username": username,
+            "birth": birth,
+            "phone":phone,
+            "street": street,
+            "city": city,
+            "country": country,
+            "zip":zip,
+        },
+        User.userId == userId)
+        return getProfileInfo(userId)
+    except:
+        return None
