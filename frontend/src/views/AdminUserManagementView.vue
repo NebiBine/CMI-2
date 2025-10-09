@@ -53,7 +53,7 @@ GET ALL USERS TI POSLE ZDEJ TO:
       "username":"nace",
       "hashPass":"scrypt:32768:8:1$nnuzbDrZGZi6Guaq$268306560e7d925e15bead2710f00b13358607264555c458cf350b2e4f0c571c27ba982e3a772a9ae39e4d7497aadb72e072438e3aa9134059d644874d6460da",
       "email":"nacerozman3@gmail.com"
-   }
+   }...
 ]
 BREZ ADMINA,!!!!
 
