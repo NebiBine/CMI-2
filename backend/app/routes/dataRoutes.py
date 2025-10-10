@@ -9,6 +9,7 @@ dataBp = Blueprint("data", __name__, url_prefix="/data")
 def getProfile():
     if flask.request.method == "POST":
         userId = request.json["userId"]
+        print(userId +"------------------------------------------------------------------")
         data = getProfileInfo(userId)
         isAdmin = checkAdmin(userId)
         data["isAdmin": isAdmin]
