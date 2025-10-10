@@ -16,7 +16,8 @@ const openUserModal = (uporabnik) => {
     console.log("TEST",selectedUser.value.userId)
     //razlaga za spodnjo vrstico
     selectedUser.value.isAdmin = admins.value.some(admin => admin.userId === uporabnik.userId)
-    console.log("Is admin = ",selectedUser.value.isAdmin,uporabnik.userId)
+    console.log("Is admin = ",selectedUser.value.isAdmin,uporabnik.userId);
+    userIdSend();
     showModal.value = true;
 };
 function closeModal(){
@@ -25,8 +26,8 @@ function closeModal(){
 
 const update = async() =>{
     try{
-        const response = await axios.post("http://localhost:8080/auth/updateUser",
-        selectedUser.value,
+        const response = await axios.post("http://localhost:8080/data/updateUser",
+        profil.value,
         {withCredentials:true});
         console.log("Successfuly updated user", response.data);
         showModal.value = false; //zaprem modal
@@ -114,6 +115,9 @@ const userIdSend = async () => {
         const response = await axios.post("http://localhost:8080/data/getProfile", //||BACK POSLE ISTO ZADEVO K U DASHBOARD VIEW + ISADMIN, SAM PRKAZ PODATKE, poglej gor||    
         {userId : selectedUser.value.userId},
         {withCredentials:true});
+
+        profil.value = response.data;
+        console.log(profil)
     }
     catch (error) {
         console.log(error)
@@ -121,20 +125,7 @@ const userIdSend = async () => {
 }
 // getam podatke iz backenda za profil data ki so bili vneseni v profilecreationu
 //||TEGA POMOJE NE RABS, DODT RABS ZA UPDATE GUMB FUNKCIJO, K POSLE CELO FORMO, LAHKO JE ISTO ALPA NI, VRNIL TI BO NOVE REFRESHANE UPDTEJTANE PODATKE||
-const profileData = async() => {
-    try{
-        const response = await axios.post(
-        'http://localhost:8080/data/getProfile',
-        {withCredentials:true}
-        )
-        profil.value = response.data;
-        console.log("PROFILE DATA",profil.value);
-    }
-    catch(error){
-        console.log(error);
-    }
 
-}
 
 
 
@@ -172,20 +163,33 @@ onMounted(() => {
         <template #default>
             <!--Narejeno tako da ce podatek ni najden ne vrze errora ampak je preprosto null-->
             <label for id="fullName"> Full Name:
-                <n-input id="fullName" placeholder="" v-model:value="selectedUser.fullName"></n-input>
+                <n-input id="fullName" placeholder="" v-model:value="profil.fullName"></n-input>
             </label>
             <label for id="username"> Username:
-                <n-input id="username" placeholder="" v-model:value="selectedUser.username"></n-input>
+                <n-input id="username" placeholder="" v-model:value="profil.username"></n-input>
             </label>
             <label for id="birth"> Date of Birth:
-                <n-input id="birth" placeholder="" v-model:value="selectedUser.birth"></n-input>
+                <n-input id="birth" placeholder="" v-model:value="profil.birth"></n-input>
             </label>
-            <label for id="username"> User ID:
-                <n-input id="username" placeholder=""v-model:value="selectedUser.userId"></n-input>
+            <label for id="phone"> Mobile Number:
+                <n-input id="phone" placeholder=""v-model:value="profil.phone"></n-input>
             </label>
+            <label for id="street"> Street:
+                <n-input id="street" placeholder=""v-model:value="profil.street"></n-input>
+            </label>
+            <label for id="city"> City:
+                <n-input id="city" placeholder=""v-model:value="profil.city"></n-input>
+            </label>
+            <label for id="country"> Country:
+                <n-input id="country" placeholder=""v-model:value="profil.country"></n-input>
+            </label>
+            <label for id="zip"> Zip Code:
+                <n-input id="zip" placeholder=""v-model:value="profil.zip"></n-input>
+            </label>
+            
 
             <label for id="admin_state"> Add admin?
-                <n-checkbox id="admin_state" v-model:checked="selectedUser.isAdmin"></n-checkbox>
+                <n-checkbox id="admin_state" v-model:checked="profil.isAdmin"></n-checkbox>
             </label>
 
 

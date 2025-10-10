@@ -32,11 +32,11 @@ def updateUserR():
     if data["isAdmin"] == True:
         if addAdmin(data["userId"]) == True:
             uud = updateUser(data["userId"], data["fullName"],data["username"],data["birth"],data["phone"],data["street"],data["city"],data["country"],data["zip"],)
-            uud["isAdmin":True]
+            uud["isAdmin"] = True
             return uud
         else:
             uud = updateUser(data["userId"], data["fullName"],data["username"],data["birth"],data["phone"],data["street"],data["city"],data["country"],data["zip"],)
-            uud["isAdmin":False]
+            uud["isAdmin"] = False
             return uud
         
 
