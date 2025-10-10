@@ -17,6 +17,7 @@ const openUserModal = (uporabnik) => {
     //razlaga za spodnjo vrstico
     selectedUser.value.isAdmin = admins.value.some(admin => admin.userId === uporabnik.userId)
     console.log("Is admin = ",selectedUser.value.isAdmin,uporabnik.userId);
+    //klicem funkcijo ki bo dala profildata
     userIdSend();
     showModal.value = true;
 };

@@ -58,9 +58,9 @@ const routes = [
     path:'/admin',
     component: MainLayout,
     children: [
-      {path:'AdminPanel',component: AdminPanelView, name:'adminPanel'},
-      {path:'AdminDashboard',component: AdminDashboard, name:'adminDashboard'},
-      {path:'UserManagement',component: AdminUserManagementView, name:'userManagement'}
+      {path:'AdminPanel',component: AdminPanelView, name:'adminPanel', meta: { requiresAuth: true }},
+      {path:'AdminDashboard',component: AdminDashboard, name:'adminDashboard', meta: { requiresAuth: true }},
+      {path:'UserManagement',component: AdminUserManagementView, name:'userManagement', meta: { requiresAuth: true }}
     ]
   }
 
