@@ -56,6 +56,9 @@ def delResetId(resetId):
 def addAdminDb(userId):
     admins.insert({"userId":userId})
 
+def removeAdminDb(userId):
+    admins.remove(User.userId == userId)
+
 def checkAdmin(userId):
     #admin = admins.get(User.userId == userId)
     if admins.get(User.userId == userId) != None:

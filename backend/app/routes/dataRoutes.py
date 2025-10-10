@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, Flask
 import flask
 from app.services.servProfileDb import getProfileInfo, updateUser
 from app.services.servAuthDb import getAllTables, checkAdmin
-from app.services.servUser import addAdmin
+from app.services.servUser import addAdmin, removeAdmin
 dataBp = Blueprint("data", __name__, url_prefix="/data")
 
 @dataBp.route("/getProfile", methods=["POST", "GET"])
@@ -10,7 +10,7 @@ def getProfile():
     if flask.request.method == "POST":
         userId = request.json["userId"]
         print(userId +"------------------------------------------------------------------")
-        data = getProfileInfo(userId)
+        data = getProfileInfo(userId) #--> PRINTA profil
         isAdmin = checkAdmin(userId)
         print(isAdmin)
         data["isAdmin"] = isAdmin
@@ -30,14 +30,19 @@ def updateUserR():
     data=request.json
     print(data)
     if data["isAdmin"] == True:
-        if addAdmin(data["userId"]) == True:
-            uud = updateUser(data["userId"], data["fullName"],data["username"],data["birth"],data["phone"],data["street"],data["city"],data["country"],data["zip"],)
-            uud["isAdmin"] = True
-            return uud
-        else:
-            uud = updateUser(data["userId"], data["fullName"],data["username"],data["birth"],data["phone"],data["street"],data["city"],data["country"],data["zip"],)
-            uud["isAdmin"] = False
-            return uud
+      if addAdmin(data["userId"]) == True:
+          uud = updateUser(data["userId"], data["fullName"],data["username"],data["birth"],data["phone"],data["street"],data["city"],data["country"],data["zip"],)
+          uud["isAdmin"] = True
+
+      else:
+          uud = updateUser(data["userId"], data["fullName"],data["username"],data["birth"],data["phone"],data["street"],data["city"],data["country"],data["zip"],)
+          uud["isAdmin"] = False
+      return uud
+    else:
+        removeAdmin(data["userId"])
+        uud = updateUser(data["userId"], data["fullName"],data["username"],data["birth"],data["phone"],data["street"],data["city"],data["country"],data["zip"],)
+        uud["isAdmin"] = False
+        return uud
         
 
 """"

@@ -1,5 +1,5 @@
 from app.model.user import User, check_password_hash
-from .servAuthDb import getAll, register, getUserUsername, getUserMail, checkAdmin, addAdminDb
+from .servAuthDb import getAll, register, getUserUsername, getUserMail, checkAdmin, addAdminDb, removeAdminDb
 from flask import jsonify, make_response
 import uuid
 import re
@@ -102,6 +102,13 @@ def addAdmin(userId):
         return True
     else:
         return False
+
+def removeAdmin(userId):
+    if checkAdmin(userId) == True:
+        removeAdminDb(userId)
+        return False
+    else:
+        return True
 
         
         
