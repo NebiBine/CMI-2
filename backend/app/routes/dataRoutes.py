@@ -12,7 +12,8 @@ def getProfile():
         print(userId +"------------------------------------------------------------------")
         data = getProfileInfo(userId)
         isAdmin = checkAdmin(userId)
-        data["isAdmin": isAdmin]
+        print(isAdmin)
+        data["isAdmin"] = isAdmin
         print(data)
         return data
     else:
