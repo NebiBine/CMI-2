@@ -12,7 +12,7 @@ const showModal = ref(false);
 const selectedUser = ref(null);
 
 const openUserModal = (uporabnik) => {
-    selectedUser.value = profil;
+    selectedUser.value = uporabnik;
     console.log("TEST",selectedUser.value.userId)
     //razlaga za spodnjo vrstico
     selectedUser.value.isAdmin = admins.value.some(admin => admin.userId === uporabnik.userId)
@@ -111,8 +111,8 @@ const getAllUsers = async () => {
 //posljem userId ko admin klikne na more info da iz backenda prejmem podatke za dolocen userId
 const userIdSend = async () => {
     try {
-        const response = await axios.post("http://localhost:8080/data/getProfile", //||BACK POSLE ISTO ZADEVO K U DASHBOARD VIEW + ISADMIN, SAM PRKAZ PODATKE, poglej gor||
-        selectedUser.value.userId,
+        const response = await axios.post("http://localhost:8080/data/getProfile", //||BACK POSLE ISTO ZADEVO K U DASHBOARD VIEW + ISADMIN, SAM PRKAZ PODATKE, poglej gor||    
+        {userId : selectedUser.value.userId},
         {withCredentials:true});
     }
     catch (error) {
@@ -123,7 +123,7 @@ const userIdSend = async () => {
 //||TEGA POMOJE NE RABS, DODT RABS ZA UPDATE GUMB FUNKCIJO, K POSLE CELO FORMO, LAHKO JE ISTO ALPA NI, VRNIL TI BO NOVE REFRESHANE UPDTEJTANE PODATKE||
 const profileData = async() => {
     try{
-        const response = await axios.get(
+        const response = await axios.post(
         'http://localhost:8080/data/getProfile',
         {withCredentials:true}
         )
@@ -140,7 +140,6 @@ const profileData = async() => {
 
 onMounted(() => {
     getAllUsers();
-    profileData();
 });
 </script>
 <template>
@@ -172,11 +171,14 @@ onMounted(() => {
     <n-modal v-model:show="showModal" preset="dialog" title="Edit or View User">
         <template #default>
             <!--Narejeno tako da ce podatek ni najden ne vrze errora ampak je preprosto null-->
-            <label for id="username"> Username:
-                <n-input id="username" placeholder="" v-model:value="selectedUser.fullName"></n-input>
+            <label for id="fullName"> Full Name:
+                <n-input id="fullName" placeholder="" v-model:value="selectedUser.fullName"></n-input>
             </label>
-            <label for id="password"> Password (Encrypted):
-                <n-input id="password" placeholder="" v-model:value="selectedUser.email"></n-input>
+            <label for id="username"> Username:
+                <n-input id="username" placeholder="" v-model:value="selectedUser.username"></n-input>
+            </label>
+            <label for id="birth"> Date of Birth:
+                <n-input id="birth" placeholder="" v-model:value="selectedUser.birth"></n-input>
             </label>
             <label for id="username"> User ID:
                 <n-input id="username" placeholder=""v-model:value="selectedUser.userId"></n-input>
