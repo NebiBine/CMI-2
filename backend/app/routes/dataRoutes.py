@@ -12,6 +12,7 @@ def getProfile():
         data = getProfileInfo(userId)
         isAdmin = checkAdmin(userId)
         data["isAdmin": isAdmin]
+        print(data)
         return data
     else:
         #manage profile isto samo get ker bo vleku iz cookija id

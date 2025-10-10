@@ -7,11 +7,12 @@ import { NModal, NButton } from "naive-ui";
 
 const admins = ref([]);
 const uporabniki = ref([]);
+const profil = ref([]);
 const showModal = ref(false);
 const selectedUser = ref(null);
 
 const openUserModal = (uporabnik) => {
-    selectedUser.value = uporabnik;
+    selectedUser.value = profil;
     console.log("TEST",selectedUser.value.userId)
     //razlaga za spodnjo vrstico
     selectedUser.value.isAdmin = admins.value.some(admin => admin.userId === uporabnik.userId)
@@ -99,10 +100,9 @@ const getAllUsers = async () => {
             withCredentials: true
         })
         //console.log(response.data)
-        uporabniki.value = response.data.uporabniki
-        admins.value = response.data.admins
-
-        //console.log(admins.value)
+        uporabniki.value = response.data
+        //debug print
+        console.log(uporabniki.value)
     }
     catch (error) {
         console.log(error)
@@ -124,11 +124,11 @@ const userIdSend = async () => {
 const profileData = async() => {
     try{
         const response = await axios.get(
-        'http://localhost:8080',
+        'http://localhost:8080/data/getProfile',
         {withCredentials:true}
         )
         profil.value = response.data;
-        console.log(profil.value);
+        console.log("PROFILE DATA",profil.value);
     }
     catch(error){
         console.log(error);
@@ -139,7 +139,8 @@ const profileData = async() => {
 
 
 onMounted(() => {
-    getAllUsers()
+    getAllUsers();
+    profileData();
 });
 </script>
 <template>
@@ -172,7 +173,7 @@ onMounted(() => {
         <template #default>
             <!--Narejeno tako da ce podatek ni najden ne vrze errora ampak je preprosto null-->
             <label for id="username"> Username:
-                <n-input id="username" placeholder="" v-model:value="selectedUser.username"></n-input>
+                <n-input id="username" placeholder="" v-model:value="selectedUser.fullName"></n-input>
             </label>
             <label for id="password"> Password (Encrypted):
                 <n-input id="password" placeholder="" v-model:value="selectedUser.email"></n-input>
