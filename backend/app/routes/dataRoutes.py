@@ -31,18 +31,14 @@ def updateUserR():
     print(data)
     if data["isAdmin"] == True:
       if addAdmin(data["userId"]) == True:
-          uud = updateUser(data["userId"], data["fullName"],data["username"],data["birth"],data["phone"],data["street"],data["city"],data["country"],data["zip"],)
-          uud["isAdmin"] = True
+        updateUser(data["userId"], data["fullName"],data["username"],data["birth"],data["phone"],data["street"],data["city"],data["country"],data["zip"],)
 
       else:
-          uud = updateUser(data["userId"], data["fullName"],data["username"],data["birth"],data["phone"],data["street"],data["city"],data["country"],data["zip"],)
-          uud["isAdmin"] = False
-      return uud
+        updateUser(data["userId"], data["fullName"],data["username"],data["birth"],data["phone"],data["street"],data["city"],data["country"],data["zip"],)
     else:
         removeAdmin(data["userId"])
-        uud = updateUser(data["userId"], data["fullName"],data["username"],data["birth"],data["phone"],data["street"],data["city"],data["country"],data["zip"],)
-        uud["isAdmin"] = False
-        return uud
+        updateUser(data["userId"], data["fullName"],data["username"],data["birth"],data["phone"],data["street"],data["city"],data["country"],data["zip"],)
+    return jsonify({"success":True, "message":"succesfully updates"}), 200
         
 
 """"
