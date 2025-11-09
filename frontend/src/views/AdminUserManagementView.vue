@@ -16,7 +16,7 @@ const openUserModal = (uporabnik) => {
     console.log("TEST",selectedUser.value.userId)
     //razlaga za spodnjo vrstico
     selectedUser.value.isAdmin = admins.value.some(admin => admin.userId === uporabnik.userId)
-    console.log("Is admin = ",selectedUser.value.isAdmin,uporabnik.userId);
+    //klicem funkcijo ki bo dala profildata
     userIdSend();
     showModal.value = true;
 };
@@ -27,6 +27,7 @@ function closeModal(){
 const update = async() =>{
     try{
         const response = await axios.post("http://localhost:8080/data/updateUser",
+        //postam celoten form (ref gleda in belezi vsako spremembo in tako posljem zadnjo verzijo profil.value)
         profil.value,
         {withCredentials:true});
         console.log("Successfuly updated user", response.data);
@@ -109,7 +110,7 @@ const getAllUsers = async () => {
         console.log(error)
     }
 }
-//posljem userId ko admin klikne na more info da iz backenda prejmem podatke za dolocen userId
+//posljem userId ko admin klikne na more info da iz backenda prejmem podatke za dolocen userId (profil data: tel stevilko, fullname itd.)
 const userIdSend = async () => {
     try {
         const response = await axios.post("http://localhost:8080/data/getProfile", //||BACK POSLE ISTO ZADEVO K U DASHBOARD VIEW + ISADMIN, SAM PRKAZ PODATKE, poglej gor||    
@@ -117,34 +118,31 @@ const userIdSend = async () => {
         {withCredentials:true});
 
         profil.value = response.data;
-        console.log(profil)
     }
     catch (error) {
         console.log(error)
     }
 }
-// getam podatke iz backenda za profil data ki so bili vneseni v profilecreationu
-//||TEGA POMOJE NE RABS, DODT RABS ZA UPDATE GUMB FUNKCIJO, K POSLE CELO FORMO, LAHKO JE ISTO ALPA NI, VRNIL TI BO NOVE REFRESHANE UPDTEJTANE PODATKE||
-
-
-
-
 onMounted(() => {
     getAllUsers();
 });
 </script>
 <template>
     <h1>User Management</h1>
-
+    <!--SEARCH BAR-->
+    <div class="searchBarAdminUsers">
+        <n-input type="text" placeholder= "Search users:" clearable></n-input>
+    </div>
+    
     <!--LISTAM USE USERJE-->
     <div class="users_list">
         <n-table :bordered="true" :single-line="false">
-  <thead>
+  <thead class = "table_header_admin">
     <tr>
       <th>Username</th>
       <th>Email</th>
       <th>UserId</th>
-      <th>Actions</th>
+      <th>Update or View User</th>
     </tr>
   </thead>
   <tbody>
@@ -153,7 +151,8 @@ onMounted(() => {
       <td>{{ uporabnik.email }}</td>
       <td>{{ uporabnik.userId }}</td>
       <td>
-        <n-button text @click="() => { openUserModal(uporabnik); userIdSend(); }" >More Info</n-button>
+        <n-button text @click="() => { openUserModal(uporabnik); userIdSend(); }"  id="btnMInfo">More Info</n-button>
+
       </td>
     </tr>
   </tbody>
@@ -161,7 +160,6 @@ onMounted(() => {
     </div>
     <n-modal v-model:show="showModal" preset="dialog" title="Edit or View User">
         <template #default>
-            <!--Narejeno tako da ce podatek ni najden ne vrze errora ampak je preprosto null-->
             <label for id="fullName"> Full Name:
                 <n-input id="fullName" placeholder="" v-model:value="profil.fullName"></n-input>
             </label>
@@ -188,7 +186,7 @@ onMounted(() => {
             </label>
             
 
-            <label for id="admin_state"> Add admin?
+            <label for id="admin_state"> Add/Remove Admin?
                 <n-checkbox id="admin_state" v-model:checked="profil.isAdmin"></n-checkbox>
             </label>
 

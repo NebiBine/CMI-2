@@ -1,1 +1,28 @@
-{"profile": {"1": {"userId": "3cb33496-96dc-493d-8842-78ff8ff0b96c", "fullName": "Bine Tav\u010dar", "username": "Nebi", "birth": "1. 5. 2007", "phone": "064297766", "street": "\u0160KOFJELO\u0160KA CESTA 5", "city": "Ljubljana", "country": "Slovenija", "zip": "1217", "pfpPath": "databases\\pfps\\pfp3cb33496-96dc-493d-8842-78ff8ff0b96c.png"}, "2": {"userId": "89f644c0-336f-4cc5-92d7-02dc83df3f2a", "fullName": "Nace Rozman", "username": "nace", "birth": "21. 3. 2007", "phone": "051369536", "street": "Mestni trg 37", "city": "\u0160kofja Loka", "country": "Slovenia", "zip": "4220", "pfpPath": "databases\\pfps\\pfp89f644c0-336f-4cc5-92d7-02dc83df3f2a.png"}}}
+{
+  "profile": {
+    "1": {
+      "userId": "3cb33496-96dc-493d-8842-78ff8ff0b96c",
+      "fullName": "Bine Tavčar",
+      "username": "Nebi",
+      "birth": "1. 5. 2007",
+      "phone": "064297766",
+      "street": "ŠKOFJELOŠKA CESTA 5",
+      "city": "Ljubljana",
+      "country": "Slovenija",
+      "zip": "1217",
+      "pfpPath": "databases\\pfps\\pfp3cb33496-96dc-493d-8842-78ff8ff0b96c.png"
+    },
+    "2": {
+      "userId": "89f644c0-336f-4cc5-92d7-02dc83df3f2a",
+      "fullName": "Nace Rozman",
+      "username": "nace",
+      "birth": "21. 3. 2007",
+      "phone": "051369536",
+      "street": "Mestni trg 37",
+      "city": "Škofja Loka",
+      "country": "Slovenia",
+      "zip": "4220",
+      "pfpPath": "databases\\pfps\\pfp89f644c0-336f-4cc5-92d7-02dc83df3f2a.png"
+    }
+  }
+}
