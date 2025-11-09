@@ -6,8 +6,9 @@ import { RouterLink } from "vue-router";
 import axios from 'axios';
 
 
-const greeting = ref("")
-const username = ref("")
+const greeting = ref("");
+const username = ref("");
+const admin_state = ref(false);
 
 function setGreeting() {
   const hour = new Date().getHours()
@@ -42,29 +43,42 @@ async function profilData() {
     console.log(error);
   }
 };
+//dokoncaj admin check za dolocene gumbe
+const adminCheck = async() => {
+  try{
+    const response = await axios.get(
+      "http://localhost:8080/auth/checkAdmin",
+      {withCredentials:true}
+    )
+    admin_state = response.data.admin;
+    console.log("PREVERJANJE ADMIN DASHBOARD: ",admin_state );
+  }
+  catch(error){
+    console.log(error);
+  }
+};
 
-
-
+onMounted(() => {
+  adminCheck();
+});
 </script>
 <template>
   <div class="welcoming-block">
     <h1>{{ greeting }}, {{ username }}!</h1>
-    <p>Your starting point for everything in CMI.</p>
+    <p>CMI connects you with essential urban services — from traffic updates and public transit to energy info and city guides. 
+      Everything you need in one place.</p>
   </div>
 
-  <div class = "intro-block">
-    <p>CMI connects you with essential urban services — from traffic updates and public transit to energy info and city guides. 
-    Everything you need in one place.</p>
+  <div class = "Announcements">
+    <h2>Announcements</h2>
   </div>
+  <div class = "Announcements">
+    <h2>Announcements</h2>
+  </div>
+
 
   <div class = "quick-access">
-    <h3>Quick Access</h3>
-    <ul>
-      <li>Traffic Updates</li>
-      <li>Weather</li>
-      <li>Public Transit</li>
-      <li>Polls & Insights</li>
-    </ul>
+
   </div>
 
 

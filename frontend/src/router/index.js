@@ -20,6 +20,7 @@ import DashboardView from '../views/DashboardView.vue'
 import AdminPanelView from '../views/AdminPanelView.vue';
 import AdminDashboard from '../views/AdminDashboardView.vue';
 import AdminUserManagementView from '../views/AdminUserManagementView.vue';
+import PollManagementView from '../views/PollManagementView.vue';
 //import HomeView from '../views/HomeView.vue'
 //import AboutView from '../views/AboutView.vue'
 
@@ -60,7 +61,8 @@ const routes = [
     children: [
       {path:'AdminPanel',component: AdminPanelView, name:'adminPanel', meta: { requiresAuth: true }},
       {path:'AdminDashboard',component: AdminDashboard, name:'adminDashboard', meta: { requiresAuth: true }},
-      {path:'UserManagement',component: AdminUserManagementView, name:'userManagement', meta: { requiresAuth: true }}
+      {path:'UserManagement',component: AdminUserManagementView, name:'userManagement', meta: { requiresAuth: true }},
+      {path:'PollManagement',component: PollManagementView, name:'pollManagement', meta: { requiresAuth: true }}
     ]
   }
 

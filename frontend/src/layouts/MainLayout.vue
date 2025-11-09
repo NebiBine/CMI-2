@@ -137,6 +137,10 @@ const admincheck = async() =>{
               label:'User Management',
               key:'userManagement'
             },
+            {
+              label:'Poll Management',
+              key:'pollManagement'
+            }
       //      {
         //      label:'Data Management',
           //    key:'dataManagement'
