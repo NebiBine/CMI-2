@@ -3,6 +3,7 @@ import flask
 from app.services.servProfileDb import getProfileInfo, updateUser
 from app.services.servAuthDb import getAllTables, checkAdmin
 from app.services.servUser import addAdmin, removeAdmin
+from app.services.servPoll import servAddPoll
 dataBp = Blueprint("data", __name__, url_prefix="/data")
 
 @dataBp.route("/getProfile", methods=["POST", "GET"])
@@ -90,6 +91,15 @@ updateUser prcakuje:
 #------------POLLS-------------------------
 @dataBp.route("/addPoll", methods=['POST'])
 def addPoll():
+  data=request.json
+  duration = data["duration"] #days
+  worth = data["worth"]
+  questions = data["questions"]
+  name = data["name"]
+  userId = request.cookies.get("sessionId")
+  return servAddPoll(duration, worth, questions, userId, name)
+     
+
   """
     "pollId":{
       "pollId":12345678,
@@ -134,6 +144,7 @@ def addPoll():
             "uprasanje": "kaj bi dodali v mesto",
             "type":"input"
         }
+        
     }
 }
  
