@@ -165,7 +165,7 @@ onMounted(()=>{
     <!-- HEADER -->
     <n-layout-header class="header" bordered>
       <div class ="logo">
-        <b>CMI - City Management Interface</b>
+        <img src="../assets/images/logotip_cmi.png" width="140px" height="140px">
     </div>
     <div class = "test">
       <!--tukaj pride username itd.-->

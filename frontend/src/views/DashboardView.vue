@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import '../assets/styles/mainStyle.css'
+import { NAlert, NButton } from 'naive-ui'
+import '../assets/styles/mainStyle.css';
 import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
 import axios from 'axios';
@@ -9,6 +10,7 @@ import axios from 'axios';
 const greeting = ref("");
 const username = ref("");
 const admin_state = ref(false);
+const showAlert = ref(true);
 
 function setGreeting() {
   const hour = new Date().getHours()
@@ -43,26 +45,17 @@ async function profilData() {
     console.log(error);
   }
 };
-//dokoncaj admin check za dolocene gumbe
-const adminCheck = async() => {
-  try{
-    const response = await axios.get(
-      "http://localhost:8080/auth/checkAdmin",
-      {withCredentials:true}
-    )
-    admin_state = response.data.admin;
-    console.log("PREVERJANJE ADMIN DASHBOARD: ",admin_state );
-  }
-  catch(error){
-    console.log(error);
-  }
-};
 
-onMounted(() => {
-  adminCheck();
-});
 </script>
 <template>
+
+<div v-if="showAlert" class="w-full">
+    <n-alert type="info" closable @close="showAlert = false" title="Announcement">
+      TETSTETSTTATDTAWTDTATDTAT
+    </n-alert>
+  </div>
+
+
   <div class="welcoming-block">
     <h1>{{ greeting }}, {{ username }}!</h1>
     <p>CMI connects you with essential urban services — from traffic updates and public transit to energy info and city guides. 

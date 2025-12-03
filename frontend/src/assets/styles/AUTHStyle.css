@@ -100,7 +100,7 @@ html, body {
   box-shadow: 0 0 6px rgba(76, 201, 240, 0.3);
 }
 
-.n-button {
+.log-reg_btn {
   width: 100%;
   padding: 0.9rem;
   background: #111827 !important;
@@ -113,7 +113,7 @@ html, body {
   margin-top: 0.5rem;
   box-shadow: 0 4px 10px rgba(17, 24, 39, 0.25); 
 }
-.n-button:hover{
+.log-reg_btn:hover{
   background: #000000 !important; 
   box-shadow: 0 6px 16px rgba(17, 24, 39, 0.35);
 }

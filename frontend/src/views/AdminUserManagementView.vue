@@ -3,6 +3,8 @@ import { ref, onMounted } from "vue";
 import '../assets/styles/mainStyle.css'
 import axios from 'axios'
 import { NModal, NButton } from "naive-ui";
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import { faPlus, faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 
 
 const admins = ref([]);
@@ -13,29 +15,29 @@ const selectedUser = ref(null);
 
 const openUserModal = (uporabnik) => {
     selectedUser.value = uporabnik;
-    console.log("TEST",selectedUser.value.userId)
+    console.log("TEST", selectedUser.value.userId)
     //razlaga za spodnjo vrstico
     selectedUser.value.isAdmin = admins.value.some(admin => admin.userId === uporabnik.userId)
     //klicem funkcijo ki bo dala profildata
     userIdSend();
     showModal.value = true;
 };
-function closeModal(){
+function closeModal() {
     showModal.value = false;
 }
 
-const update = async() =>{
-    try{
+const update = async () => {
+    try {
         const response = await axios.post("http://localhost:8080/data/updateUser",
-        //postam celoten form (ref gleda in belezi vsako spremembo in tako posljem zadnjo verzijo profil.value)
-        profil.value,
-        {withCredentials:true});
+            //postam celoten form (ref gleda in belezi vsako spremembo in tako posljem zadnjo verzijo profil.value)
+            profil.value,
+            { withCredentials: true });
         console.log("Successfuly updated user", response.data);
         showModal.value = false; //zaprem modal
         await getAllUsers(); //poklicem funkcijo da dobim nove osvežene podatke
-        
+
     }
-    catch(error){
+    catch (error) {
         console.log(error);
     }
 }
@@ -114,8 +116,8 @@ const getAllUsers = async () => {
 const userIdSend = async () => {
     try {
         const response = await axios.post("http://localhost:8080/data/getProfile", //||BACK POSLE ISTO ZADEVO K U DASHBOARD VIEW + ISADMIN, SAM PRKAZ PODATKE, poglej gor||    
-        {userId : selectedUser.value.userId},
-        {withCredentials:true});
+            { userId: selectedUser.value.userId },
+            { withCredentials: true });
 
         profil.value = response.data;
     }
@@ -130,33 +132,44 @@ onMounted(() => {
 <template>
     <h1>User Management</h1>
     <!--SEARCH BAR-->
+    <label for="searhEngine">Search users:</label>
+    <!--TOOLTIP ZA POMOC UPORABNIKOM UPORABI TA TEMPLATE VECKRAT-->
+    <n-tooltip trigger="hover">
+        <template #trigger>
+            <FontAwesomeIcon :icon="faCircleQuestion" />
+        </template>
+        Search users by their username. Enter the username in the input field down below.
+    </n-tooltip>
+    <!--------------------------------------------------------------------------------------->
     <div class="searchBarAdminUsers">
-        <n-input type="text" placeholder= "Search users:" clearable></n-input>
+        <n-input type="text" id="searhEngine" placeholder="Currently disabled! :(" clearable disabled="true"></n-input>
     </div>
-    
+
     <!--LISTAM USE USERJE-->
     <div class="users_list">
         <n-table :bordered="true" :single-line="false">
-  <thead class = "table_header_admin">
-    <tr>
-      <th>Username</th>
-      <th>Email</th>
-      <th>UserId</th>
-      <th>Update or View User</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="uporabnik in uporabniki" :key="uporabnik.userId">
-      <td>{{ uporabnik.username }}</td>
-      <td>{{ uporabnik.email }}</td>
-      <td>{{ uporabnik.userId }}</td>
-      <td>
-        <n-button text @click="() => { openUserModal(uporabnik); userIdSend(); }"  id="btnMInfo">More Info</n-button>
+            <thead class="table_header_admin">
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>UserId</th>
+                    <th>Update or View User</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="uporabnik in uporabniki" :key="uporabnik.userId">
+                    <td>{{ uporabnik.username }}</td>
+                    <td>{{ uporabnik.email }}</td>
+                    <td>{{ uporabnik.userId }}</td>
+                    <td>
+                        <n-button text @click="() => { openUserModal(uporabnik); userIdSend(); }"
+                            class="moreinfoBTN">More
+                            Info</n-button>
 
-      </td>
-    </tr>
-  </tbody>
-</n-table>
+                    </td>
+                </tr>
+            </tbody>
+        </n-table>
     </div>
     <n-modal v-model:show="showModal" preset="dialog" title="Edit or View User">
         <template #default>
@@ -170,21 +183,21 @@ onMounted(() => {
                 <n-input id="birth" placeholder="" v-model:value="profil.birth"></n-input>
             </label>
             <label for id="phone"> Mobile Number:
-                <n-input id="phone" placeholder=""v-model:value="profil.phone"></n-input>
+                <n-input id="phone" placeholder="" v-model:value="profil.phone"></n-input>
             </label>
             <label for id="street"> Street:
-                <n-input id="street" placeholder=""v-model:value="profil.street"></n-input>
+                <n-input id="street" placeholder="" v-model:value="profil.street"></n-input>
             </label>
             <label for id="city"> City:
-                <n-input id="city" placeholder=""v-model:value="profil.city"></n-input>
+                <n-input id="city" placeholder="" v-model:value="profil.city"></n-input>
             </label>
             <label for id="country"> Country:
-                <n-input id="country" placeholder=""v-model:value="profil.country"></n-input>
+                <n-input id="country" placeholder="" v-model:value="profil.country"></n-input>
             </label>
             <label for id="zip"> Zip Code:
-                <n-input id="zip" placeholder=""v-model:value="profil.zip"></n-input>
+                <n-input id="zip" placeholder="" v-model:value="profil.zip"></n-input>
             </label>
-            
+
 
             <label for id="admin_state"> Add/Remove Admin?
                 <n-checkbox id="admin_state" v-model:checked="profil.isAdmin"></n-checkbox>

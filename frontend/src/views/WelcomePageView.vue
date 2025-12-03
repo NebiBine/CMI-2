@@ -6,46 +6,29 @@ import { NButton } from 'naive-ui'
 </script>
 
 <template>
-    <div class="WelcomePage-Logo">
-        <img src="../assets/images/WelcomePage-Logo.png"></img>
+  <div class="cmiWrapper">
+    <div class="cmiCity">
+      <h1>CMI City</h1>
+      <!-- p - 24  -->
+      <p>Explore urban solutions and city management</p>
+
+      <button class="welcome_btn"><RouterLink to="/auth/login">Login</RouterLink></button>
+      <button class="welcome_btn"><RouterLink to="/auth/register">Register</RouterLink></button>
     </div>
-    <div class="welcomePage-Background">
-        <GridDistortion
-            imageSrc="https://picsum.photos/1920/1080"
-            :grid="10"
-            :mouse="0.1"
-            :strength="0.15"
-            :relaxation="0.9"
-            class="force-fs"
-        />
-        <div class="dark-overlay"></div>
-        </div>
-    
-    <div class = "WelcomeText">
-        <TextType 
-            :text="['Welcome to CMI', 'City Management Interface']"
-            :typingSpeed="50"
-            :pauseDuration="1000"
-            :showCursor="false"
-            cursorCharacter="|"
-        />
-    </div>
-    <div class="WelcomePageDescription">
-        <p>CMI is a centralized platform designed for smart and efficient urban management. It empowers administrators, planners, and decision-makers to organize, monitor, and optimize city operations from one intuitive interface. From infrastructure and public services to planning, analytics, and real-time monitoring, CMI provides the tools to keep cities connected, responsive, and future-ready.</p>
+    <div class="cmiCompany">
+      <h1>CMI Company</h1>
+      <!-- p - 24  -->
+      <p>Enterprise solutions for business growth</p>
+      
+      <button>Login</button>
+      <button>Register</button>
     </div>
 
 
-    <div class="EnterButton">
-  <router-link to="/auth/login">
-    <n-button strong secondary>
-      LogIn
-    </n-button>
-  </router-link>
 
-  <router-link to="/auth/register">
-    <n-button strong secondary>
-      Register
-    </n-button>
-  </router-link>
-</div>
-  </template>
+  </div>
+
+
+
+
+</template>

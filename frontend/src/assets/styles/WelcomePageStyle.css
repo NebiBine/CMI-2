@@ -1,105 +1,110 @@
-/* FONTI ITD. */
-@font-face {
-    font-family: "Figtree";
-    src: url("../fonts/Figtree-VariableFont_wght.ttf") format("truetype");
-    font-weight: bolder;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: "Inter";
-    src: url("../fonts/Inter_28pt-ExtraLight.ttf") format("truetype");
-    font-weight: bolder;
-    font-style: normal;
-  }
-/* -------------------- */
-
-
-.welcomePage-Background {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-  }
-  /* FORCE-AM FULLSCREEN ZA OZADJE NA WELCOME PAGE-U*/
-  .force-fs,
-  .force-fs * {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    display: block !important;
-  }
-  .dark-overlay{
-    position: fixed;                 /* Cover the viewport */
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5); /* 20% transparent black */
-  }
-  
-  .WelcomePage-Logo {
-    position: fixed;
-    top: -150px; 
-    left: 45%;
-    transform: translateX(-50%);
-    z-index: 20; /* nad overlayom + backgroundom */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-.WelcomePage-Logo img {
-    max-width: 500px; 
-    height: auto;
+.cmiWrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
 }
-.WelcomeText {
-  position: fixed;      
-  top: 38%;             
-  left: 50%;
-  transform: translateX(-50%);  
+
+.cmiCity {
+  background-image: url("../images/cmi_test_latest.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   text-align: center;
-  font-family: "Figtree", sans-serif;
-  font-weight: bolder;
-  font-size: 40px;
-  color: #fff;
+  width: 50%;
+  color: white;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  align-items: center;
+  transition: all 500ms;
 }
 
-.WelcomePageDescription {
-    position: fixed;
-    top: 55%;                       
-    left: 50%;
-    transform: translateX(-50%);
-    max-width: 60%;
-    font-family: "Inter", sans-serif;
-    font-size: 18px;
-    color: #E5E7EB;
-    text-align: center;
-    z-index: 25;
+.cmiCity p,
+.cmiCity .welcome_btn {
+  opacity: 0;
+  transition: opacity 500ms;
 }
-.EnterButton {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    position: fixed;
-    bottom: 5rem;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  
-  .EnterButton .n-button {
-    color: white !important;
-    font-weight: 600;
-    padding: 0.7rem 1.8rem;
-    border-radius: 8px;
-    background: #374151 !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) ;
-    transition: 0.25s;
-  }
-  
-  .EnterButton .n-button:hover {
-    background: #111827 !important;
-  }
-  
+
+.cmiCity:hover {
+  width: 70%;
+}
+
+.cmiCity:hover p,
+.cmiCity:hover .welcome_btn {
+  opacity: 1;
+}
+
+.cmiCompany {
+  text-align: center;
+  position: relative;
+  color: white;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  background-image: url("../images/cmicompany_test.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  align-items: center;
+  transition: all 500ms;
+}
+
+.cmiCompany:hover p,
+.cmiCompany:hover button {
+  opacity: 1;
+}
+
+.cmiCompany p,
+.cmiCompany button {
+  opacity: 0;
+  transition: opacity 500ms;
+}
+
+.cmiCompany:hover {
+  width: 70%;
+}
+
+.cmiCompany:hover p,
+.cmiCompany:hover button {
+  opacity: 1;
+}
+
+.cmiCity .welcome_btn,
+.cmiCompany button {
+  color: white !important; 
+  background-color: #111827;
+  width: 25%;
+  height: 4%;
+  margin-top: 10px;
+  text-align: center;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body {
+  font-family: "Segoe UI";
+  font-weight: 900;
+}
+
+h1 {
+  font-size: 60px;
+}
+
+.cmiCity p,
+.cmiCompany p {
+  font-size: 24px;
+  padding-bottom: 150px;
+}

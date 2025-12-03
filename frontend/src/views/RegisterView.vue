@@ -5,11 +5,12 @@ import '../assets/styles/AUTHStyle.css'
 import axios from 'axios';
 import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
+import { message } from 'ant-design-vue';
 
 const router = useRouter();
 const formRef = ref(null);
-const message = useMessage(); 
 const size = ref("medium");
+const gumb_rules = ref(false);
 
 const formValue = ref({
   user: {
@@ -25,6 +26,16 @@ const rules = {
     username: {
       required: true,
       message: "Please input your name",
+      trigger: "blur"
+    },
+    email: {
+      required: true,
+      message: "Please input your email",
+      trigger: "blur"
+    },
+    password: {
+      required: true,
+      message: "Please input your paswword",
       trigger: "blur"
     }
   },
@@ -44,11 +55,15 @@ const register = async () => {
     console.log("✅ CMI Register success:", response.data)
     if(response.data.success === true){
       router.push('/auth/ProfileCreation');
+      message.success(response.data.message);
+    }
+    else{
+      message.error(response.data.message)
     }
     //message.success("Registration successful!") notify userju ce je registracija uspesna
   } catch (error) {
     console.error("❌ CMI Register error:", error)
-    //message.error("Registration failed") notify userju da registracija ni uspesna
+    message.error(error.response.data.message);
   }
 }
 
@@ -80,7 +95,7 @@ const register = async () => {
             <n-input type="password" v-model:value="formValue.user.password" placeholder="Password" />
           </n-form-item>
 
-          <n-button type="primary" @click="register">Create Account</n-button>
+          <n-button type="primary"class="log-reg_btn" @click="register">Create Account</n-button>
         </n-form>
 
         <div class="login-footer">

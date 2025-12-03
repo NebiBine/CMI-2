@@ -1,16 +1,15 @@
 <script setup>
-import { useMessage } from "naive-ui";
 import { ref } from "vue";
-import '../assets/styles/AUTHStyle.css'
+import '../assets/styles/AUTHStyle.css';
 import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
 import axios from 'axios';
+import { message } from 'ant-design-vue';
 
 const router = useRouter();
 const formRef = ref(null);
-const message = useMessage(); 
 const size = ref("medium");
-const errorMessage = ref("");
+
 const rememberState = ref(false);
 
 const formValue = ref({
@@ -42,19 +41,20 @@ const login = async () => {
       identifier: formValue.value.user.username,
       password: formValue.value.user.password,
       remember: rememberState.value
-    },{
-      withCredentials: true
-    })
+    },
+    {withCredentials: true})
     console.log("✅ CMI Login success:", response.data)
 
     if (response.data.success === true) {
       router.push("/app/Dashboard");
+      
+      message.success(response.data.message);
     } else {
-      errorMessage.value = "Invalid credentials. Please try again.";
+      message.error(response.data.message);
     }
   } catch (error) {
     console.error("❌ CMI Login error:", error);
-    errorMessage.value = "Login failed. Please check your connection or credentials.";
+    message.error(error.response.data.message);
   }
 };
 function remember(checked){
@@ -63,8 +63,10 @@ function remember(checked){
 }
 //dodaj da ce user ze ima cookije da direktno pusham na dashboard router.push("/app/Dashboard");
 
-
-
+const [messageApi, contextHolder] = message.useMessage();
+const wrongUsername = () => {
+  messageApi.info('Username does not exist!');
+};
 </script>
 
 <template>
@@ -94,7 +96,7 @@ function remember(checked){
             <n-checkbox color="#4cc9f0" @update:checked="remember" >Remember me</n-checkbox>
           </n-space>
 
-          <n-button type="primary" @click="login">Log In</n-button>
+          <n-button type="primary" class="log-reg_btn" @click="login">Log In</n-button>
         </n-form>
 
         <div class="login-footer">
