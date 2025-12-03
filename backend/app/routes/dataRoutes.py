@@ -3,6 +3,7 @@ import flask
 from app.services.servProfileDb import getProfileInfo, updateUser
 from app.services.servAuthDb import getAllTables, checkAdmin
 from app.services.servUser import addAdmin, removeAdmin
+from app.services.servPoll import servAddPoll
 dataBp = Blueprint("data", __name__, url_prefix="/data")
 
 @dataBp.route("/getProfile", methods=["POST", "GET"])
@@ -86,3 +87,132 @@ updateUser prcakuje:
 }
 
 """
+
+#------------POLLS-------------------------
+@dataBp.route("/addPoll", methods=['POST'])
+def addPoll():
+  data=request.json
+  duration = data["duration"] #days
+  worth = data["worth"]
+  questions = data["questions"]
+  name = data["name"]
+  userId = request.cookies.get("sessionId")
+  return servAddPoll(duration, worth, questions, userId, name)
+     
+
+  """
+    "pollId":{
+      "pollId":12345678,
+      "admin":"bine",
+      "dateAdd":123232,
+      "duration":2d,
+      "expiry":"dateAdd + duration",
+      "city":"Ljubljana",
+      "vrednost":15,
+      "questions":{
+          "qId1":{
+            "name":"uprasanje",
+            "qId":123456789,
+            "uprasanje":"ALI SI VESEL",
+            "type":"checkBox"
+          }"qId2":{
+            "name":"uprasanje",
+            "qId":1234567891,
+            "uprasanje":"kaj delas",
+            "type":"textbox"
+            ]
+          }
+      }
+    }
+  """
+
+
+  """
+  data = request.data
+  data -> 
+  {"data":{
+    "duration": 2,
+    "vrednost":15,
+    "questions":{
+        "q1":{
+            "name":"traffic light",
+            "uprasanje": "ali ti je vsec traffic light",
+            "type":"yesno"
+        },
+        "q2":{
+            "name":"suggestios",
+            "uprasanje": "kaj bi dodali v mesto",
+            "type":"input"
+        }
+        
+    }
+}
+ 
+}
+ return database add poll
+
+ v db serv se nardi ta db in result db:
+
+ result -> 
+{
+   "results":{
+      "pollId":{
+         "q1Id":{
+            "question":"vprasanje",
+            "type":"yesno",
+            "res":{
+               "yes":323,
+               "no":323
+            }
+         },
+         "q2Id":{
+            "question":"vprasanje",
+            "type":"input",
+            "res":{
+               "inputs":[
+                  "dsdsd",
+                  "dsdd"
+               ]
+            }
+         },
+         "q3Id":{
+            "question":"vprasanje",
+            "type":"check",
+            "res":{
+               "o1":232,
+               "o2":234,
+               "o3":343,
+               "o4":222
+            }
+         },
+         "q4Id":{
+            "question":"vprasanje",
+            "type":"radio",
+            "res":{
+               "o1":232,
+               "o2":234,
+               "o3":343,
+               "o4":222
+            }
+         }
+      }
+   }
+}
+  """
+  pass
+
+@dataBp.route("/removePoll", methods=['POST'])
+def addPoll():
+  pass
+
+@dataBp.route("/getPolls", methods=['POST'])
+def addPoll():
+  pass
+
+@dataBp.route("/votePoll", methods=['POST'])
+def addPoll():
+  pass
+
+@dataBp.route("/viewPoll", methods=['POST'])
+def addPoll():
+  pass

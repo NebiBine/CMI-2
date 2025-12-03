@@ -25,7 +25,7 @@ def registerUser(username, password, email):
         response.status_code = 200
         return response
     except:
-        return jsonify({"success":False, "message": "There was an error, please try again."}), 400
+        return jsonify({"success":False, "message": "There was an error, please try again later."}), 400
 
 
 def loginUser(identifier, password, remember):
@@ -94,7 +94,7 @@ def loginUser(identifier, password, remember):
                 return response
         else:
             print("napačno geslo")
-            return jsonify({"success": False, "message": "Napačno geslo"}), 401
+            return jsonify({"success": False, "message": "Wrong password"}), 401
 
 def addAdmin(userId):
     if checkAdmin(userId) ==False:

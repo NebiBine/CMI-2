@@ -49,3 +49,8 @@ def updateUser(userId, name, username, birth, phone, street, city, country, zip)
         return getProfileInfo(userId)
     except:
         return None
+    
+def getCity(userId):
+    profil = profile.get(User.userId == userId)
+    city = profil["city"]
+    return city

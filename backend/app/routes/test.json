@@ -1,0 +1,60 @@
+{
+    "results":
+    {
+        "pollId":{
+            "name":"name",
+            "admin":"admin1",
+            "duration":"duration1",
+            "city":"city",
+            "questions":{
+                "q_id":{
+                    "name":"nameq",
+                    "quid":"quid1",
+                    "upr":"upr1",
+                    "type":"check",
+                    "options":{
+                        "oi_id":{
+                            "oid":"oid",
+                            "numberVoted":323
+                        },
+                        "oi_id1":{
+                            "oid":"oid",
+                            "numberVoted":3423
+                        },
+                        "oi_id2":{
+                            "oid":"oid",
+                            "numberVoted":3233
+                        },
+                        "oi_id3":{
+                            "oid":"oid",
+                            "numberVoted":3213
+                        }
+                    }
+                },
+                "q_id2":{
+                    "name":"nameq",
+                    "quid":"quid1",
+                    "upr":"upr1",
+                    "type":"yesno",
+                    "options":{
+                        "yes":2323,
+                        "no":23
+                    }
+                        
+                    
+                },
+                "q_id3":{
+                    "name":"nameq",
+                    "quid":"quid1",
+                    "upr":"upr1",
+                    "type":"input",
+                    "options":{
+                        "answers":["dsdsd","dsdsd","ewsds"]
+                    }
+                }
+
+                }
+            }
+        }
+
+    }
