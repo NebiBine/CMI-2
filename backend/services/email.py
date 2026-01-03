@@ -1,7 +1,7 @@
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, To, DynamicTemplateData
 import os
-from .servAuthDb import getUserMail
+
 def sendEmail(email, link):
     SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY") 
 
@@ -10,12 +10,6 @@ def sendEmail(email, link):
     #setx je permamently
     #set env je za ta session
 
-    uporabnik = getUserMail(email)
-    if not uporabnik:
-        print("error")
-        print(f"{email}")
-        print(uporabnik)
-        return "servEmail error, ne obstaja, ni accounta"
     message = Mail(
         from_email='cmi.city.eu@gmail.com',
         to_emails= email,
