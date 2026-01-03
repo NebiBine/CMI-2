@@ -45,15 +45,14 @@ const rules = {
 //try catch ce je error samo catcham z console logom da ne crasha vse skupaj
 const register = async () => {
   try {
-    const response = await axios.post("http://localhost:8080/auth/register", {
+    const response = await axios.post("http://localhost:8000/auth/register", {
       username: formValue.value.user.username,
       email : formValue.value.user.email,
       password: formValue.value.user.password,
-    },{
-      withCredentials: true
-    });
+    },
+    {withCredentials: true});
     console.log("✅ CMI Register success:", response.data)
-    if(response.data.success === true){
+    if(response.data.statusCode === 200){
       router.push('/auth/ProfileCreation');
       message.success(response.data.message);
     }

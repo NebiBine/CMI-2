@@ -3,45 +3,45 @@ import { ref, onMounted } from "vue";
 import '../assets/styles/mainStyle.css'
 import axios from 'axios'
 import { NModal, NButton } from "naive-ui";
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faPlus, faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faCircleQuestion } from '@fortawesome/free-regular-svg-icons'
 
-
-const admins = ref([]);
 const uporabniki = ref([]);
 const profil = ref([]);
 const showModal = ref(false);
 const selectedUser = ref(null);
+const admin_state = ref(false);
 
-const openUserModal = (uporabnik) => {
-    selectedUser.value = uporabnik;
-    console.log("TEST", selectedUser.value.userId)
-    //razlaga za spodnjo vrstico
-    selectedUser.value.isAdmin = admins.value.some(admin => admin.userId === uporabnik.userId)
-    //klicem funkcijo ki bo dala profildata
-    userIdSend();
-    showModal.value = true;
-};
+
 function closeModal() {
     showModal.value = false;
 }
 
-const update = async () => {
+async function update() {
+    const updatedProfile = {
+        id: profil.value.id ?? selectedUser.value.id,
+        first_name: profil.value.first_name,
+        last_name: profil.value.last_name,
+        birthdate: profil.value.birthdate,
+        phone: profil.value.phone,
+        address: profil.value.address,
+        city: profil.value.city,
+        country: profil.value.country,
+        isAdmin: admin_state.value
+    };
     try {
-        const response = await axios.post("http://localhost:8080/data/updateUser",
+        const response = await axios.post("http://localhost:8000/profile/updateProfile",
             //postam celoten form (ref gleda in belezi vsako spremembo in tako posljem zadnjo verzijo profil.value)
-            profil.value,
+            updatedProfile,
             { withCredentials: true });
         console.log("Successfuly updated user", response.data);
         showModal.value = false; //zaprem modal
         await getAllUsers(); //poklicem funkcijo da dobim nove osvežene podatke
-
     }
     catch (error) {
         console.log(error);
     }
 }
-
 /*
 1.---------------------------------------------------------------------
 
@@ -97,34 +97,45 @@ updateUser prcakuje:
 VRNE TI PA ISTI JSON KSI MI GA POSLOU, IDENTITIČEN, POD POGOJEM DA NI BLO ERRORJA, SEPRAV PO ŽE NARJENE UPDEJTU V DB
 
 */
-const getAllUsers = async () => {
+async function getAllUsers() {
     try {
         const response = await axios.get(
-            'http://localhost:8080/data/getAllUsers', {
+            'http://localhost:8000/auth/getAllUsers', {
             withCredentials: true
         })
         //console.log(response.data)
         uporabniki.value = response.data
         //debug print
-        console.log(uporabniki.value)
+        console.log("ALL USERS: ", uporabniki.value)
     }
     catch (error) {
         console.log(error)
     }
 }
 //posljem userId ko admin klikne na more info da iz backenda prejmem podatke za dolocen userId (profil data: tel stevilko, fullname itd.)
-const userIdSend = async () => {
+async function userIdSend() {
     try {
-        const response = await axios.post("http://localhost:8080/data/getProfile", //||BACK POSLE ISTO ZADEVO K U DASHBOARD VIEW + ISADMIN, SAM PRKAZ PODATKE, poglej gor||    
-            { userId: selectedUser.value.userId },
+        const response = await axios.post("http://localhost:8000/profile/getProfile", //||BACK POSLE ISTO ZADEVO K U DASHBOARD VIEW + ISADMIN, SAM PRKAZ PODATKE, poglej gor||    
+            { userId: selectedUser.value.id },
             { withCredentials: true });
-
-        profil.value = response.data;
+        profil.value = response.data.profile;
+        admin_state.value = response.data.admin; //dobim vse admine da lahko potem primerjam ce je user admin al ne
+        console.log("PROFILE DATA FOR SELECTED USER:", profil.value);
+        console.log("ADMINS DATA:", admin_state.value);
     }
     catch (error) {
         console.log(error)
     }
 }
+const openUserModal = (uporabnik) => {
+    selectedUser.value = uporabnik;
+    console.log("CLICKED USER (USER ID)", selectedUser.value.id)
+    //razlaga za spodnjo vrstico
+    //selectedUser.value.isAdmin = admins.value.some(admin => admin.userId === uporabnik.userId)
+    //klicem funkcijo ki bo dala profildata IN POSLALA USERID
+    userIdSend();
+    showModal.value = true;
+};
 onMounted(() => {
     getAllUsers();
 });
@@ -142,7 +153,7 @@ onMounted(() => {
     </n-tooltip>
     <!--------------------------------------------------------------------------------------->
     <div class="searchBarAdminUsers">
-        <n-input type="text" id="searhEngine" placeholder="Currently disabled! :(" clearable disabled="true"></n-input>
+        <n-input type="text" id="searhEngine" placeholder="Currently disabled! :(" clearable disabled></n-input>
     </div>
 
     <!--LISTAM USE USERJE-->
@@ -157,13 +168,12 @@ onMounted(() => {
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="uporabnik in uporabniki" :key="uporabnik.userId">
+                <tr v-for="uporabnik in uporabniki" :key="uporabnik.id">
                     <td>{{ uporabnik.username }}</td>
                     <td>{{ uporabnik.email }}</td>
-                    <td>{{ uporabnik.userId }}</td>
+                    <td>{{ uporabnik.id }}</td>
                     <td>
-                        <n-button text @click="() => { openUserModal(uporabnik); userIdSend(); }"
-                            class="moreinfoBTN">More
+                        <n-button text @click="openUserModal(uporabnik)" class="moreinfoBTN">More
                             Info</n-button>
 
                     </td>
@@ -173,20 +183,20 @@ onMounted(() => {
     </div>
     <n-modal v-model:show="showModal" preset="dialog" title="Edit or View User">
         <template #default>
-            <label for id="fullName"> Full Name:
-                <n-input id="fullName" placeholder="" v-model:value="profil.fullName"></n-input>
+            <label for id="firstName"> First Name:
+                <n-input id="fullName" placeholder="" v-model:value="profil.first_name"></n-input>
             </label>
-            <label for id="username"> Username:
-                <n-input id="username" placeholder="" v-model:value="profil.username"></n-input>
+            <label for id="LastName"> Last Name:
+                <n-input id="username" placeholder="" v-model:value="profil.last_name"></n-input>
             </label>
             <label for id="birth"> Date of Birth:
-                <n-input id="birth" placeholder="" v-model:value="profil.birth"></n-input>
+                <n-input id="birth" placeholder="" v-model:value="profil.birthdate"></n-input>
             </label>
             <label for id="phone"> Mobile Number:
                 <n-input id="phone" placeholder="" v-model:value="profil.phone"></n-input>
             </label>
-            <label for id="street"> Street:
-                <n-input id="street" placeholder="" v-model:value="profil.street"></n-input>
+            <label for id="street"> Address:
+                <n-input id="street" placeholder="" v-model:value="profil.address"></n-input>
             </label>
             <label for id="city"> City:
                 <n-input id="city" placeholder="" v-model:value="profil.city"></n-input>
@@ -194,13 +204,12 @@ onMounted(() => {
             <label for id="country"> Country:
                 <n-input id="country" placeholder="" v-model:value="profil.country"></n-input>
             </label>
-            <label for id="zip"> Zip Code:
-                <n-input id="zip" placeholder="" v-model:value="profil.zip"></n-input>
-            </label>
-
-
+            <!-- NAREDI DA LAHKO SAMO ADMIN LEVEL 2 SPREMINJA ADMIN LEVEL - KO BODO DOKONCANI LEVELI -->
+            <!-- <label for id="adminLevel"> Admin Level:
+                <n-input id="adminLevel" placeholder="" v-model:value="profil.adminLevel"></n-input>
+            </label> -->
             <label for id="admin_state"> Add/Remove Admin?
-                <n-checkbox id="admin_state" v-model:checked="profil.isAdmin"></n-checkbox>
+                <n-checkbox id="admin_state" v-model:checked="admin_state"></n-checkbox>
             </label>
 
 

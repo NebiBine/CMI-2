@@ -72,6 +72,10 @@ const menuOptions = ref([
       {
         label:'Points of Interest',
         key:'cityPointsOfInterest'
+      },
+      {
+        label:'Local Goods',
+        key:'cityLocalGoods'
       }
     ]
   },
@@ -115,10 +119,10 @@ const menuOptions = ref([
   }
 
 ])
-const admincheck = async() =>{
+async function admincheck() {
   try{
     const response = await axios.get(
-      "http://localhost:8080/auth/checkAdmin",
+      "http://localhost:8000/auth/checkAdmin",
       {withCredentials:true}
     )
     admin.value = response.data.admin
@@ -152,7 +156,7 @@ const admincheck = async() =>{
     }
   }
   catch(error){
-    console.log(error)
+    console.log("Admin check error: " + error)
   }
 }
 onMounted(()=>{

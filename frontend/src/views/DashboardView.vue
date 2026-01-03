@@ -5,6 +5,8 @@ import '../assets/styles/mainStyle.css';
 import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
 import axios from 'axios';
+import { message } from "ant-design-vue";
+
 
 
 const greeting = ref("");
@@ -25,27 +27,30 @@ function setGreeting() {
     greeting.value = "Good Evening"
   }
 }
-onMounted(() => {
-  setGreeting()
-  profilData()
-});
+
 
 async function profilData() {
   try {
     const response = await axios.get(
-      'http://localhost:8080/data/getProfile', {
+      'http://localhost:8000/auth/getProfile', {
       withCredentials: true
     })
     //vzamem username 
     username.value = response.data.username
-
+    //message.success(response.data.message);
   }
   catch (error) {
     console.log('Napaka pri pridobivanju podatkov profila');
+    //message.error(error.response.data.error);
     console.log(error);
   }
 };
 
+
+onMounted(() => {
+  setGreeting()
+  profilData()
+});
 </script>
 <template>
 

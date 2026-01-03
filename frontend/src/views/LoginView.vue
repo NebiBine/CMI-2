@@ -23,12 +23,12 @@ const rules = {
   user: {
     username: {
       required: true,
-      message: "Please input your username",
+      message: "Please input your username or email!",
       trigger: "blur"
     },
     password: {
       required: true,
-      message: "Please input your password",
+      message: "Please input your password!",
       trigger: "blur"
     }
   },
@@ -37,7 +37,7 @@ const rules = {
 // axios login
 const login = async () => {
   try {
-    const response = await axios.post("http://localhost:8080/auth/login", {
+    const response = await axios.post("http://localhost:8000/auth/login", {
       identifier: formValue.value.user.username,
       password: formValue.value.user.password,
       remember: rememberState.value
@@ -45,17 +45,20 @@ const login = async () => {
     {withCredentials: true})
     console.log("✅ CMI Login success:", response.data)
 
-    if (response.data.success === true) {
+    if (response.data.statusCode === 200) {
       router.push("/app/Dashboard");
-      
-      message.success(response.data.message);
-    } else {
-      message.error(response.data.message);
-    }
+      message.success(response.data.message,3);
+    } 
   } catch (error) {
     console.error("❌ CMI Login error:", error);
-    message.error(error.response.data.message);
-  }
+    if (error.response.data.detail) {
+        message.error(error.response.data.detail,3);
+    } else if (error.response.data.message) {
+        message.error(error.response.data.message,3);
+    } else {
+        message.error('Login failed. Please try again.',3);
+    }
+}
 };
 function remember(checked){
   rememberState.value = checked;
@@ -85,7 +88,7 @@ const wrongUsername = () => {
           :size="size"
         >
           <n-form-item path="user.username">
-            <n-input v-model:value="formValue.user.username" placeholder="Username" />
+            <n-input v-model:value="formValue.user.username" placeholder="Email/Username" />
           </n-form-item>
 
           <n-form-item path="user.password">

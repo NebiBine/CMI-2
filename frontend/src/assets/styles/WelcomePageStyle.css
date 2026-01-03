@@ -60,13 +60,8 @@
   transition: all 500ms;
 }
 
-.cmiCompany:hover p,
-.cmiCompany:hover button {
-  opacity: 1;
-}
-
 .cmiCompany p,
-.cmiCompany button {
+.cmiCompany .welcome_btn {
   opacity: 0;
   transition: opacity 500ms;
 }
@@ -76,14 +71,14 @@
 }
 
 .cmiCompany:hover p,
-.cmiCompany:hover button {
+.cmiCompany:hover .welcome_btn {
   opacity: 1;
 }
 
 .cmiCity .welcome_btn,
-.cmiCompany button {
+.cmiCompany .welcome_btn {
   color: white !important; 
-  background-color: #111827;
+  background-color: #111827 !important;
   width: 25%;
   height: 4%;
   margin-top: 10px;
@@ -92,6 +87,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none !important;
+}
+
+/* Target the text inside n-button */
+.cmiCity .welcome_btn a {
+  color: white !important;
+  text-decoration: none;
+  border: none !important;
+}
+
+.cmiCity .welcome_btn :deep(.n-button__content) {
+  color: white !important;
+  border: none !important;
 }
 
 body {

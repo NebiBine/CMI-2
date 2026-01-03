@@ -47,10 +47,10 @@ const rules = {
 };
 
 // axios
-const passwordReset = async () => {
+async function passwordReset() {
   try {
     await formRef.value?.validate(); // validiraj form da je vse kot mora bit potem pojdi naprej
-    const response = await axios.post(`http://localhost:8080/auth/resetPassword/${token}`, {
+    const response = await axios.post(`http://localhost:8000/auth/resetPassword`, {
       newPassword: formValue.value.user.newPassword,
       token
     },{

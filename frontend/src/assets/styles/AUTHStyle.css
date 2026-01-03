@@ -3,9 +3,12 @@
   font-family: 'InterNaslovi';
   src: url('../fonts/Inter-Bold.woff2') format('woff2'),
        url('../fonts/InterVariable.ttf') format('truetype');
-  font-weight: 700;
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
+}
+.ant-message-content {
+  font-weight: 400 !important;
 }
 :root{
   color: black;
@@ -20,6 +23,7 @@ html, body {
   width: 100%;
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 400;
   overflow: hidden;
   color-scheme: only light;
 }

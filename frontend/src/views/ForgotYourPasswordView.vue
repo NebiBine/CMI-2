@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid"
 import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
 import axios from 'axios';
+import { message } from "ant-design-vue";
 
 const router = useRouter();
 const formRef = ref(null);
@@ -29,21 +30,22 @@ const rules = {
 
 // axios 
 const forgotPassword = async () => {
-  const token = uuidv4()
-  const resetlink = `http://localhost:5173/auth/PasswordReset/${token}`
   try {
-    const response = await axios.post("http://localhost:8080/auth/forgotPassword", {
-      email: formValue.value.user.email,
-      resetlink,
-      token
+    const response = await axios.post("http://localhost:8000/auth/forgotPassword", {
+      email: formValue.value.user.email
     },{
       withCredentials: true
     })
     console.log("✅ Success:", response.data);
-    console.log(resetlink);
+    if(response.data.statusCode === 200){
+      message.success(response.data.message);
+    }
+    else{
+      message.error(response.data.message);
+    }
   } catch (error) {
     console.error("❌ Error:", error);
-    console.log(resetlink);
+    message.error(error.response.data.message);
   }
 };
 </script>
