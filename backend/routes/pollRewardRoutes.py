@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from uuid import uuid4
 from datetime import datetime, timedelta
 
-from ..database.creators.models import Poll
+from ..database.creators.models import Poll, Question
 from ..database.servicesDb.databaseServ import savePoll, getCityId, getAllPolls
 
 router = APIRouter()
@@ -11,11 +11,6 @@ router = APIRouter()
 class PollResponse(BaseModel):
     statusCode: int
     message: str
-
-class Question(BaseModel):
-    text: str
-    type: str
-    options: list[str]
 
 class PollRequest(BaseModel):
     pollTitle: str

@@ -2,12 +2,15 @@ from odmantic import Model, Field
 from uuid import uuid4
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Field as PydanticField
 
 class Question(BaseModel):
+    id: str = PydanticField(default_factory=lambda: str(uuid4()))
     text: str
     type: str
     options: list[str]
+
+    
 
 
 class Uporabnik(Model):
