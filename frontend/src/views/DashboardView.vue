@@ -55,8 +55,11 @@ onMounted(() => {
 <template>
 
 <div v-if="showAlert" class="w-full">
-    <n-alert type="info" closable @close="showAlert = false" title="Announcement">
-      TETSTETSTTATDTAWTDTATDTAT
+    <n-alert type="info" closable @close="showAlert = false" title="Traffic Announcement">
+      <template #icon>
+        <img src = "../assets/icons/car.svg" alt="Traffic Icon"/>
+      </template>
+      Dont forget to check out the latest traffic updates in your area! Stay informed and plan your routes accordingly.
     </n-alert>
   </div>
 

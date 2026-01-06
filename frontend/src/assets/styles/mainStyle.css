@@ -1,11 +1,20 @@
 @font-face {
   font-family: 'InterNaslovi';
   src: url('../fonts/Inter-Bold.woff2') format('woff2'),
-    url('../fonts/InterVariable.ttf') format('truetype');
+    url('../fonts/Inter-Bold.woff2') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
+
+@font-face {
+  font-family: 'InterTekst';
+  src: url('../fonts/InterVariable.ttf') format('truetype');
+  font-weight: 100 900; 
+  font-style: normal;
+  font-display: swap;
+}
+
 
 html,
 body,
@@ -183,21 +192,51 @@ body,
 .polls-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px; /* Space between cards */
+  gap: 24px; 
   padding: 20px 0;
   align-items: flex-start;
 }
 
-/* Individual Poll Card */
 .EnPoll {
   background-color: #ffffff;
-  border: 1px solid #e5e7eb; /* Light gray border */
-  border-radius: 16px;       /* Rounded corners */
+  border: 1px solid #e5e7eb; 
+  border-radius: 16px;      
   padding: 24px;
-  width: 350px;              /* Fixed width like in the picture */
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Soft shadow */
+  width: 350px;              
   display: flex;
   flex-direction: column;
   position: relative;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.pollTitle{
+  font-size: 20px;
+  margin-top: -10px;
+}
+.question-text{
+  font-family: 'InterTekst', sans-serif;
+  font-weight: 500;
+  font-size: 17px;
+}
+.optionsWrapper{
+  font-family: 'InterNaslovi', sans-serif;
+  font-weight: 200;
+}
+.optionsWrapper input{
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 15px;
+  margin-top: 10px;
+}
+.submitpollBtn{
+  margin-top: 20px;
+  color: white;
+  background-color: #111827;
+  border-radius: 8px;
+  font-weight: bold;
+}
+.cancelpollBtn{
+  background-color: red;
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
 }
