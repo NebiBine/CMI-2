@@ -1,5 +1,5 @@
 from odmantic import AIOEngine
-from ..creators.models import Uporabnik, Profile, Admins, Reset, Poll
+from ..creators.models import Uporabnik, Profile, Admins, Reset, Poll, Results
 
 engine = AIOEngine()
 
@@ -50,9 +50,12 @@ async def getCityId(id: str):
 
 
 #polls
-async def savePoll(poll):
+async def savePoll(poll: Poll):
     await engine.save(poll)
 
-async def getAllPolls(city):
+async def getAllPolls(city: str):
     return await engine.find(Poll, Poll.city == city)
+
+async def saveResults(results: Results):
+    await engine.save(results)
 

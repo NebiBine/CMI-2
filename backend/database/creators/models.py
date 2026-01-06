@@ -1,7 +1,7 @@
 from odmantic import Model, Field
 from uuid import uuid4
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Union
 from pydantic import BaseModel, Field as PydanticField
 
 class Question(BaseModel):
@@ -10,8 +10,45 @@ class Question(BaseModel):
     type: str
     options: list[str]
 
-    
+class Option(BaseModel):
+    optionText: str
+    result: list[Union[int, str]] = []
 
+class QuestionResult(BaseModel):
+    questionId: str
+    questionType: str
+    questionText: str
+    option1 : Option
+    option2 : Option
+    option3 : Option
+    option4 : Option
+
+class Results(Model):
+    id: str = Field(primary_field=True, default_factory=lambda: str(uuid4()))
+    pollId: str  # foreign key to Poll
+    answers: dict[str, QuestionResult]
+
+"""
+dict structure for answers:
+{
+    questionId1: {
+        questionId: str
+        questionType: str
+        option1 : Option
+        option2 : Option
+        option3 : Option
+        option4 : Option ----> samo QuestionResult
+    },
+    questionId2: {
+        questionId: str
+        questionType: str
+        option1 : Option
+        option2 : Option
+        option3 : Option
+        option4 : Option ----> samo QuestionResult
+    }
+}
+"""
 
 class Uporabnik(Model):
     id: str = Field(primary_field=True, default_factory=lambda: str(uuid4()))
@@ -49,6 +86,7 @@ class Poll(Model):
     creatorId: str  # foreign key to Uporabnik
     city: str
     pollTitle: str
+    pollDescription: str
     pollDuration: int  # in days
     expirationDate: datetime
     creationDate: datetime = Field(default_factory=datetime.utcnow)
@@ -67,6 +105,3 @@ class UserRewards(Model):
     rewardId: str  # foreign key to Reward
     claimedAt: datetime = Field(default_factory=datetime.utcnow)
 
-class Results(Model):
-    pollId: str  # foreign key to Poll
-    answers: dict  # questionId -> answer
