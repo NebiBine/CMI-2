@@ -72,6 +72,7 @@ async function pollSubmit() {
   const pollData = {
     pollTitle: pollTitle.value,
     pollDuration: pollDuration.value,
+    pollDescription : pollDescription.value,
     points: possible_points_value.value,
     questions: questions.value
   };
@@ -140,25 +141,39 @@ onMounted(() => {
   <!------------------- MODAL ZA DODAJANJE ANKETE ------------------->
   <n-modal v-model:show="modal_state1" preset="dialog" title="Add Poll" positive-text="Submit" negative-text="Cancel"
     @positive-click="pollSubmit" @negative-click="closeModal1" :style="{ width: '600px', height: 'auto' }">
+    <template #icon>
+      <img src="../assets/icons/add_poll.svg" alt="Add Poll Icon"/>
+    </template>
     <!-- poll title -->
-    <label for="poll_name">Poll Name:
-      <n-input type="text" id="poll_name" v-model:value="pollTitle"
-        placeholder="Enter Poll Title (eg. New city project)"></n-input>
-    </label>
-    <label for="poll_description">Poll Description:
-      <n-input type="text" id="poll_description" v-model:value="pollDescription"
-        placeholder="Enter Poll Description"></n-input>
-    </label>
+     <div class = "pollName">
+      <label for="poll_name">Poll Name:
+        <n-input type="text" id="poll_name" v-model:value="pollTitle"
+          placeholder="Enter Poll Title (eg. New city project)"></n-input>
+      </label>
+    </div>
+    <!-- poll description -->
+     <div class="pollDescription">
+      <label for="poll_description">Poll Description:
+        <n-input type="text" id="poll_description" v-model:value="pollDescription"
+          placeholder="Enter Poll Description"></n-input>
+      </label>
+    </div>
     <!-- poll duration -->
-    <label for="poll_duration">Poll Duration:
-      <n-slider v-model:value="pollDuration" :step="1" :max="7" />
-    </label>
+     <div class = "pollDuration">
+      <label for="poll_duration">Poll Duration:
+        <n-slider v-model:value="pollDuration" :step="1" :max="7"  style = "width: 85%;" />
+      </label>
+    </div>
     <!-- <label for id="expires"> Expires at:
       <n-date-picker v-model:value="timestamp" type="date" />
     </label> -->
-    <label for="possible_points">Possible points
-      <n-input-number id="possible_points" v-model:value="possible_points_value" clearable />
-    </label>
+
+    <!-- possible points -->
+     <div class="possiblePoints">
+      <label for="possible_points">Possible points
+        <n-input-number id="possible_points" v-model:value="possible_points_value" clearable />
+      </label>
+    </div>
     <n-button class="btn_add_questions" @click="open_modal2()">Add questions</n-button>
     <div>
       <label for="added_questions">Added questions:
@@ -203,6 +218,9 @@ onMounted(() => {
   <!------------------- MODAL ZA DODAJANJE VPRAŠANJ ------------------->
   <n-modal v-model:show="modal_state2" preset="dialog" title="Create Poll Questions" positive-text="Submit"
     negative-text="Cancel" @positive-click="submitQuestions" @negative-click="closeModal">
+    <template #icon>
+      <img src="../assets/icons/add_poll.svg" alt="Add Poll Icon"/>
+    </template>
     <!-- Vsa vprašanja -->
     <div v-for="(question, index) in questions" :key="index" class="question-item"
       style="margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #eee;">
