@@ -16,6 +16,7 @@ const possible_points_value = ref(0);
 const pollTitle = ref("");
 const pollDuration = ref(0);
 const pollDescription = ref("");
+
 //VPRAŠANJA ARRAY
 const questions = ref([]);
 
