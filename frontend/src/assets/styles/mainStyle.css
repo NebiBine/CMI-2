@@ -240,3 +240,7 @@ body,
   border-radius: 8px;
   font-weight: bold;
 }
+.pollName label{
+  display: flex;
+  flex-direction: column;
+}
