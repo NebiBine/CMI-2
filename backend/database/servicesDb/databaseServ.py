@@ -1,5 +1,5 @@
 from odmantic import AIOEngine
-from ..creators.models import Uporabnik, Profile, Admins, Reset, Poll, Results
+from ..creators.models import Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints
 
 engine = AIOEngine()
 
@@ -59,3 +59,18 @@ async def getAllPolls(city: str):
 async def saveResults(results: Results):
     await engine.save(results)
 
+async def markCompletedPoll(userId: str, pollId: str, points: int):
+    userPoints = await engine.find_one(UserPoints, UserPoints.userId == userId)
+    if not userPoints:
+        userPoints = UserPoints(userId=userId, points=0, completedPolls=[])
+    if pollId not in userPoints.completedPolls:
+        userPoints.points += points
+        userPoints.completedPolls.append(pollId)
+        await engine.save(userPoints)
+
+async def getUserPoints(userId: str):
+    userPoints = await engine.find_one(UserPoints, UserPoints.userId == userId)
+    if not userPoints:
+        userPoints = UserPoints(userId=userId, points=0, completedPolls=[])
+        await engine.save(userPoints)
+    return userPoints
