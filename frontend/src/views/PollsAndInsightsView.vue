@@ -13,20 +13,19 @@ const selectedPollId = ref("");
 //const time_left = new Date(polls.expirationDate).getDate() - new Date().getDate();
 
 
+//TODO : Popravi posiljanje odgovorov ker verjetno niso v enakem formatu
+//----------------------------------------------------------------------
 function closeModal() {
     showModal.value = false;
 }
 function openModal(poll) {
 
-
-
     showModal.value = true;
     selectedPoll.value = poll;
-    selectedPollId.value = selectedPoll.value.questions.questionId;
 
     selectedPoll.value.questions.forEach(question => {
-        if (question.type === 'checkbox') {
-            question.answer = [];
+        if (question.type === 'checkbox' || question.type === 'radioButtons') {
+            question.answer = ["", "", "", ""];
         } else {
             question.answer = '';
         }
@@ -46,9 +45,10 @@ async function getPolls() {
 }
 
 async function pollParticipationSubmit(selectedPoll){
+    //zdruzim vse vprasanja in odgovore in id v eno konstanto
     const CombinedQuestionAnswer = selectedPoll.questions.map((question) => {
         return {
-            questionId : selectedPollId.value,
+            questionId : question.id,
             questionText: question.text,
             answer: question.answer
         };
@@ -59,21 +59,17 @@ async function pollParticipationSubmit(selectedPoll){
         pollQuestions: CombinedQuestionAnswer
     }
     try{
-        const response = await axios.post("http://localhost:8000/poll-reward/participateInPoll",
-        {pollAnswers},
+        const response = await axios.post("http://localhost:8000/poll-reward/completePoll", 
+        pollAnswers, 
         { withCredentials: true });
-
-
-        if (response.data.statusCode === 200) {
-            message.success(response.data.message);
-        }
-        else {
-            message.error(response.data.message);
-        }
     }
     catch(error){
-        console.log(error);
+        console.log(error)
     }
+
+
+    console.log("Poll Answers to submit:", pollAnswers);
+
 }
 
 onMounted(() => {
