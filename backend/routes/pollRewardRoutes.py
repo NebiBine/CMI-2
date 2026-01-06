@@ -4,7 +4,7 @@ from uuid import uuid4
 from datetime import datetime, timedelta
 
 from ..database.creators.models import Option, Poll, Question, QuestionResult, Results
-from ..database.servicesDb.databaseServ import savePoll, getCityId, getAllPolls, saveResults
+from ..database.servicesDb.databaseServ import savePoll, getCityId, getAllPolls, saveResults, getUserPoints
 
 router = APIRouter()
 
@@ -56,4 +56,20 @@ async def getPollsRoute(request: Request):
         raise HTTPException(status_code=401, detail="Unauthorized, no user ID")
     city = await getCityId(userId)
     polls = await getAllPolls(city)
-    return polls
+
+    userPoints = await getUserPoints(userId)
+    completedPolls = userPoints.completedPolls # to je list z narjenimi
+
+    compPolls = []
+
+    for poll in polls:
+        if poll.id in completedPolls:
+            compPolls.append(poll.id)
+
+    return compPolls
+
+@router.get("/completePoll")
+async def completePollRoute(pollId: str, request: Request):
+    pass
+    #  markCompletedPoll iz serva
+    # shran odgovore v results

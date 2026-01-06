@@ -92,6 +92,7 @@ class Poll(Model):
     creationDate: datetime = Field(default_factory=datetime.utcnow)
     points: int
     questions: list[Question]  # each question can be represented as a dicts
+    
 
 class Reward(Model):
     id: str = Field(primary_field=True, default_factory=lambda: str(uuid4()))
@@ -105,3 +106,7 @@ class UserRewards(Model):
     rewardId: str  # foreign key to Reward
     claimedAt: datetime = Field(default_factory=datetime.utcnow)
 
+class UserPoints(Model):
+    userId: str  # foreign key to Uporabnik
+    points: int = Field(default=0)
+    completedPolls: list[str] = []
