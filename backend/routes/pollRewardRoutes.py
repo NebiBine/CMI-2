@@ -63,8 +63,8 @@ async def getPollsRoute(request: Request):
     compPolls = []
 
     for poll in polls:
-        if poll.id in completedPolls:
-            compPolls.append(poll.id)
+        if poll.id not in completedPolls:
+            compPolls.append(poll)
 
     return compPolls
 
