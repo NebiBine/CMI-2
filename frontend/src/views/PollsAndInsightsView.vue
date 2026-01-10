@@ -15,6 +15,7 @@ const selectedPollId = ref("");
 
 
 //TODO : Popravi posiljanje odgovorov ker verjetno niso v enakem formatu
+// TODO: PRIKAZ TIME LEFT SE ZA URE
 //----------------------------------------------------------------------
 function closeModal() {
     showModal.value = false;
