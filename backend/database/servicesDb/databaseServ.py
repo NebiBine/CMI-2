@@ -74,3 +74,16 @@ async def getUserPoints(userId: str):
         userPoints = UserPoints(userId=userId, points=0, completedPolls=[])
         await engine.save(userPoints)
     return userPoints
+
+async def getPollId(pollId: str):
+    return await engine.find_one(Poll, Poll.id == pollId)
+
+async def getResultsId(pollId: str):
+    return await engine.find_one(Results, Results.pollId == pollId)
+
+async def updatePollResults(pollId: str, answers: list):
+    pass
+
+async def getQuestionId(questionId: str, ResultsObj: Results):
+    return ResultsObj.answers.get(questionId)
+    
