@@ -144,6 +144,10 @@ async function admincheck() {
             {
               label:'Poll Management',
               key:'pollManagement'
+            },
+            {
+              label:'Reward Management',
+              key:'rewardManagement'
             }
       //      {
         //      label:'Data Management',
