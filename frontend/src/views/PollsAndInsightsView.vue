@@ -23,13 +23,13 @@ function openModal(poll) {
     showModal.value = true;
     selectedPoll.value = poll;
 
-    selectedPoll.value.questions.forEach(question => {
-        if (question.type === 'checkbox' || question.type === 'radioButtons') {
-            question.answer = ["", "", "", ""];
-        } else {
-            question.answer = '';
-        }
-    });
+    // selectedPoll.value.questions.forEach(question => {
+    //     if (question.type === 'checkbox' || question.type === 'radioButtons') {
+    //         question.answer = ["", "", "", ""];
+    //     } else {
+    //         question.answer = '';
+    //     }
+    // });
 }
 
 async function getPolls() {
@@ -66,8 +66,6 @@ async function pollParticipationSubmit(selectedPoll){
     catch(error){
         console.log(error)
     }
-
-
     console.log("Poll Answers to submit:", pollAnswers);
 
 }

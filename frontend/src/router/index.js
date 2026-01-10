@@ -16,6 +16,7 @@ import ProfileCreationView from '../views/ProfileCreationView.vue';
   //main page dashboard etc.
 import DashboardView from '../views/DashboardView.vue';
 import PollsAndInsightsView from '../views/PollsAndInsightsView.vue';
+import RewardsView from '../views/RewardsView.vue';
 
 //admin
 import AdminPanelView from '../views/AdminPanelView.vue';
@@ -64,6 +65,7 @@ const routes = [
     children: [
       {path:'Dashboard',name:'dashboard',component: DashboardView, meta: { requiresAuth: true }},
       {path:'PollsAndInsights',name:'polls',component: PollsAndInsightsView, meta: { requiresAuth: true }},
+      {path:'Rewards',name:'rewards',component: RewardsView, meta: { requiresAuth: true }},
     ]
   },
   {
@@ -111,13 +113,13 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   if (to.meta.requiresAuth) { //ce to ima meta requiresauth potem preveri ce ne samo dovoli da gre dalje 
     try {
-      const res = await axios.get("http://localhost:8000/auth/check", { //getam iz backenda
+      const response = await axios.get("http://localhost:8000/auth/check", { //getam iz backenda
         withCredentials: true, // pove da zahtevam cookije
       });
       //DODAJ DA CE SI ZE LOGINAN GRES DIREKTNO IZ LOGINA NA DASHBOARD -- REDIRECT--------------------------------------------------------------------
-      if (res.data.loggedIn) {
+      if (response.data.loggedIn) {
         next(); // ce je logged in true dovolim userju da gre naprej na /app/dashboard recimo
-        console.log(res.data.loggedIn)
+        console.log(response.data.loggedIn)
       } else {
         next("/auth/login"); 
       }
@@ -125,7 +127,7 @@ router.beforeEach(async (to, from, next) => {
       next("/auth/login"); //ce je error sklepam da user ni loggan in in ga pustim na loginu
     }
   } else {
-    next();
+    next(); //ce pa imam nastavljeno requiresAuth na false potem samo dovolim userju da dostopa do strani
   }
 });
 
