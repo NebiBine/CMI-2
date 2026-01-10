@@ -1,5 +1,5 @@
 from odmantic import AIOEngine
-from ..creators.models import Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints
+from ..creators.models import Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive
 
 engine = AIOEngine()
 
@@ -86,4 +86,23 @@ async def updatePollResults(pollId: str, answers: list):
 
 async def getQuestionId(questionId: str, ResultsObj: Results):
     return ResultsObj.answers.get(questionId)
+
+async def moveToArchive(poll: Poll):
+    novArchive = PollArchive(
+        id = poll.id,
+        creatorId = poll.creatorId,
+        city=poll.city,
+        pollTitle = poll.pollTitle,
+        pollDescription = poll.pollDescription,
+        pollDuration = poll.pollDuration,
+        expirationDate = poll.expirationDate,
+        creationDate = poll.creationDate,
+        points = poll.points,
+        questions = poll.questions
+    )
+
+    await engine.save(novArchive)
+    await engine.delete(poll)
+
+
     

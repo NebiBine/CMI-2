@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from typing import Union
 
 from ..database.creators.models import Option, Poll, Question, QuestionResult, Results
-from ..database.servicesDb.databaseServ import savePoll, getCityId, getAllPolls, saveResults, getUserPoints, getPollId,getResultsId, getQuestionId,markCompletedPoll
+from ..database.servicesDb.databaseServ import savePoll, getCityId, getAllPolls, saveResults, getUserPoints, getPollId,getResultsId, getQuestionId,markCompletedPoll, moveToArchive
 
 router = APIRouter()
 
@@ -73,34 +73,14 @@ async def getPollsRoute(request: Request):
     compPolls = []
 
     for poll in polls:
+        if poll.expirationDate < datetime.utcnow():
+            await moveToArchive(poll)
+            continue
         if poll.id not in completedPolls:
             compPolls.append(poll)
 
     return compPolls
 
-@router.post("/submitPoll", response_model=PollResponse)
-async def submit_poll_route(submission: PollSubmissionRequest, request: Request):
-    userId = request.cookies.get("sessionId")
-    if not userId:
-        raise HTTPException(status_code=401, detail="Unauthorized")
-
-    # Logic to save answers and award points
-    # This is a placeholder, you'll need to implement it
-    print(f"User {userId} submitted answers for poll {submission.pollId}")
-    for answer in submission.pollQuestions:
-        print(f"  - Q: {answer.questionId}, A: {answer.answer}")
-
-    # 1. Get the poll to find out how many points to award
-    # poll = await getPollById(submission.pollId)
-    # points_to_award = poll.points
-
-    # 2. Mark the poll as completed for the user and add points
-    # await markPollAsCompleted(userId, submission.pollId, points_to_award)
-
-    # 3. Update the Results document with the new answers
-    # await updatePollResults(submission.pollId, submission.pollQuestions)
-
-    return {"statusCode": 200,"message": "Poll submitted successfully"}
 
 @router.post("/completePoll", response_model=PollResponse)
 async def completePollRoute(pollreq: PollSubmissionRequest, request: Request):
