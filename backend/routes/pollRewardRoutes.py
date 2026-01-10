@@ -129,10 +129,10 @@ async def completePollRoute(pollreq: PollSubmissionRequest, request: Request):
     await markCompletedPoll(userId, pollId, poll.points)
     return {"statusCode": 200, "message": "Poll completed successfully"}
         
-@router.get("/getUserPoints")
+@router.get("/getUserPoints", response_model=int)
 async def getUserPointsRoute(request: Request):
     userId = request.cookies.get("sessionId")
     if not userId:
         raise HTTPException(status_code=401, detail="Unauthorized, no user ID")
     userPoints = await getUserPoints(userId)
-    return {"points": userPoints.points}
+    return userPoints.points
