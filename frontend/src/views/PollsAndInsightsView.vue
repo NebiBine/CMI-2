@@ -20,9 +20,14 @@ function closeModal() {
     showModal.value = false;
 }
 function openModal(poll) {
-
     showModal.value = true;
     selectedPoll.value = poll;
+    
+    poll.questions.forEach(question => {
+        if (question.type === 'checkbox') {
+            question.answer = [];
+        }
+    });
 }
 
 async function getPolls() {
@@ -59,7 +64,7 @@ async function pollParticipationSubmit(selectedPoll){
         if(response.status == 200){
             message.success(response.data.message);
             closeModal();
-            //TODO: OSVEZI POLLE KO SI ZE VOTAL DA TISTEGA KO SI GA VOTAL NE VIDIS VEC
+            getPolls();
         }
         else{
             message.error(response.data.message);
@@ -103,7 +108,7 @@ onMounted(() => {
 
                 <n-button @click="openModal(poll)">Participate</n-button>
                 <n-modal v-model:show="showModal" preset="dialog" title="Participate in the Poll"
-                    @positive-click="pollParticipationSubmit(poll)" @negative-click="closeModal">
+                    @positive-click="pollParticipationSubmit(selectedPoll)" @negative-click="closeModal">
                     <!--IKONA MODALA-->
                     <template #icon>
                         <img src="../assets/icons/poll_participate_icon.svg" alt="Poll Participate Icon"
