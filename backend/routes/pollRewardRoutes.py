@@ -4,8 +4,8 @@ from uuid import uuid4
 from datetime import datetime, timedelta
 from typing import Union
 
-from ..database.creators.models import Option, Poll, Question, QuestionResult, Results
-from ..database.servicesDb.databaseServ import savePoll, getCityId, getAllPolls, saveResults, getUserPoints, getPollId,getResultsId, getQuestionId,markCompletedPoll, moveToArchive
+from ..database.creators.models import Option, Poll, Question, QuestionResult, Results, Reward
+from ..database.servicesDb.databaseServ import savePoll, getCityId, getAllPolls, saveResults, getUserPoints, getPollId,getResultsId, getQuestionId,markCompletedPoll, moveToArchive, saveReward
 
 router = APIRouter()
 
@@ -29,6 +29,13 @@ class UserAnswer(BaseModel):
 class PollSubmissionRequest(BaseModel):
     pollId: str
     pollQuestions: list[UserAnswer]
+
+class RewardRequest(BaseModel):
+    rewardTitle: str
+    rewardDescription: str
+    pointsRequired: int
+    expirationDate: datetime
+
 
 @router.post("/addPoll", response_model=PollResponse)
 async def addPollRoute(pollR: PollRequest, request: Request):
@@ -136,3 +143,23 @@ async def getUserPointsRoute(request: Request):
         raise HTTPException(status_code=401, detail="Unauthorized, no user ID")
     userPoints = await getUserPoints(userId)
     return userPoints.points
+
+@router.post("/addReward", response_model=PollResponse)
+async def addRewardRoute(rewardRequest: RewardRequest, request: Request):
+    adminId = request.cookies.get("sessionId")
+    if not adminId:
+        raise HTTPException(status_code=401, detail="Unauthorized, no admin ID")
+    userCity = await getCityId(adminId)
+    rewardID = uuid4()
+    novReward = Reward(
+        id=str(rewardID),
+        creatorId=adminId,
+        city=userCity,
+        rewardTitle=rewardRequest.rewardTitle,
+        rewardDescription=rewardRequest.rewardDescription,
+        pointsRequired=rewardRequest.pointsRequired,
+        creationDate=datetime.utcnow(),
+        expirationDate=rewardRequest.expirationDate
+    )
+    await saveReward(novReward)
+    return {"statusCode": 200, "message": "Reward added successfully"}

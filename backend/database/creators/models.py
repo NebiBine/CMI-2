@@ -107,10 +107,13 @@ class PollArchive(Model):
 
 class Reward(Model):
     id: str = Field(primary_field=True, default_factory=lambda: str(uuid4()))
-    name: str
-    description: str
+    creatorId: str  # foreign key to Uporabnik
+    city: str
+    rewardTitle: str
+    rewardDescription: str
     pointsRequired: int
-    imageUrl: Optional[str] = ""  # URL or path to the reward image
+    creationDate: datetime = Field(default_factory=datetime.utcnow)
+    expirationDate: datetime
 
 class UserRewards(Model):
     userId: str  # foreign key to Uporabnik
@@ -121,3 +124,4 @@ class UserPoints(Model):
     userId: str  # foreign key to Uporabnik
     points: int = Field(default=0)
     completedPolls: list[str] = []
+

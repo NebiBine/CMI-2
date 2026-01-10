@@ -104,5 +104,6 @@ async def moveToArchive(poll: Poll):
     await engine.save(novArchive)
     await engine.delete(poll)
 
-
+async def saveReward(reward):
+    await engine.save(reward)
     
