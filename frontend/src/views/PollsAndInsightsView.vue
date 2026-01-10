@@ -4,6 +4,7 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import PollParticipateIcon from "@/assets/icons/poll_participate_icon.svg";
+import { message } from 'ant-design-vue';
 
 const polls = ref([]);
 const showModal = ref(false);
@@ -22,14 +23,6 @@ function openModal(poll) {
 
     showModal.value = true;
     selectedPoll.value = poll;
-
-    // selectedPoll.value.questions.forEach(question => {
-    //     if (question.type === 'checkbox' || question.type === 'radioButtons') {
-    //         question.answer = ["", "", "", ""];
-    //     } else {
-    //         question.answer = '';
-    //     }
-    // });
 }
 
 async function getPolls() {
@@ -50,6 +43,7 @@ async function pollParticipationSubmit(selectedPoll){
         return {
             questionId : question.id,
             questionText: question.text,
+            questionType: question.type,
             answer: question.answer
         };
     });
@@ -62,6 +56,14 @@ async function pollParticipationSubmit(selectedPoll){
         const response = await axios.post("http://localhost:8000/poll-reward/completePoll", 
         pollAnswers, 
         { withCredentials: true });
+        if(response.status == 200){
+            message.success(response.data.message);
+            closeModal();
+            //TODO: OSVEZI POLLE KO SI ZE VOTAL DA TISTEGA KO SI GA VOTAL NE VIDIS VEC
+        }
+        else{
+            message.error(response.data.message);
+        }
     }
     catch(error){
         console.log(error)
