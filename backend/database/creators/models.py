@@ -93,6 +93,19 @@ class Poll(Model):
     points: int
     questions: list[Question]  # each question can be represented as a dicts
     
+class PollArchive(Model):
+    id: str = Field(primary_field=True, default_factory=lambda: str(uuid4()))
+    originalPollId: str  # foreign key to Poll
+    creatorId: str  # foreign key to Uporabnik
+    city: str
+    pollTitle: str
+    pollDescription: str
+    pollDuration: int  # in days
+    expirationDate: datetime
+    creationDate: datetime
+    archivedDate: datetime = Field(default_factory=datetime.utcnow)
+    points: int
+    questions: list[Question]  # each question can be represented as a dicts
 
 class Reward(Model):
     id: str = Field(primary_field=True, default_factory=lambda: str(uuid4()))
