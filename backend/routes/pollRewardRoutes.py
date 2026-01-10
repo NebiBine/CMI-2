@@ -102,13 +102,12 @@ async def submit_poll_route(submission: PollSubmissionRequest, request: Request)
 
     return {"statusCode": 200,"message": "Poll submitted successfully"}
 
-@router.get("/completePoll", response_model=PollResponse)
+@router.post("/completePoll", response_model=PollResponse)
 async def completePollRoute(pollreq: PollSubmissionRequest, request: Request):
     userId = request.cookies.get("sessionId")
     if not userId:
         raise HTTPException(status_code=401, detail="Unauthorized, no user ID")
     pollId = pollreq.pollId
-    # pridobi poll iz db
     poll = await getPollId(pollId)
     results = await getResultsId(pollId)
     if not poll:
@@ -118,7 +117,7 @@ async def completePollRoute(pollreq: PollSubmissionRequest, request: Request):
         questionResult: QuestionResult = await getQuestionId(userAnswer.questionId, results)
         if userAnswer.questionType == "yesno":
             #{questionId: '2326882a-41e1-4af4-b14e-21c6bcdca1b6', questionText: 'waf', answer: 'aa'}
-            if userAnswer.answer == "yes":
+            if userAnswer.answer == "Yes":
                 questionResult.option1.result.append(userId)
             else:
                 questionResult.option2.result.append(userId)
@@ -135,16 +134,16 @@ async def completePollRoute(pollreq: PollSubmissionRequest, request: Request):
                 questionResult.option3.result.append(userId)
             elif userAnswer.answer == questionResult.option4.optionText:
                 questionResult.option4.result.append(userId)
-        
         elif userAnswer.questionType == "checkbox":
-            if userAnswer.answer == questionResult.option1.optionText:
-                questionResult.option1.result.append(userId)
-            elif userAnswer.answer == questionResult.option2.optionText:
-                questionResult.option2.result.append(userId)
-            elif userAnswer.answer == questionResult.option3.optionText:
-                questionResult.option3.result.append(userId)
-            elif userAnswer.answer == questionResult.option4.optionText:
-                questionResult.option4.result.append(userId)
+            for ans in userAnswer.answer:
+                if ans == questionResult.option1.optionText:
+                    questionResult.option1.result.append(userId)
+                elif ans == questionResult.option2.optionText:
+                    questionResult.option2.result.append(userId)
+                elif ans == questionResult.option3.optionText:
+                    questionResult.option3.result.append(userId)
+                elif ans == questionResult.option4.optionText:
+                    questionResult.option4.result.append(userId)
 
     await saveResults(results)
     await markCompletedPoll(userId, pollId, poll.points)
