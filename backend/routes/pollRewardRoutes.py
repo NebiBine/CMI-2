@@ -167,6 +167,7 @@ async def addRewardRoute(rewardRequest: RewardRequest, request: Request):
 @router.get("/getAllAvailableRewards", response_model=list[Reward])
 async def getAllRewardsRoute(request: Request):
     avaliableRewards = []
+    claimedRewards = []
     userId = request.cookies.get("sessionId")
 
     if not userId:
@@ -177,14 +178,16 @@ async def getAllRewardsRoute(request: Request):
     city = await getCityId(userId)
     rewards = await getAllRewardsCity(city)
 
-    for reward in rewards:
+    for reward in rewards: # extra check za potekle rewarde
         if reward.expirationDate < datetime.utcnow():
             await deleteReward(reward)
             continue
         else:
             if reward.id not in claimedRewardIds:
                 avaliableRewards.append(reward)
-    return avaliableRewards
+            else:
+                claimedRewards.append(reward)
+    return {"avaliableRewards": avaliableRewards, "claimedRewards": claimedRewards}
 
 #if admin pol all rewards, unclaimable samo na managmentu. to lahko preverjaš če je session id v admin idju
 
