@@ -163,3 +163,19 @@ async def addRewardRoute(rewardRequest: RewardRequest, request: Request):
     )
     await saveReward(novReward)
     return {"statusCode": 200, "message": "Reward added successfully"}
+
+@router.get("/getAllRewards", response_model=list[Reward])
+async def getAllRewardsRoute(request: Request):
+    userId = request.cookies.get("sessionId")
+    if not userId:
+        raise HTTPException(status_code=401, detail="Unauthorized, no user ID")
+    city = await getCityId(userId)
+    return "kurac"
+
+#if admin pol all rewards, unclaimable samo na managmentu. to lahko preverjaš če je session id v admin idju
+
+#če ni pogleda če si že claimou, in vrne list ( v obeh primerih list rewardov)
+
+#popa claimRewardRoute pa admin da edita reward (npr. če je potekel, če je spremenil točke al pa kaj drugega)
+#se delete rewardRoute
+# 3 razlicna post routa
