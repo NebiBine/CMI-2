@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from typing import Union
 
 from ..database.creators.models import Option, Poll, Question, QuestionResult, Results, Reward
-from ..database.servicesDb.databaseServ import savePoll, getCityId, getAllPolls, saveResults, getUserPoints, getPollId,getResultsId, getQuestionId,markCompletedPoll, moveToArchive, saveReward
+from ..database.servicesDb.databaseServ import deleteReward, savePoll, getCityId, getAllPolls, saveResults, getUserPoints, getPollId,getResultsId, getQuestionId,markCompletedPoll, moveToArchive, saveReward, getAllRewardsCity, getClaimedRewards
 
 router = APIRouter()
 
@@ -164,13 +164,27 @@ async def addRewardRoute(rewardRequest: RewardRequest, request: Request):
     await saveReward(novReward)
     return {"statusCode": 200, "message": "Reward added successfully"}
 
-@router.get("/getAllRewards", response_model=list[Reward])
+@router.get("/getAllAvailableRewards", response_model=list[Reward])
 async def getAllRewardsRoute(request: Request):
+    avaliableRewards = []
     userId = request.cookies.get("sessionId")
+
     if not userId:
         raise HTTPException(status_code=401, detail="Unauthorized, no user ID")
+    claimedR = await getClaimedRewards(userId)
+    claimedRewardIds = [claim.rewardId for claim in claimedR]
+        
     city = await getCityId(userId)
-    return "kurac"
+    rewards = await getAllRewardsCity(city)
+
+    for reward in rewards:
+        if reward.expirationDate < datetime.utcnow():
+            await deleteReward(reward)
+            continue
+        else:
+            if reward.id not in claimedRewardIds:
+                avaliableRewards.append(reward)
+    return avaliableRewards
 
 #if admin pol all rewards, unclaimable samo na managmentu. to lahko preverjaš če je session id v admin idju
 

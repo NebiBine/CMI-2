@@ -1,5 +1,5 @@
 from odmantic import AIOEngine
-from ..creators.models import Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive
+from ..creators.models import Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive, Reward, UserRewards
 
 engine = AIOEngine()
 
@@ -106,4 +106,18 @@ async def moveToArchive(poll: Poll):
 
 async def saveReward(reward):
     await engine.save(reward)
-    
+
+async def getAllRewardsCity(city: str):
+    return await engine.find(Reward, Reward.city == city)
+
+async def getAllRewards(city: str):
+    return await engine.find(Reward, Reward.city == city)
+
+async def getClaimedRewards(userId: str):
+    return await engine.find(UserRewards, UserRewards.userId == userId)
+
+async def getClaimeRewardId(rewardId:str):
+    return await engine.find_one(UserRewards, UserRewards.rewardId == rewardId)
+
+async def deleteReward(reward: Reward):
+    await engine.delete(reward)
