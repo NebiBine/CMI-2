@@ -25,7 +25,7 @@ async function submitReward(){
         rewardTitle: rewardName.value,
         rewardDescription: rewardDescription.value,
         pointsRequired: pointsRequired.value,
-        expirationDate: new Date(expiresAt.value ).toLocaleDateString('si-SI') //dam v pravilen format za backend
+        expirationDate: expiresAt.value
     }
     try{
         const response = await axios.post("http://localhost:8000/poll-reward/addReward",
@@ -38,12 +38,12 @@ async function submitReward(){
         console.log(error)
     }
 }
+//TODO: PRIKAZ VSEH REWARDOV IN UREJANJE IN BRISANJE REWARDOV 
 
 </script>
 <template>
     <h1>Reward Management</h1>
     <p>Here you can manage rewards for citizens.</p>
-    <!--TODO: DODAJ PRIKAZ VSEH REWARDOV ZA DOLOCENO MESTO-->
     <n-button @click="openModal">Add a reward</n-button>
 
 

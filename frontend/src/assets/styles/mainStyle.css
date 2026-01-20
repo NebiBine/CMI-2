@@ -244,3 +244,18 @@ body,
   display: flex;
   flex-direction: column;
 }
+.rewards-container h2{
+  font-family: 'InterTekst', sans-serif;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 15px;
+  font-size: 20px;
+}
+.empty-rewards{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  flex-direction: column;
+  gap: 20px;
+}

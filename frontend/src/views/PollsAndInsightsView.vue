@@ -14,7 +14,6 @@ const selectedPollId = ref("");
 //const time_left = new Date(polls.expirationDate).getDate() - new Date().getDate();
 
 
-//TODO : Popravi posiljanje odgovorov ker verjetno niso v enakem formatu
 // TODO: PRIKAZ TIME LEFT SE ZA URE
 //----------------------------------------------------------------------
 function closeModal() {

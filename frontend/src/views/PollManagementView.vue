@@ -4,6 +4,8 @@ import '../assets/styles/mainStyle.css';
 import axios from 'axios';
 import { message } from "ant-design-vue";
 
+//array z vsemi aktivnimi polli 
+const polls = ref([]);
 
 const username = ref("");
 
@@ -69,6 +71,8 @@ const submitQuestions = () => {
   closeModal();
 };
 
+
+//FUNKCIJA ZA SUBMIT POLLA IN AXIOS POST
 async function pollSubmit() {
   const pollData = {
     pollTitle: pollTitle.value,
@@ -96,15 +100,19 @@ async function pollSubmit() {
     console.log(error)
   }
   pollTitle.value = "";
+  pollDescription.value = "";
   pollDuration.value = 0;
   possible_points_value.value = 0;
   questions.value = [];
+
+  //klic funkcije da osvezim seznam vseh pollov
+  getPolls();
 }
 
 
 
 
-
+// PRIDOBIVANJE USERNAMA ZA ADMIN GREETING
 async function profilData() {
   try {
     const response = await axios.get(
@@ -120,9 +128,23 @@ async function profilData() {
     console.log(error);
   }
 };
+
+async function getPolls() {
+    try {
+        const response = await axios.get("http://localhost:8000/poll-reward/getPolls",
+            { withCredentials: true });
+        polls.value = response.data;
+        console.log("Fetched polls:", polls.value);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
 //ONLOAD
 onMounted(() => {
-  profilData()
+  profilData(),
+  getPolls()
 });
 </script>
 <template>
@@ -135,7 +157,19 @@ onMounted(() => {
   </button>
 
   <br></br>
-  <h3>Currently active polls</h3>
+  <div class = "activePolls">
+    <h3>Currently active polls</h3>
+    <div class = "polls-container">
+      <div v-for="poll in polls" :key = "poll.id" class = "EnPoll">
+          <h2 style = "font-size: 20px;">Poll title: {{ poll.pollTitle }}</h2>
+          <p>Description: {{ poll.pollDescription }}</p>
+          <p>Points: {{ poll.points }}</p>
+          <p>Expires at: {{ new Date(poll.expirationDate).toLocaleDateString('si-SI') }}</p>
+          <p>Creator ID: {{ poll.creatorId }}</p>
+      </div>
+    </div>
+  </div>
+
   <br></br>
   <h3>Past Due Polls Statistics</h3>
 
@@ -250,8 +284,8 @@ onMounted(() => {
       <!-- RADIO BUTTONS or CHECKBOX: 4 option inputs -->
       <div v-else-if="question.type === 'radioButtons' || question.type === 'checkbox'">
         <p>Enter up to 4 options:</p>
-        <div v-for="(option, optIndex) in question.options" :key="optIndex" style="margin-bottom: 6px;">
-          <n-input v-model:value="question.options[optIndex]" :placeholder="`Option ${optIndex + 1}`"
+        <div v-for="(option, optionIndex) in question.options" :key="optionIndex" style="margin-bottom: 6px;">
+          <n-input v-model:value="question.options[optionIndex]" :placeholder="`Option ${optionIndex + 1}`"
             style="width: 100%;" />
         </div>
       </div>
