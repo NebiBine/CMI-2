@@ -258,4 +258,6 @@ body,
   height: 100%;
   flex-direction: column;
   gap: 20px;
+  font-family: 'InterTekst', sans-serif;
+  font-weight: 600;
 }
