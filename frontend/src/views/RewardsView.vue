@@ -5,6 +5,8 @@ import axios from 'axios';
 
 const userPoints = ref(0);
 const rewardDrawer = ref(false);
+const rewards = ref([]);
+const claimedRewards = ref([]);
 
 async function getUserPoints(){
     try{
@@ -16,6 +18,18 @@ async function getUserPoints(){
         console.log(error)
     }
 }
+async function getAllAvailableRewards(){
+    try{
+        const response  = await axios.get('http://localhost:8000/poll-reward/getAllAvailableRewards',
+        { withCredentials: true });
+        rewards.value = response.data;
+        console.log("Available rewards:", rewards.value);
+    }
+    catch(error){
+        console.log(error)
+    }
+}
+
 
 function claimedRewardsDrawerOpen(){
     rewardDrawer.value = true;
@@ -23,19 +37,29 @@ function claimedRewardsDrawerOpen(){
 
 
 onMounted(() => {
-    getUserPoints()
+    getUserPoints();
+    getAllAvailableRewards();
 });
 </script>
 <template>
     <h1>Rewards</h1>
     <p>Look through the available rewards here and redeem them!</p>
     <p>Your current points: {{ userPoints }}</p>
+
     <n-button @click="claimedRewardsDrawerOpen">View your claimed rewards</n-button>
+    <div class = "polls-container">
+        <div v-for="reward in rewards" :key="id" class = "EnPoll"> 
+            <h2>Reward Title: {{ reward.rewardTitle }}</h2>
+            <p>Description: {{ reward.rewardDescription }}</p>
+            <p>Points Required: {{ reward.pointsRequired }}</p>
+        </div>
+    </div>
+
     <n-drawer v-model:show="rewardDrawer" placement="right" :width="400" closable>
         <n-drawer-content closable title="Your claimed rewards" id = "rwTest">
-            <div v-if="rewards">
-                <div v-for="reward in rewards">
-                    <!--TODO: PRIKAZI REWARDE TUKAJ V TEM DIVU--> 
+            <div v-if="claimedRewards.length != 0">
+                <div v-for="claimedReward in claimedRewards" :key="id" class = "enPoll"> 
+                    <!--TODO: REWARD KEY ZA UNOVCENJE-->
                 </div>
             </div>
             <div v-else class = "empty-rewards">
