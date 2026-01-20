@@ -25,7 +25,7 @@ async function submitReward(){
         rewardTitle: rewardName.value,
         rewardDescription: rewardDescription.value,
         pointsRequired: pointsRequired.value,
-        expirationDate: new Date(expiresAt.value ).toLocaleDateString('si-SI') //dam v pravilen format za backend
+        expirationDate: expiresAt.value
     }
     try{
         const response = await axios.post("http://localhost:8000/poll-reward/addReward",
