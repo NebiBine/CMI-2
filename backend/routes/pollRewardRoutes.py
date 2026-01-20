@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from typing import Union
 
 from ..database.creators.models import Option, Poll, Question, QuestionResult, Results, Reward
-from ..database.servicesDb.databaseServ import deleteReward, savePoll, getCityId, getAllPolls, saveResults, getUserPoints, getPollId,getResultsId, getQuestionId,markCompletedPoll, moveToArchive, saveReward, getAllRewardsCity, getClaimedRewards
+from ..database.servicesDb.databaseServ import deleteReward, getClaimeRewardId, savePoll, getCityId, getAllPolls, saveResults, getUserPoints, getPollId,getResultsId, getQuestionId,markCompletedPoll, moveToArchive, saveReward, getAllRewardsCity, getClaimedRewards
 
 router = APIRouter()
 
@@ -188,6 +188,27 @@ async def getAllRewardsRoute(request: Request):
             else:
                 claimedRewards.append(reward)
     return {"avaliableRewards": avaliableRewards, "claimedRewards": claimedRewards}
+
+@router.get("/getAllRewardsAdmin", response_model=list[Reward])
+async def getAllRewardsAdminRoute(request: Request):
+    adminId = request.cookies.get("sessionId") # spremen da realno čekira če je admin
+    if not adminId:
+        raise HTTPException(status_code=401, detail="Unauthorized, no admin ID")
+    city = await getCityId(adminId)
+    rewards = await getAllRewardsCity(city)
+    return rewards
+
+@router.delete("/deleteReward/{rewardId}", response_model=PollResponse)
+async def deleteRewardRoute(rewardId: str, request: Request):
+    adminId = request.cookies.get("sessionId") # spremen da realno čekira če je admin
+    if not adminId:
+        raise HTTPException(status_code=401, detail="Unauthorized, no admin ID")
+    reward = await getClaimeRewardId(rewardId)
+    if not reward:
+        raise HTTPException(status_code=404, detail="Reward not found")
+    await deleteReward(reward)
+    return {"statusCode": 200, "message": "Reward deleted successfully"}
+
 
 #if admin pol all rewards, unclaimable samo na managmentu. to lahko preverjaš če je session id v admin idju
 

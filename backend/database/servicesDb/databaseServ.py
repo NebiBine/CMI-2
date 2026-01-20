@@ -121,3 +121,4 @@ async def getClaimeRewardId(rewardId:str):
 
 async def deleteReward(reward: Reward):
     await engine.delete(reward)
+
