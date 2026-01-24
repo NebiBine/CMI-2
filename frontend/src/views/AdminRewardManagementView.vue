@@ -95,7 +95,7 @@ async function editReward(){
     };
     try{
         //SPREMENI ENDPOINT
-        const response = await axios.post('http://localhost:8000/poll-reward/EDITREWARDENDPOINT',
+        const response = await axios.post('http://localhost:8000/poll-reward/editReward',
         //POSLJEM PODATKE NOVEGA REWARDA V BACKEND DA GA UPDATAS
         editedReward,
         {withCredentials: true}

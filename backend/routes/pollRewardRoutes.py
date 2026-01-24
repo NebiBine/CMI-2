@@ -230,7 +230,7 @@ async def deleteRewardRoute(rewardId: str, request: Request):
 #se delete rewardRoute
 # 3 razlicna post routa
 
-router.post("/claimReward", response_model=PollResponse)
+@router.post("/claimReward", response_model=PollResponse)
 async def claimRewardRoute(rewardId:str, request:Request):
     userId = request.cookies.get("sessionId")
     if not userId:
@@ -249,7 +249,7 @@ async def claimRewardRoute(rewardId:str, request:Request):
 
 
 
-router.post("/editReward", response_model=PollResponse)
+@router.post("/editReward", response_model=PollResponse)
 async def editRewardRoute(rewardRequest: EditRewardRequest, request: Request):
     adminId = request.cookies.get("sessionId")
     if not adminId: # spremen da realno čekira če je admin
