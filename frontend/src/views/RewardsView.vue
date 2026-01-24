@@ -24,6 +24,7 @@ async function getAllAvailableRewards(){
         const response  = await axios.get('http://localhost:8000/poll-reward/getAllAvailableRewards',
         { withCredentials: true });
         rewards.value = response.data.avaliableRewards;
+        claimedRewards.value = response.data.claimedRewards;
         console.log("Available rewards:", rewards.value);
     }
     catch(error){
@@ -36,7 +37,12 @@ async function claimReward(rewardId){
         const response = await axios.post(`http://localhost:8000/poll-reward/claimReward`,
         { rewardId: rewardId },
         { withCredentials: true });
-        message.success(response.data.message);
+        if(response.data.statusCode === 200){
+            message.success(response.data.message);
+        }
+        else{
+            message.error(response.data.message);
+        }
         getUserPoints();
         getAllAvailableRewards();
     }
