@@ -24,19 +24,17 @@ async function getAllAvailableRewards(){
         const response  = await axios.get('http://localhost:8000/poll-reward/getAllAvailableRewards',
         { withCredentials: true });
         rewards.value = response.data.avaliableRewards;
-        claimedRewards.value = response.data.claimedRewards;
         console.log("Available rewards:", rewards.value);
     }
     catch(error){
         console.log(error)
     }
 }
+
 async function claimReward(rewardId){
     try{
-        //spremeni endpoint
-        const response = await axios.post('http://localhost:8000/poll-reward/CLAIMREWARDENDPOINT',
-        //posljem reward id AMPAK VERJETNO SE NE BO DELALO
-        rewardId,
+        const response = await axios.post(`http://localhost:8000/poll-reward/claimReward`,
+        {},
         { withCredentials: true });
         message.success(response.data.message);
         getUserPoints();
@@ -46,7 +44,6 @@ async function claimReward(rewardId){
         console.log(error)
     }
 }
-
 
 function claimedRewardsDrawerOpen(){
     rewardDrawer.value = true;
@@ -65,7 +62,7 @@ onMounted(() => {
 
     <n-button @click="claimedRewardsDrawerOpen">View your claimed rewards</n-button>
     <div class = "polls-container">
-        <div v-for="reward in rewards" :key="id" class = "EnPoll"> 
+        <div v-for="reward in rewards" :key="reward.id" class = "EnPoll"> 
             <h2>Reward Title: {{ reward.rewardTitle }}</h2>
             <p>Description: {{ reward.rewardDescription }}</p>
             <p>Points Required: {{ reward.pointsRequired }}</p>

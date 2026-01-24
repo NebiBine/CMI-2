@@ -82,15 +82,16 @@ async function deleteReward(rewardId){
     catch(error){
         console.log(error)
     }
-
 }
-async function editReward(reward){
+
+
+async function editReward(){
     const editedReward = {
-        id: reward.id,
-        rewardTitle: editedRewardName.value,
-        rewardDescription: editedRewardDescription.value,
-        pointsRequired: editedPointsRequired.value,
-        expirationDate: editedExpiresAt.value
+        id: selectedReward.value.id,
+        rewardTitle: selectedReward.value.rewardTitle,
+        rewardDescription: selectedReward.value.rewardDescription,
+        pointsRequired: selectedReward.value.pointsRequired,
+        expirationDate: selectedReward.value.expirationDate
     };
     try{
         //SPREMENI ENDPOINT
@@ -100,12 +101,14 @@ async function editReward(reward){
         {withCredentials: true}
     );
     message.success(response.data.message);
+    console.log("EDITED REWARD",editedReward)
     closeModalEdit();
     getAdminRewards();
 }
 
     catch(error){
         console.log(error)
+        console.log("EDITED REWARD",editedReward)
     }
 }
 
@@ -120,7 +123,7 @@ onMounted(() => {
     <p>Here you can manage rewards for citizens.</p>
     <n-button @click="openModal">Add a reward</n-button>
     <div class = "polls-container">
-        <div v-for="reward in rewards" :key="id" class = "EnPoll"> 
+        <div v-for="reward in rewards" :key="reward.id" class = "EnPoll"> 
             <h2>Reward Title: {{ reward.rewardTitle }}</h2>
             <p>Description: {{ reward.rewardDescription }}</p>
             <p>Points Required: {{ reward.pointsRequired }}</p>
@@ -165,30 +168,29 @@ onMounted(() => {
     <n-modal v-model:show="modalEditStatus" preset="dialog" title="Edit Reward"
     positive-text="Confirm Changes"
     negative-text="Cancel"
-    @positive-click="editReward(selectedReward)"
+    @positive-click="editReward"
     @negative-click="closeModalEdit">
     
     <template #icon>
         <img src="../assets/icons/reward_add_modal.svg" />
     </template>
 
-
-    <label for="rewardName">Reward Name:
-        <n-input id="rewardName" v-model:value="editedRewardName" placeholder="Enter reward name"></n-input>
-    </label>
-
-    <label for="rewardDescription">Reward description:
-        <n-input id="rewardDescription" v-model:value="editedRewardDescription" placeholder="Enter reward description"></n-input>
-    </label>
-
-    <label for="pointsRequired">Points Required:
-        <n-input-number id="pointsRequired" v-model:value="editedPointsRequired" placeholder="Enter points required" ></n-input-number>
-    </label>
     
-    <label for="expiresAt">Expires at:
-        <n-date-picker v-model:value="editedExpiresAt" type="date" placeholder="Select expiration date" />
-    </label>
-    </n-modal>
+        <label for="rewardName">Reward Name:
+            <n-input id="rewardName" v-model:value="selectedReward.rewardTitle" placeholder="Enter reward name"></n-input>
+        </label>
 
+        <label for="rewardDescription">Reward description:
+            <n-input id="rewardDescription" v-model:value="selectedReward.rewardDescription" placeholder="Enter reward description"></n-input>
+        </label>
+
+        <label for="pointsRequired">Points Required:
+            <n-input-number id="pointsRequired" v-model:value="selectedReward.pointsRequired" placeholder="Enter points required" ></n-input-number>
+        </label>
+        
+        <label for="expiresAt">Expires at:
+            <n-date-picker v-model:value="selectedReward.expirationDate" type="date" placeholder="Select expiration date" />
+        </label>
+        </n-modal>
 
 </template>

@@ -164,7 +164,7 @@ async def addRewardRoute(rewardRequest: RewardRequest, request: Request):
     await saveReward(novReward)
     return {"statusCode": 200, "message": "Reward added successfully"}
 
-@router.get("/getAllAvailableRewards", response_model=list[Reward])
+@router.get("/getAllAvailableRewards", response_model=dict)
 async def getAllRewardsRoute(request: Request):
     avaliableRewards = []
     claimedRewards = []
