@@ -73,7 +73,7 @@ async function deleteReward(reward){
         //SPREMENI ENDPOINT
         const response = await axios.post('http://localhost:8000/poll-reward/deleteReward',
         //POSLJEM REWARD ID V BACKEND DA VES KERGA IZBRISAT
-        { id: reward.id },
+        reward.id,
         { withCredentials: true }
     );
         message.success(response.data.message);
