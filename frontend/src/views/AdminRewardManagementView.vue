@@ -71,9 +71,9 @@ async function getAdminRewards(){
 async function deleteReward(rewardId){
     try{
         //SPREMENI ENDPOINT
-        const response = await axios.post('http://localhost:8000/poll-reward/DELETEREWARDENDPOINT',
+        const response = await axios.post('http://localhost:8000/poll-reward/deleteReward',
         //POSLJEM REWARD ID V BACKEND DA VES KERGA IZBRISAT
-        selectedReward.value.id,
+        { rewardId: rewardId },
         { withCredentials: true }
     );
         message.success(response.data.message);
@@ -95,12 +95,17 @@ async function editReward(){
     };
     try{
         //SPREMENI ENDPOINT
-        const response = await axios.post('http://localhost:8000/poll-reward/EDITREWARDENDPOINT',
+        const response = await axios.post('http://localhost:8000/poll-reward/editReward',
         //POSLJEM PODATKE NOVEGA REWARDA V BACKEND DA GA UPDATAS
         editedReward,
         {withCredentials: true}
     );
-    message.success(response.data.message);
+    if(response.data.statusCode === 200){
+        message.success(response.data.message);
+    }
+    else{
+        message.error(response.data.message);
+    }
     console.log("EDITED REWARD",editedReward)
     closeModalEdit();
     getAdminRewards();
@@ -128,7 +133,7 @@ onMounted(() => {
             <p>Description: {{ reward.rewardDescription }}</p>
             <p>Points Required: {{ reward.pointsRequired }}</p>
             <div class="rewardEditDelete">
-                <n-button class = "deleteReward">Delete Reward</n-button>
+                <n-button class = "deleteReward" @click="deleteReward(reward.id)">Delete Reward</n-button>
                 <n-button class = "editReward" @click="openModalEdit(reward)">Edit Reward</n-button>
             </div>
             <!--TODO: SISTEM ZA UREJANJE IN BRISANJE REWARDOV JE POTREBNO SE-->
@@ -189,7 +194,13 @@ onMounted(() => {
         </label>
         
         <label for="expiresAt">Expires at:
-            <n-date-picker v-model:value="selectedReward.expirationDate" type="date" placeholder="Select expiration date" />
+            <n-date-picker 
+            v-model:value="selectedReward.expirationDate" 
+            type="date" 
+            placeholder="Select expiration date" 
+            :is-date-disabled="(dateDanes) => dateDanes < Date.now()"
+            />
+            <!--DODAN VALIDATOR V DATETIME PICKER DA NEMORES IZBRAT PRETEKLIH DATUMOV-->
         </label>
         </n-modal>
 
