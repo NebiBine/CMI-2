@@ -215,7 +215,7 @@ async def deleteRewardRoute(rewardId: str, request: Request):
     adminId = request.cookies.get("sessionId") # spremen da realno čekira če je admin
     if not adminId:
         raise HTTPException(status_code=401, detail="Unauthorized, no admin ID")
-    reward = await getClaimeRewardId(rewardId)
+    reward = await getRewardId(rewardId)
     if not reward:
         raise HTTPException(status_code=404, detail="Reward not found")
     await deleteReward(reward)
