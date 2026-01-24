@@ -35,7 +35,7 @@ async function getAllAvailableRewards(){
 async function claimReward(reward){
     try{
         const response = await axios.post(`http://localhost:8000/poll-reward/claimReward`,
-        reward.id,
+        {id: reward.id},
         { withCredentials: true });
         if(response.data.statusCode === 200){
             message.success(response.data.message);
