@@ -81,8 +81,9 @@ onMounted(() => {
     <n-drawer v-model:show="rewardDrawer" placement="right" :width="400" closable>
         <n-drawer-content closable title="Your claimed rewards" id = "rwTest">
             <div v-if="claimedRewards.length != 0">
-                <div v-for="claimedReward in claimedRewards" :key="id" class = "enPoll"> 
-                    <!--TODO: REWARD KEY ZA UNOVCENJE-->
+                <div v-for="claimedReward in claimedRewards" :key="claimedReward.id" class = "enReward"> 
+                    <h2>Reward Title: {{ claimedReward.rewardTitle }}</h2>
+                    <p>Description: {{ claimedReward.rewardDescription }}</p>
                 </div>
             </div>
             <div v-else class = "empty-rewards">

@@ -284,3 +284,9 @@ body,
   --n-color-selected: #111827 !important;
   --n-text-color-hover: #ffffff !important;
 }
+
+.enReward{
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #e5e7eb;
+}
