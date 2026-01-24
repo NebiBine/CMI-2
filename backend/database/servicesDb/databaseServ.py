@@ -1,5 +1,5 @@
 from odmantic import AIOEngine
-from ..creators.models import Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive, Reward, UserRewards
+from ..creators.models import Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive, Reward, UserRewards, RewardArchive
 from datetime import datetime
 engine = AIOEngine()
 
@@ -98,7 +98,8 @@ async def moveToArchive(poll: Poll):
         expirationDate = poll.expirationDate,
         creationDate = poll.creationDate,
         points = poll.points,
-        questions = poll.questions
+        questions = poll.questions,
+        deletedAt=datetime.utcnow()
     )
 
     await engine.save(novArchive)
@@ -119,8 +120,6 @@ async def getClaimedRewards(userId: str):
 async def getClaimeRewardId(rewardId:str):
     return await engine.find_one(UserRewards, UserRewards.rewardId == rewardId)
 
-async def deleteReward(reward: Reward):
-    await engine.delete(reward)
 
 async def getRewardId(rewardId: str):
     return await engine.find_one(Reward, Reward.id == rewardId)
@@ -142,3 +141,19 @@ async def updatePoints(userId: str, points: int, operation: str):
     elif operation == "-":
         userPoints.points -= points
     await engine.save(userPoints)
+
+async def moveRewardToArchive(reward: Reward):
+    novArchive = RewardArchive(
+        id = reward.id,
+        creatorId = reward.creatorId,
+        city=reward.city,
+        rewardTitle = reward.rewardTitle,
+        rewardDescription = reward.rewardDescription,
+        pointsRequired = reward.pointsRequired,
+        creationDate = reward.creationDate,
+        expirationDate = reward.expirationDate,
+        deletedAt=datetime.utcnow()
+    )
+
+    await engine.save(novArchive)
+    await engine.delete(reward)
