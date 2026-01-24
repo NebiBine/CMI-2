@@ -11,6 +11,7 @@ const profil = ref([]);
 const showModal = ref(false);
 const selectedUser = ref(null);
 const admin_state = ref(false);
+const searchText = ref("");
 
 
 function closeModal() {
@@ -153,9 +154,9 @@ onMounted(() => {
     </n-tooltip>
     <!--------------------------------------------------------------------------------------->
     <div class="searchBarAdminUsers">
-        <n-input type="text" id="searhEngine" placeholder="Currently disabled! :(" clearable disabled></n-input>
+        <n-input type="text" id="searhEngine" placeholder="Currently disabled! :(" clearable disabled=false v-model:value="searchText"></n-input>
     </div>
-
+    
     <!--LISTAM USE USERJE-->
     <div class="users_list">
         <n-table :bordered="true" :single-line="false">

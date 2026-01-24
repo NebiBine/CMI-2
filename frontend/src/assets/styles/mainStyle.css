@@ -261,3 +261,26 @@ body,
   font-family: 'InterTekst', sans-serif;
   font-weight: 600;
 }
+
+.rewardEditDelete{
+  display: flex;
+  flex-direction: row;
+  gap: 80px;
+}
+.deleteReward{
+  margin-left: -5px;
+  color: white;
+  border-radius: 10px;
+  background-color: red;
+  /*DOLOCANJE NAIVEUI STILOV KER DRUGACE NEGRE DOLOCAT.. ZAPOMNI SI*/
+  --n-color-hover:red !important;
+  --n-text-color-hover: #ffffff !important;
+}
+.editReward{
+  color: white;
+  background-color: #111827;
+  border-radius: 10px;
+  --n-color-hover: #111827 !important;
+  --n-color-selected: #111827 !important;
+  --n-text-color-hover: #ffffff !important;
+}
