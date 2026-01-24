@@ -68,12 +68,12 @@ async function getAdminRewards(){
     }
 }
 //DELETE REWARD FUNKCIJA
-async function deleteReward(rewardId){
+async function deleteReward(reward){
     try{
         //SPREMENI ENDPOINT
         const response = await axios.post('http://localhost:8000/poll-reward/deleteReward',
         //POSLJEM REWARD ID V BACKEND DA VES KERGA IZBRISAT
-        { rewardId: rewardId },
+        { id: reward.id },
         { withCredentials: true }
     );
         message.success(response.data.message);
@@ -133,7 +133,7 @@ onMounted(() => {
             <p>Description: {{ reward.rewardDescription }}</p>
             <p>Points Required: {{ reward.pointsRequired }}</p>
             <div class="rewardEditDelete">
-                <n-button class = "deleteReward" @click="deleteReward(reward.id)">Delete Reward</n-button>
+                <n-button class = "deleteReward" @click="deleteReward(reward)">Delete Reward</n-button>
                 <n-button class = "editReward" @click="openModalEdit(reward)">Edit Reward</n-button>
             </div>
             <!--TODO: SISTEM ZA UREJANJE IN BRISANJE REWARDOV JE POTREBNO SE-->
