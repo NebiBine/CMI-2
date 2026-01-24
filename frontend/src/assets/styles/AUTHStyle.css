@@ -242,3 +242,11 @@ html, body {
   margin-top: 1rem;
 }
 
+.forgotForm{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.forgotForm .n-button{
+  background-color: #111827 !important;
+}

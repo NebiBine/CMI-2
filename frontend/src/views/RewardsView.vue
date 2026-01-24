@@ -2,6 +2,7 @@
 import '../assets/styles/mainStyle.css'
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { message } from 'ant-design-vue';
 
 const userPoints = ref(0);
 const rewardDrawer = ref(false);
@@ -30,6 +31,19 @@ async function getAllAvailableRewards(){
     }
 }
 
+async function claimReward(rewardId){
+    try{
+        const response = await axios.post(`http://localhost:8000/poll-reward/claimReward`,
+        {},
+        { withCredentials: true });
+        message.success(response.data.message);
+        getUserPoints();
+        getAllAvailableRewards();
+    }
+    catch(error){
+        console.log(error)
+    }
+}
 
 function claimedRewardsDrawerOpen(){
     rewardDrawer.value = true;
@@ -48,10 +62,13 @@ onMounted(() => {
 
     <n-button @click="claimedRewardsDrawerOpen">View your claimed rewards</n-button>
     <div class = "polls-container">
-        <div v-for="reward in rewards" :key="id" class = "EnPoll"> 
+        <div v-for="reward in rewards" :key="reward.id" class = "EnPoll"> 
             <h2>Reward Title: {{ reward.rewardTitle }}</h2>
             <p>Description: {{ reward.rewardDescription }}</p>
             <p>Points Required: {{ reward.pointsRequired }}</p>
+            <p>Expires At: {{ new Date(reward.expirationDate).toLocaleDateString() }}</p>
+            <n-button @click="claimReward(reward.id)">Claim Reward</n-button>
+            <!--TODO: SISTEM ZA CLAIM REWARD BUTTON JE NASTAVLJEN FUNCKIJO SE DOPISI-->
         </div>
     </div>
 

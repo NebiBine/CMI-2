@@ -62,9 +62,10 @@ const forgotPassword = async () => {
           :model="formValue"
           :rules="rules"
           :size="size"
+          class = "forgotForm"
         >
           <n-form-item path="user.email">
-            <n-input v-model:value="formValue.user.email" placeholder="Email" />
+            <n-input v-model:value="formValue.user.email" placeholder="Email"  class = "forgotInput"/>
           </n-form-item>
 
           <n-button type="primary" @click="forgotPassword">Send reset link</n-button>
