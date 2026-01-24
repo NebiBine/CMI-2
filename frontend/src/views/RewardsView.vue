@@ -32,10 +32,10 @@ async function getAllAvailableRewards(){
     }
 }
 
-async function claimReward(rewardId){
+async function claimReward(reward){
     try{
         const response = await axios.post(`http://localhost:8000/poll-reward/claimReward`,
-        { rewardId: rewardId },
+        reward.id,
         { withCredentials: true });
         if(response.data.statusCode === 200){
             message.success(response.data.message);
@@ -73,7 +73,7 @@ onMounted(() => {
             <p>Description: {{ reward.rewardDescription }}</p>
             <p>Points Required: {{ reward.pointsRequired }}</p>
             <p>Expires At: {{ new Date(reward.expirationDate).toLocaleDateString() }}</p>
-            <n-button @click="claimReward(reward.id)">Claim Reward</n-button>
+            <n-button @click="claimReward(reward)">Claim Reward</n-button>
             <!--TODO: SISTEM ZA CLAIM REWARD BUTTON JE NASTAVLJEN FUNCKIJO SE DOPISI-->
         </div>
     </div>
