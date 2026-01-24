@@ -36,6 +36,10 @@ class RewardRequest(BaseModel):
     pointsRequired: int
     expirationDate: datetime
 
+class RewardAllResponse(BaseModel):
+    avaliableRewards: list[Reward]
+    claimedRewards: list[Reward]
+
 
 @router.post("/addPoll", response_model=PollResponse)
 async def addPollRoute(pollR: PollRequest, request: Request):
@@ -164,7 +168,7 @@ async def addRewardRoute(rewardRequest: RewardRequest, request: Request):
     await saveReward(novReward)
     return {"statusCode": 200, "message": "Reward added successfully"}
 
-@router.get("/getAllAvailableRewards", response_model=list[Reward])
+@router.get("/getAllAvailableRewards", response_model=RewardAllResponse)
 async def getAllRewardsRoute(request: Request):
     avaliableRewards = []
     claimedRewards = []

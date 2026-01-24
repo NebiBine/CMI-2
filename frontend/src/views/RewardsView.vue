@@ -22,7 +22,7 @@ async function getAllAvailableRewards(){
     try{
         const response  = await axios.get('http://localhost:8000/poll-reward/getAllAvailableRewards',
         { withCredentials: true });
-        rewards.value = response.data;
+        rewards.value = response.data.avaliableRewards;
         console.log("Available rewards:", rewards.value);
     }
     catch(error){
