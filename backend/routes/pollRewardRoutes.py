@@ -48,6 +48,9 @@ class RewardAllResponse(BaseModel):
     avaliableRewards: list[Reward]
     claimedRewards: list[Reward]
 
+class DeleteClaimRewardRequest(BaseModel):
+    id: str
+
 
 @router.post("/addPoll", response_model=PollResponse)
 async def addPollRoute(pollR: PollRequest, request: Request):
@@ -211,11 +214,11 @@ async def getAllRewardsAdminRoute(request: Request):
     return rewards
 
 @router.post("/deleteReward", response_model=PollResponse)
-async def deleteRewardRoute(rewardId: str, request: Request):
+async def deleteRewardRoute(deleteRewardRequest: DeleteClaimRewardRequest, request: Request):
     adminId = request.cookies.get("sessionId") # spremen da realno čekira če je admin
     if not adminId:
         raise HTTPException(status_code=401, detail="Unauthorized, no admin ID")
-    reward = await getRewardId(rewardId)
+    reward = await getRewardId(deleteRewardRequest.id)
     if not reward:
         raise HTTPException(status_code=404, detail="Reward not found")
     await deleteReward(reward)
@@ -231,11 +234,11 @@ async def deleteRewardRoute(rewardId: str, request: Request):
 # 3 razlicna post routa
 
 @router.post("/claimReward", response_model=PollResponse)
-async def claimRewardRoute(rewardId:str, request:Request):
+async def claimRewardRoute(claimRewardRequest: DeleteClaimRewardRequest, request:Request):
     userId = request.cookies.get("sessionId")
     if not userId:
         raise HTTPException(status_code=401, detail="Unauthorized, no user ID")
-    reward = await getRewardId(rewardId)
+    reward = await getRewardId(claimRewardRequest.id)
     if not reward:
         raise HTTPException(status_code=404, detail="Reward not found")
     userPoints = await getUserPoints(userId)
@@ -243,7 +246,7 @@ async def claimRewardRoute(rewardId:str, request:Request):
         raise HTTPException(status_code=400, detail="Not enough points to claim this reward")
     
     await updatePoints(userId, reward.pointsRequired, "-")
-    await claimReward(userId, rewardId)
+    await claimReward(userId, claimRewardRequest.id)
     return {"statusCode": 200, "message": "Reward claimed successfully"}
 
 
