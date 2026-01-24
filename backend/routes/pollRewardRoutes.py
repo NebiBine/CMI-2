@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from typing import Union
 
 from ..database.creators.models import Option, Poll, Question, QuestionResult, Results, Reward, UserRewards, UserPoints
-from ..database.servicesDb.databaseServ import deleteReward, getClaimeRewardId, savePoll, getCityId, getAllPolls, saveResults, getUserPoints, getPollId,getResultsId, getQuestionId,markCompletedPoll, moveToArchive, saveReward, getAllRewardsCity, getClaimedRewards, getRewardId, claimReward,updatePoints
+from ..database.servicesDb.databaseServ import getClaimeRewardId, savePoll, getCityId, getAllPolls, saveResults, getUserPoints, getPollId,getResultsId, getQuestionId,markCompletedPoll, moveToArchive, saveReward, getAllRewardsCity, getClaimedRewards, getRewardId, claimReward,updatePoints, moveRewardToArchive
 
 router = APIRouter()
 
@@ -221,7 +221,7 @@ async def deleteRewardRoute(deleteRewardRequest: DeleteClaimRewardRequest, reque
     reward = await getRewardId(deleteRewardRequest.id)
     if not reward:
         raise HTTPException(status_code=404, detail="Reward not found")
-    await deleteReward(reward)
+    await moveRewardToArchive(reward)
     return {"statusCode": 200, "message": "Reward deleted successfully"}
 
 

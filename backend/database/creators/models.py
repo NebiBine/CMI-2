@@ -104,6 +104,7 @@ class PollArchive(Model):
     creationDate: datetime = Field(default_factory=datetime.utcnow)
     points: int
     questions: list[Question]  # each question can be represented as a dicts
+    deletedAt: datetime = Field(default_factory=datetime.utcnow)
 
 class Reward(Model):
     id: str = Field(primary_field=True, default_factory=lambda: str(uuid4()))
@@ -114,6 +115,17 @@ class Reward(Model):
     pointsRequired: int
     creationDate: datetime = Field(default_factory=datetime.utcnow)
     expirationDate: datetime
+
+class RewardArchive(Model):
+    id: str = Field(primary_field=True, default_factory=lambda: str(uuid4()))
+    creatorId: str  # foreign key to Uporabnik
+    city: str
+    rewardTitle: str
+    rewardDescription: str
+    pointsRequired: int
+    creationDate: datetime = Field(default_factory=datetime.utcnow)
+    expirationDate: datetime
+    deletedAt: datetime = Field(default_factory=datetime.utcnow)
 
 class UserRewards(Model):
     userId: str  # foreign key to Uporabnik
