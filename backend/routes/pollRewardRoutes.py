@@ -195,7 +195,7 @@ async def getAllRewardsRoute(request: Request):
 
     for reward in rewards: # extra check za potekle rewarde
         if reward.expirationDate < datetime.utcnow():
-            await deleteReward(reward)
+            await moveRewardToArchive(reward)
             continue
         else:
             if reward.id not in claimedRewardIds:
