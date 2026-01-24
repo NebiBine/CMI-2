@@ -120,6 +120,7 @@ class UserRewards(Model):
     rewardId: str  # foreign key to Reward
     claimedAt: datetime = Field(default_factory=datetime.utcnow)
 
+
 class UserPoints(Model):
     userId: str  # foreign key to Uporabnik
     points: int = Field(default=0)

@@ -4,8 +4,8 @@ from uuid import uuid4
 from datetime import datetime, timedelta
 from typing import Union
 
-from ..database.creators.models import Option, Poll, Question, QuestionResult, Results, Reward
-from ..database.servicesDb.databaseServ import deleteReward, getClaimeRewardId, savePoll, getCityId, getAllPolls, saveResults, getUserPoints, getPollId,getResultsId, getQuestionId,markCompletedPoll, moveToArchive, saveReward, getAllRewardsCity, getClaimedRewards
+from ..database.creators.models import Option, Poll, Question, QuestionResult, Results, Reward, UserRewards, UserPoints
+from ..database.servicesDb.databaseServ import deleteReward, getClaimeRewardId, savePoll, getCityId, getAllPolls, saveResults, getUserPoints, getPollId,getResultsId, getQuestionId,markCompletedPoll, moveToArchive, saveReward, getAllRewardsCity, getClaimedRewards, getRewardId, claimReward,updatePoints
 
 router = APIRouter()
 
@@ -31,6 +31,14 @@ class PollSubmissionRequest(BaseModel):
     pollQuestions: list[UserAnswer]
 
 class RewardRequest(BaseModel):
+    rewardTitle: str
+    rewardDescription: str
+    pointsRequired: int
+    expirationDate: datetime
+
+
+class EditRewardRequest(BaseModel):
+    id: str
     rewardTitle: str
     rewardDescription: str
     pointsRequired: int
@@ -202,7 +210,7 @@ async def getAllRewardsAdminRoute(request: Request):
     rewards = await getAllRewardsCity(city)
     return rewards
 
-@router.delete("/deleteReward/{rewardId}", response_model=PollResponse)
+@router.post("/deleteReward", response_model=PollResponse)
 async def deleteRewardRoute(rewardId: str, request: Request):
     adminId = request.cookies.get("sessionId") # spremen da realno čekira če je admin
     if not adminId:
@@ -221,3 +229,41 @@ async def deleteRewardRoute(rewardId: str, request: Request):
 #popa claimRewardRoute pa admin da edita reward (npr. če je potekel, če je spremenil točke al pa kaj drugega)
 #se delete rewardRoute
 # 3 razlicna post routa
+
+router.post("/claimReward", response_model=PollResponse)
+async def claimRewardRoute(rewardId:str, request:Request):
+    userId = request.cookies.get("sessionId")
+    if not userId:
+        raise HTTPException(status_code=401, detail="Unauthorized, no user ID")
+    reward = await getRewardId(rewardId)
+    if not reward:
+        raise HTTPException(status_code=404, detail="Reward not found")
+    userPoints = await getUserPoints(userId)
+    if userPoints.points < reward.pointsRequired:
+        raise HTTPException(status_code=400, detail="Not enough points to claim this reward")
+    
+    await updatePoints(userId, reward.pointsRequired, "-")
+    await claimReward(userId, rewardId)
+    return {"statusCode": 200, "message": "Reward claimed successfully"}
+
+
+
+
+router.post("/editReward", response_model=PollResponse)
+async def editRewardRoute(rewardRequest: EditRewardRequest, request: Request):
+    adminId = request.cookies.get("sessionId")
+    if not adminId: # spremen da realno čekira če je admin
+        raise HTTPException(status_code=401, detail="Unauthorized, no admin ID")
+    reward = await getRewardId(rewardRequest.id)
+    if not reward:
+        raise HTTPException(status_code=404, detail="Reward not found")
+    reward.rewardTitle = rewardRequest.rewardTitle
+    reward.rewardDescription = rewardRequest.rewardDescription
+    reward.pointsRequired = rewardRequest.pointsRequired
+    if rewardRequest.expirationDate < datetime.utcnow():
+        raise HTTPException(status_code=400, detail="Cannot set expiration date to a past date")
+    reward.expirationDate = rewardRequest.expirationDate
+    await saveReward(reward)
+    return {"statusCode": 200, "message": "Reward edited successfully"}
+#edit, delete, pa claim
+# za vsak reward vrne kok jih je claimal

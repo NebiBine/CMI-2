@@ -1,6 +1,6 @@
 from odmantic import AIOEngine
 from ..creators.models import Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive, Reward, UserRewards
-
+from datetime import datetime
 engine = AIOEngine()
 
 #auth
@@ -62,7 +62,7 @@ async def saveResults(results: Results):
 async def markCompletedPoll(userId: str, pollId: str, points: int):
     userPoints = await engine.find_one(UserPoints, UserPoints.userId == userId)
     if not userPoints:
-        userPoints = UserPoints(userId=userId, points=0, completedPolls=[])
+        userPoints = UserPoints(userId=userId, points=points, completedPolls=[])
     if pollId not in userPoints.completedPolls:
         userPoints.points += points
         userPoints.completedPolls.append(pollId)
@@ -122,3 +122,23 @@ async def getClaimeRewardId(rewardId:str):
 async def deleteReward(reward: Reward):
     await engine.delete(reward)
 
+async def getRewardId(rewardId: str):
+    return await engine.find_one(Reward, Reward.id == rewardId)
+
+async def claimReward(userId: str, rewardId: str):
+    userReward = UserRewards(
+        userId=userId,
+        rewardId=rewardId,
+        claimedAt=datetime.utcnow()
+    )
+    await engine.save(userReward)
+
+async def updatePoints(userId: str, points: int, operation: str):
+    userPoints = await engine.find_one(UserPoints, UserPoints.userId == userId)
+    if not userPoints:
+        userPoints = UserPoints(userId=userId, points=0, completedPolls=[])
+    if operation == "+":
+        userPoints.points += points
+    elif operation == "-":
+        userPoints.points -= points
+    await engine.save(userPoints)
