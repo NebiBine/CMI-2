@@ -68,7 +68,7 @@ onMounted(() => {
 <template>
 
 <div v-for="announcement in announcements" :key="announcement.id">
-    <n-alert type="info" closable @close="showAlert = false" :title="announcement.title">
+    <n-alert :type="announcement.type" closable @close="showAlert = false" :title="announcement.title">
       {{ announcement.content }}
     </n-alert>
   </div>

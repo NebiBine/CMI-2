@@ -6,6 +6,15 @@ import '../assets/styles/mainStyle.css';
 const announcementModal = ref(false);
 const announcementTitle = ref("");
 const announcementContent = ref("");
+const announcementType = ref("");
+
+const announcementTypeOptions = [
+    { label: 'Default', value: 'default' },
+    { label: 'Info', value: 'info' },
+    { label: 'Success', value: 'success' },
+    { label: 'Warning', value: 'warning' },
+    { label: 'Error', value: 'error' }
+]
 
 const showAnnouncementModal = () => {
     announcementModal.value = true;
@@ -18,7 +27,8 @@ async function announcementData() {
         const response = await axios.post('http://localhost:8000/dashboard/createAnnouncement',
         {
             title: announcementTitle.value,
-            content: announcementContent.value
+            content: announcementContent.value,
+            type: announcementType.value
         },
         {withCredentials: true});
         if (response.status === 200) {
@@ -32,7 +42,7 @@ async function announcementData() {
     closeAnnouncementModal();
     announcementTitle.value = "";
     announcementContent.value = "";
-}
+    announcementType.value = "";
 
 </script>
 <template>
@@ -57,6 +67,8 @@ async function announcementData() {
 
             <label for="content">Add content for the announcement:</label>
             <n-input id="content" v-model:value="announcementContent" placeholder="Content"></n-input>
+            <label for="type">Add content for the announcement:</label>
+            <n-select id="type" v-model:value="announcementType" :options="announcementTypeOptions" placeholder="Content"></n-select>
             <button @click="announcementData()" class="modal_btn">Submit your announcement</button>
             <button @click="closeAnnouncementModal()" class="modal_btn">Close</button>
         </template>
