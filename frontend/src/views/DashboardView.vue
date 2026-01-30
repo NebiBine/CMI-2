@@ -69,13 +69,21 @@ onMounted(() => {
     <p>CMI connects you with essential urban services — from traffic updates and public transit to energy info and city guides. 
       Everything you need in one place.</p>
   </div>
+  <div class = "widgetsWrapper">
+    <div class = "PollRewardsWidget">
+      <h2>Polls & Rewards Overview</h2>
+    </div>
+    <div class = "TrafficUpdatesWidget">
+      <h2>Traffic Overview</h2>
+    </div>
+    <div class = "WeatherWidget">
+      <h2>Weather Overview</h2>
+    </div>
+    <div class = "EnergyInfoWidget">
+      <h2>Energy Overview</h2>
+    </div>
+  </div>
 
-  <div class = "Announcements">
-    <h2>Announcements</h2>
-  </div>
-  <div class = "Announcements">
-    <h2>Announcements</h2>
-  </div>
 
 
   <div class = "quick-access">

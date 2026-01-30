@@ -296,3 +296,43 @@ body,
   gap: 15px;
   
 }
+
+.widgetsWrapper{
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+  margin-left: 20px;
+  flex-wrap: wrap;
+}
+.widgetsWrapper h2{
+  font-family: 'InterTekst', sans-serif;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 15px;
+  font-size: 20px;
+}
+.PollRewardsWidget{
+  background-color: yellow;
+  width: 400px;
+  height: 350px;
+  border-radius: 10px;
+
+}
+.TrafficUpdatesWidget{
+  background-color: orange;
+  width: 400px;
+  height: 350px;
+  border-radius: 10px;
+}
+.WeatherWidget{
+  background-color: orange;
+  width: 400px;
+  height: 350px;
+  border-radius: 10px;
+}
+.EnergyInfoWidget{
+  background-color: orange;
+  width: 400px;
+  height: 350px;
+  border-radius: 10px;
+}

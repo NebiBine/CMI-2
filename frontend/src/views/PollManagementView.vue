@@ -5,7 +5,9 @@ import axios from 'axios';
 import { message } from "ant-design-vue";
 
 
-const pollStatistics = ref([]);
+const archivedPolls = ref([]);
+const archivedPollData = ref([]);
+const PollResults = ref([]);
 
 //array z vsemi aktivnimi polli 
 const polls = ref([]);
@@ -28,7 +30,6 @@ const pollDescription = ref("");
 const questions = ref([]);
 
 const Poll = ref([]);
-
 //FUNKCIJE ZA MODAL STATE (ODPIRANJE ZAPIRANJE MODALOV)
 function open_modal1() {
   modal_state1.value = true;
@@ -45,8 +46,10 @@ function closeModal1() {
   modal_state1.value = false;
 };
 
-function openModalstatistics(){
+function openModalstatistics(archivedPoll){
   modalStatisticsState.value = true;
+  archivedPollData.value = archivedPoll;
+  PollStatistics();
 };
 
 function closeModalstatistics(){
@@ -167,12 +170,23 @@ async function getPolls() {
     }
 }
 //FUNKCIJA ZA PRIDOBIVANJE ARHIVIRANIH POLLOV IN SAMIH ODGOVOROV
-async function getPollStatistics(){
+async function getArchivedPolls(){
   try{
-    const response = await axios.get('http://localhost:8000/poll-reward/STATISTIKAENDPOINT',
+    const response = await axios.get('http://localhost:8000/poll-reward/getArchivedPolls',
     { withCredentials: true });
-    pollStatistics.value = response.data;
-    console.log("Fetched poll statistics:", pollStatistics.value);
+    archivedPolls.value = response.data;
+    console.log("Fetched poll statistics:", archivedPolls.value);
+  }
+  catch(error){
+    console.log(error)
+  }
+}
+async function PollStatistics(){
+  try{
+    const response = await axios.post('http://localhost:8000/poll-reward/getResults',
+    {id:  archivedPollData.value.id},
+    { withCredentials: true });
+    PollResults.value = response.data;
   }
   catch(error){
     console.log(error)
@@ -180,13 +194,11 @@ async function getPollStatistics(){
 }
 
 
-
-
 //ONLOAD
 onMounted(() => {
   profilData(),
   getPolls(),
-  getPollStatistics()
+  getArchivedPolls()
 });
 </script>
 <template>
@@ -216,10 +228,10 @@ onMounted(() => {
    <!--PRIKAZAN ARHIV VSEH POLLOV IN NJIHOVE STATISTIKE ODGOVOROV-->
   <h3>Past Due Polls Statistics</h3>
   <div class = "polls-container">
-    <div v-for="archivedPoll in pollStatistics" :key="archivedPoll.id" class = "enPoll">
+    <div v-for="archivedPoll in archivedPolls" :key="archivedPoll.id" class = "enPoll">
       <!--PRIKAZANI VSI ARHIVIRANI POLLI -->
       <!--GUMB ZA ODPIRANJE MODALA Z REZULTATI-->
-      <n-button @click="openModalstatistics">See results</n-button>
+      <n-button @click="openModalstatistics(archivedPoll)">See results</n-button>
     </div>
   </div>
   <!--MODAL ZA STATISTIKO VSAKEGA POLLA -- PRIKAZANI BODO ODGOVORI!!! -->
@@ -230,14 +242,10 @@ onMounted(() => {
     content="Are you sure?"
     positive-text="Submit"
     negative-text="Cancel"
-    @positive-click="submitCallback"
     @negative-click="closeModalstatistics">
-    <div v-for="question in archivedPoll" :key="question.id">
-      
+    <div v-for="question in PollResults" :key="question.id">
+      <!--PRIKAZANO VSAKO VPRASANJE IN VSI ODGOVORI KATERI OBSTAJAJO ZA TOCNO TA POLL IN TO VPRASANJE-->
     </div>
-
-
-
   </n-modal>
 
 
