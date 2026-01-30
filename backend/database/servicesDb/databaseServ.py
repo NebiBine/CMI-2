@@ -1,5 +1,5 @@
 from odmantic import AIOEngine
-from ..creators.models import Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive, Reward, UserRewards, RewardArchive, ResultsArchive
+from ..creators.models import Announcments, Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive, Reward, UserRewards, RewardArchive, ResultsArchive
 from datetime import datetime
 engine = AIOEngine()
 
@@ -178,3 +178,12 @@ async def moveRewardToArchive(reward: Reward):
 
     await engine.save(novArchive)
     await engine.delete(reward)
+
+async def saveAnnouncment(announcment: Announcments):
+    await engine.save(announcment)
+
+async def getAnnouncment(city: str):
+    return await engine.find(Announcments, Announcments.city == city)
+
+async def deleteAnnouncment(announcment: Announcments):
+    await engine.delete(announcment)

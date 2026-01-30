@@ -143,3 +143,9 @@ class UserPoints(Model):
     points: int = Field(default=0)
     completedPolls: list[str] = []
 
+class Announcments(Model):
+    id: str = Field(primary_field=True, default_factory=lambda: str(uuid4()))
+    city: str
+    title: str
+    content: str
+    expirationDate: datetime

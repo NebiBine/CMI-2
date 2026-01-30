@@ -19,3 +19,9 @@ try:
     router.include_router(pollReward_router, prefix="/poll-reward", tags=["poll-reward"])
 except Exception as e:
     print(f"[routes] Failed to load pollRewardRoutes: {e}")
+
+try:
+    from .dashboardRoutes import router as dashboard_router
+    router.include_router(dashboard_router, prefix="/dashboard", tags=["dashboard"])
+except Exception as e:
+    print(f"[routes] Failed to load dashboardRoutes: {e}")
