@@ -231,7 +231,7 @@ onMounted(() => {
     <div v-for="archivedPoll in archivedPolls" :key="archivedPoll.id" class = "enPoll">
       <!--PRIKAZANI VSI ARHIVIRANI POLLI -->
       <!--GUMB ZA ODPIRANJE MODALA Z REZULTATI-->
-      <n-button @click="openModalstatistics(archivedPoll)">See results</n-button>
+      <n-button @click="openModalstatistics(archivedPoll)">See results (se ne deluje)</n-button>
     </div>
   </div>
   <!--MODAL ZA STATISTIKO VSAKEGA POLLA -- PRIKAZANI BODO ODGOVORI!!! -->
@@ -245,52 +245,29 @@ onMounted(() => {
     @negative-click="closeModalstatistics">
     <div v-for="question in PollResults" :key="question.id">
       <!--PRIKAZANO VSAKO VPRASANJE IN VSI ODGOVORI KATERI OBSTAJAJO ZA TOCNO TA POLL IN TO VPRASANJE-->
+      <!--WORK IN PROGRESS TO SE NE BO DELOVALO-->
+      <h3>{{ question.text }}</h3>
+      <div v-if="question.type == 'yesno'">
+        <p>Yes: {{ question.results.yes }}</p>
+        <p>No: {{ question.results.no }}</p>
+      </div>
+      <div v-if="question.type == 'input'">
+        <p>Yes: {{ question.results.yes }}</p>
+        <p>No: {{ question.results.no }}</p>
+      </div>
+      <div v-if="question.type == 'checkbox'">
+        <div v-if="question.option">
+          <div v-for="(option, index) in question.options" :key="index">
+            <p>{{ option }}: {{ question.results[option]}}</p>
+          </div>
+        </div>
+      </div>
+      <div v-if="question.type == 'radioButtons'">
+        <p>Yes: {{ question.results.yes }}</p>
+        <p>No: {{ question.results.no }}</p>
+      </div>
     </div>
   </n-modal>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

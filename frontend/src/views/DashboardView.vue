@@ -13,6 +13,7 @@ const greeting = ref("");
 const username = ref("");
 const admin_state = ref(false);
 const showAlert = ref(true);
+const announcements = ref([]);
 
 function setGreeting() {
   const hour = new Date().getHours()
@@ -45,21 +46,30 @@ async function profilData() {
     console.log(error);
   }
 };
-
+async function getAnnouncement(){
+  try{
+    const response = await axios.get(
+      'http://localhost:8000/dashboard/getAnnouncement', 
+      {withCredentials: true});
+      announcements.value = response.data;
+  }
+  catch (error) {
+    console.log('Error while fetching announcements');
+    console.log(error);
+  }
+}
 
 onMounted(() => {
-  setGreeting()
-  profilData()
+  setGreeting(),
+  profilData(),
+  getAnnouncement()
 });
 </script>
 <template>
 
-<div v-if="showAlert" class="w-full">
-    <n-alert type="info" closable @close="showAlert = false" title="Traffic Announcement">
-      <template #icon>
-        <img src = "../assets/icons/car.svg" alt="Traffic Icon"/>
-      </template>
-      Dont forget to check out the latest traffic updates in your area! Stay informed and plan your routes accordingly.
+<div v-for="announcement in announcements" :key="announcement.id">
+    <n-alert type="info" closable @close="showAlert = false" :title="announcement.title">
+      {{ announcement.content }}
     </n-alert>
   </div>
 

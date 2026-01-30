@@ -4,7 +4,7 @@ import '../assets/styles/mainStyle.css';
 
 
 const announcementModal = ref(false);
-const announcementHeadline = ref("");
+const announcementTitle = ref("");
 const announcementContent = ref("");
 
 const showAnnouncementModal = () => {
@@ -13,10 +13,25 @@ const showAnnouncementModal = () => {
 const closeAnnouncementModal = () => {
     announcementModal.value = false;
 }
-function announcementData() {
-    console.log("Headline:", announcementHeadline.value);
-    console.log("Content:", announcementContent.value);
-    announcementModal.value = false;
+async function announcementData() {
+    try{
+        const response = await axios.post('http://localhost:8000/dashboard/createAnnouncement',
+        {
+            title: announcementTitle.value,
+            content: announcementContent.value
+        },
+        {withCredentials: true});
+        if (response.status === 200) {
+            console.log('Announcement submitted successfully');
+        }
+    }
+    catch (error) {
+        console.log('Error while submitting announcement');
+        console.log(error);
+    }
+    closeAnnouncementModal();
+    announcementTitle.value = "";
+    announcementContent.value = "";
 }
 
 </script>
@@ -38,7 +53,7 @@ function announcementData() {
         </template> -->
         <template #default>
             <label for="headline">Add a headline for the announcement:</label>
-            <n-input id="headline" v-model:value="announcementHeadline" placeholder="Headline"></n-input>
+            <n-input id="headline" v-model:value="announcementTitle" placeholder="Headline"></n-input>
 
             <label for="content">Add content for the announcement:</label>
             <n-input id="content" v-model:value="announcementContent" placeholder="Content"></n-input>
