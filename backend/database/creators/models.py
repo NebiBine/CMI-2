@@ -149,3 +149,4 @@ class Announcments(Model):
     title: str
     content: str
     expirationDate: datetime
+    type : str
