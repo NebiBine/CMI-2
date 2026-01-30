@@ -1,5 +1,5 @@
 from odmantic import AIOEngine
-from ..creators.models import Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive, Reward, UserRewards, RewardArchive
+from ..creators.models import Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive, Reward, UserRewards, RewardArchive, ResultsArchive
 from datetime import datetime
 engine = AIOEngine()
 
@@ -56,6 +56,9 @@ async def savePoll(poll: Poll):
 async def getAllPolls(city: str):
     return await engine.find(Poll, Poll.city == city)
 
+async def getAllArchivedPolls(city: str):
+    return await engine.find(PollArchive, PollArchive.city == city)
+
 async def saveResults(results: Results):
     await engine.save(results)
 
@@ -78,8 +81,14 @@ async def getUserPoints(userId: str):
 async def getPollId(pollId: str):
     return await engine.find_one(Poll, Poll.id == pollId)
 
+async def getArchivedPollId(pollId: str):
+    return await engine.find_one(PollArchive, PollArchive.id == pollId)
+
 async def getResultsId(pollId: str):
     return await engine.find_one(Results, Results.pollId == pollId)
+
+async def getArchivedResultsId(pollId: str):
+    return await engine.find_one(ResultsArchive, ResultsArchive.pollId == pollId)
 
 async def updatePollResults(pollId: str, answers: list):
     pass
@@ -104,6 +113,18 @@ async def moveToArchive(poll: Poll):
 
     await engine.save(novArchive)
     await engine.delete(poll)
+
+    results = await getResultsId(poll.id)
+
+    novResults = ResultsArchive(
+        id = results.id,
+        pollId = results.pollId,
+        answers = results.answers
+        )
+    await engine.save(novResults)
+    await engine.delete(results)
+    
+    
 
 async def saveReward(reward):
     await engine.save(reward)
