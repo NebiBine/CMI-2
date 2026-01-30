@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import '../assets/styles/mainStyle.css';
+import axios from 'axios';
 
 
 const announcementModal = ref(false);
@@ -43,6 +44,7 @@ async function announcementData() {
     announcementTitle.value = "";
     announcementContent.value = "";
     announcementType.value = "";
+}
 
 </script>
 <template>
