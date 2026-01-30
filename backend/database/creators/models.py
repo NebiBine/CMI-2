@@ -28,6 +28,11 @@ class Results(Model):
     pollId: str  # foreign key to Poll
     answers: dict[str, QuestionResult]
 
+
+class ResultsArchive(Model):
+    id: str = Field(primary_field=True, default_factory=lambda: str(uuid4()))
+    pollId: str  # foreign key to Poll
+    answers: dict[str, QuestionResult]
 """
 dict structure for answers:
 {

@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from typing import Union
 
 from ..database.creators.models import Option, Poll, Question, QuestionResult, Results, Reward, UserRewards, UserPoints
-from ..database.servicesDb.databaseServ import getClaimeRewardId, savePoll, getCityId, getAllPolls, saveResults, getUserPoints, getPollId,getResultsId, getQuestionId,markCompletedPoll, moveToArchive, saveReward, getAllRewardsCity, getClaimedRewards, getRewardId, claimReward,updatePoints, moveRewardToArchive
+from ..database.servicesDb.databaseServ import getAllArchivedPolls, getArchivedResultsId, getClaimeRewardId, savePoll, getCityId, getAllPolls, saveResults, getUserPoints, getPollId,getResultsId, getQuestionId,markCompletedPoll, moveToArchive, saveReward, getAllRewardsCity, getClaimedRewards, getRewardId, claimReward,updatePoints, moveRewardToArchive
 
 router = APIRouter()
 
@@ -49,6 +49,9 @@ class RewardAllResponse(BaseModel):
     claimedRewards: list[Reward]
 
 class DeleteClaimRewardRequest(BaseModel):
+    id: str
+
+class getResultsPollRequest(BaseModel):
     id: str
 
 
@@ -273,4 +276,24 @@ async def editRewardRoute(rewardRequest: EditRewardRequest, request: Request):
 # to do poslt creator id kot ime ne kot id(more bit skrit)
 
 #STATISTIKA
+#iz arhiva plus results
+@router.get('/getArchivedPolls', response_model=list[Poll])
+async def getArchivedPollsRoute(request:Request):
+    adminId = request.cookies.get("sessionId")
+    if not adminId:
+        raise HTTPException(status_code=401, detail="Unauthorized, no admin ID") 
+    city = await getCityId(adminId)
+    polli = await getAllArchivedPolls(city)
+    return polli
+
+@router.post('/getResults',response_model=PollResponse)
+async def getResultsRoute(request:Request,pollId:getResultsPollRequest):
+    adminId = request.cookies.get("sessionId")
+    if not adminId:
+        raise HTTPException(status_code=401, detail="Unauthorized, no admin ID")
+    results = await getArchivedResultsId(pollId.id)
+    if not results:
+        raise HTTPException(status_code=404, detail="Poll or Results not found")
+    return results.answers
+    
 
