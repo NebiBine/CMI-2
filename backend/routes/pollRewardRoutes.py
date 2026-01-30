@@ -251,7 +251,6 @@ async def claimRewardRoute(claimRewardRequest: DeleteClaimRewardRequest, request
 
 
 
-
 @router.post("/editReward", response_model=PollResponse)
 async def editRewardRoute(rewardRequest: EditRewardRequest, request: Request):
     adminId = request.cookies.get("sessionId")
@@ -270,3 +269,8 @@ async def editRewardRoute(rewardRequest: EditRewardRequest, request: Request):
     return {"statusCode": 200, "message": "Reward edited successfully"}
 #edit, delete, pa claim
 # za vsak reward vrne kok jih je claimal
+
+# to do poslt creator id kot ime ne kot id(more bit skrit)
+
+#STATISTIKA
+
