@@ -1,50 +1,52 @@
 from fastapi import APIRouter, HTTPException, Response, Request, Form
 from pydantic import BaseModel
 from ..database.creators.models import Announcments
-from ..database.servicesDb.databaseServ import getCityId, getAnnouncment, saveAnnouncment, deleteAnnouncment
+from ..database.servicesDb.databaseServ import getCityId, getAnnouncement, saveAnnouncement, deleteAnnouncement
 from uuid import uuid4
 from datetime import datetime, timedelta
 
 router = APIRouter()
 
-class AnnouncmentResponse(BaseModel):
+class AnnouncementResponse(BaseModel):
     statusCode: int
     message: str
 
-class AnnouncmentRequest(BaseModel):
+class AnnouncementRequest(BaseModel):
     title: str
     content: str
+    type : str
 
-@router.get("/getAnnouncment",response_model=list[Announcments])
-async def getAnnouncmentRoute(request : Request):
+@router.get("/getAnnouncement",response_model=list[Announcments])
+async def getAnnouncementRoute(request : Request):
     userId = request.cookies.get("sessionId")
     if not userId:
         raise HTTPException(status_code=401, detail="Unauthorized, no user ID")
     city = await getCityId(userId)
-    announcment = await getAnnouncment(city)
-    if not announcment:
+    announcement = await getAnnouncement(city)
+    if not announcement:
         return []
-    elif announcment[0].expirationDate < datetime.utcnow():
-        await deleteAnnouncment(announcment[0])
+    elif announcement[0].expirationDate < datetime.utcnow():
+        await deleteAnnouncement(announcement[0])
         return []
-    return announcment
+    return announcement
 
 
-@router.post('/createAnnouncment',response_model=AnnouncmentResponse)
-async def createAnnouncmentRoute(request:Request, announcment: AnnouncmentRequest):
+@router.post('/createAnnouncement',response_model=AnnouncementResponse)
+async def createAnnouncementRoute(request:Request, announcement: AnnouncementRequest):
     adminId = request.cookies.get("sessionId")
     if not adminId:
         raise HTTPException(status_code=401, detail="Unauthorized, no admin ID")
     city = await getCityId(adminId)
-    novAnnouncment = Announcments(
+    newAnnouncement = Announcments(
         id = str(uuid4()),
         city = city,
-        title=announcment.title,
-        content=announcment.content,
-        expirationDate=datetime.utcnow() + timedelta(days=7)
+        title=announcement.title,
+        content=announcement.content,
+        expirationDate=datetime.utcnow() + timedelta(days=7),
+        type = announcement.type
     )
-    await saveAnnouncment(novAnnouncment)
-    return {"statusCode": 200, "message": "Announcment created successfully"}
+    await saveAnnouncement(newAnnouncement)
+    return {"statusCode": 200, "message": "Announcement created successfully"}
 
 
 

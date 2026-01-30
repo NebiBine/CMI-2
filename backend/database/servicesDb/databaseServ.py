@@ -179,11 +179,11 @@ async def moveRewardToArchive(reward: Reward):
     await engine.save(novArchive)
     await engine.delete(reward)
 
-async def saveAnnouncment(announcment: Announcments):
-    await engine.save(announcment)
+async def saveAnnouncement(announcement: Announcments):
+    await engine.save(announcement)
 
-async def getAnnouncment(city: str):
+async def getAnnouncement(city: str):
     return await engine.find(Announcments, Announcments.city == city)
 
-async def deleteAnnouncment(announcment: Announcments):
-    await engine.delete(announcment)
+async def deleteAnnouncement(announcement: Announcments):
+    await engine.delete(announcement)
