@@ -4,6 +4,9 @@ import '../assets/styles/mainStyle.css';
 import axios from 'axios';
 import { message } from "ant-design-vue";
 
+
+const pollStatistics = ref([]);
+
 //array z vsemi aktivnimi polli 
 const polls = ref([]);
 
@@ -12,6 +15,8 @@ const username = ref("");
 //MODAL STANJA
 const modal_state1 = ref(false);
 const modal_state2 = ref(false);
+const modalStatisticsState = ref(false);
+//--------------------------------------------------------
 
 //MODAL 1 VREDNOSTI
 const possible_points_value = ref(0);
@@ -24,13 +29,33 @@ const questions = ref([]);
 
 const Poll = ref([]);
 
-const open_modal1 = () => {
+//FUNKCIJE ZA MODAL STATE (ODPIRANJE ZAPIRANJE MODALOV)
+function open_modal1() {
   modal_state1.value = true;
-}
-const open_modal2 = () => {
+};
+function open_modal2() {
   modal_state2.value = true;
 };
 
+function closeModal() {
+  modal_state2.value = false;
+};
+
+function closeModal1() {
+  modal_state1.value = false;
+};
+
+function openModalstatistics(){
+  modalStatisticsState.value = true;
+};
+
+function closeModalstatistics(){
+  modalStatisticsState.value = false;
+};
+
+//--------------------------------------------------------
+
+//IZBIRE ZA TIP VPRASANJA
 const polltypeOptions = [
   { label: "Yes/No question", value: "yesno" },
   { label: "Input type question", value: "input" },
@@ -38,25 +63,24 @@ const polltypeOptions = [
   { label: "Pick multiple questions (checkbox)", value: "checkbox" },
 ];
 
-const closeModal = () => {
-  modal_state2.value = false;
-};
-const closeModal1 = () => {
-  modal_state1.value = false;
-};
 
+//FUNKCIJA ZA DODAJANJE VPRASANJA V QUESTIONS ARRAY KI SE KASNEJE NAPOLNI
 const addQuestion = () => {
   questions.value.push({ text: "", type: "", options: ["", "", "", ""] });
 };
 
+//FUNKCIJA Z  ODSTRANJEVANJE VPRASANJA ... UPORABLJENA FUNKCIJA SPLICE NA DOLOCENEM INDEXU IN ODSTRANI 1 ELEMENT
 const removeQuestion = (index) => {
   questions.value.splice(index, 1);
 };
 
-const addOption = (question) => {
-  question.options.push("");
-};
+//TESTING FUNKCIJA
+// const addOption = (question) => {
+//   question.options.push("");
+// };
 
+
+//FUNCKCIJA ZA SPREMEMBO TIPA VPRASANJA IN SPREMINJANJE OPCIJ.. DELUJE NA PRINCIP ON CHANGE V DROPDOWNU
 const handleTypeChange = (question) => {
   if (question.type === "yesno") {
     question.options = ["Yes", "No", "", ""];
@@ -66,6 +90,7 @@ const handleTypeChange = (question) => {
     question.options = ["", "", "", ""];
   }
 };
+
 const submitQuestions = () => {
   console.log("Submitted Questions:", questions.value);
   closeModal();
@@ -129,6 +154,7 @@ async function profilData() {
   }
 };
 
+//FUNKCIJA ZA PRIDOBIVANJE VSEH AKTIVNIH POLLOV
 async function getPolls() {
     try {
         const response = await axios.get("http://localhost:8000/poll-reward/getPolls",
@@ -140,11 +166,27 @@ async function getPolls() {
         console.log(error);
     }
 }
+//FUNKCIJA ZA PRIDOBIVANJE ARHIVIRANIH POLLOV IN SAMIH ODGOVOROV
+async function getPollStatistics(){
+  try{
+    const response = await axios.get('http://localhost:8000/poll-reward/STATISTIKAENDPOINT',
+    { withCredentials: true });
+    pollStatistics.value = response.data;
+    console.log("Fetched poll statistics:", pollStatistics.value);
+  }
+  catch(error){
+    console.log(error)
+  }
+}
+
+
+
 
 //ONLOAD
 onMounted(() => {
   profilData(),
-  getPolls()
+  getPolls(),
+  getPollStatistics()
 });
 </script>
 <template>
@@ -171,7 +213,78 @@ onMounted(() => {
   </div>
 
   <br></br>
+   <!--PRIKAZAN ARHIV VSEH POLLOV IN NJIHOVE STATISTIKE ODGOVOROV-->
   <h3>Past Due Polls Statistics</h3>
+  <div class = "polls-container">
+    <div v-for="archivedPoll in pollStatistics" :key="archivedPoll.id" class = "enPoll">
+      <!--PRIKAZANI VSI ARHIVIRANI POLLI -->
+      <!--GUMB ZA ODPIRANJE MODALA Z REZULTATI-->
+      <n-button @click="openModalstatistics">See results</n-button>
+    </div>
+  </div>
+  <!--MODAL ZA STATISTIKO VSAKEGA POLLA -- PRIKAZANI BODO ODGOVORI!!! -->
+  <n-modal
+    v-model:show="modalStatisticsState"
+    preset="dialog"
+    title="Poll Statistics Overview"
+    content="Are you sure?"
+    positive-text="Submit"
+    negative-text="Cancel"
+    @positive-click="submitCallback"
+    @negative-click="closeModalstatistics">
+    <div v-for="question in archivedPoll" :key="question.id">
+      
+    </div>
+
+
+
+  </n-modal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   <!------------------- MODAL ZA DODAJANJE ANKETE ------------------->
   <n-modal v-model:show="modal_state1" preset="dialog" title="Add Poll" positive-text="Submit" negative-text="Cancel"
@@ -236,7 +349,7 @@ onMounted(() => {
               <div v-else>
                 <p>Options:</p>
                 <ul style="margin-left: 15px;">
-                  <li v-for="(options1, optIndex) in question1.options" :key="optIndex">
+                  <li v-for="options1 in question1.options" :key="optIndex">
                     {{ options1 }}
                   </li>
                 </ul>
