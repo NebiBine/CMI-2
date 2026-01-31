@@ -54,6 +54,8 @@ class DeleteClaimRewardRequest(BaseModel):
 class getResultsPollRequest(BaseModel):
     id: str
 
+class sendResults(BaseModel):
+    answers: dict[str, QuestionResult]
 
 @router.post("/addPoll", response_model=PollResponse)
 async def addPollRoute(pollR: PollRequest, request: Request):
@@ -286,7 +288,7 @@ async def getArchivedPollsRoute(request:Request):
     polli = await getAllArchivedPolls(city)
     return polli
 
-@router.post('/getResults',response_model=PollResponse)
+@router.post('/getResults',response_model=sendResults)
 async def getResultsRoute(request:Request,pollId:getResultsPollRequest):
     adminId = request.cookies.get("sessionId")
     if not adminId:
@@ -294,6 +296,6 @@ async def getResultsRoute(request:Request,pollId:getResultsPollRequest):
     results = await getArchivedResultsId(pollId.id)
     if not results:
         raise HTTPException(status_code=404, detail="Poll or Results not found")
-    return results.answers
+    return {"answers": results.answers}
     
 
