@@ -125,18 +125,33 @@ body,
 .moreinfoBTN{
   background-color: #111827;
   color: white;
-  padding: 6px;
+  padding: 10px;
   border-radius: 10px;
+  --n-color-hover: #111827 !important;
+  --n-color-selected: #111827 !important;
+  --n-color-active: #111827 !important;
+  --n-text-color-hover: #ffffff !important;
+
 }
 
 /*-----------POLL MANAGEMENT ---------------*/
 .n-button.btn_add_questions {
-  background-color: white !important;
-  color: black !important;
-  border: 2px solid white !important;
-  border-radius: 5px;
-  padding: 10px 20px;
+  background-color: #f3f4f6 !important;
+  color: #111827 !important;
+  border: none !important;
+  border-radius: 8px;
+  padding: 12px 20px;
   font-family: 'InterNaslovi';
+  font-weight: 600;
+  --n-color-hover: #e5e7eb !important;
+  --n-text-color-hover: #111827 !important;
+}
+.questions-list {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 10px;
 }
 
 /*-------------------------------------*/
@@ -182,6 +197,9 @@ body,
   justify-content: flex-end;
   position: absolute;
   right: 20px;
+  border-radius: 10px;
+  --n-color-hover: #111827 !important;
+  --n-text-color-hover: #ffffff !important;
 }
 .faq{
   margin-top: 20px;
@@ -208,6 +226,30 @@ body,
   position: relative;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+.optionsWrapperCheckbox{
+  display: flex;
+  flex-direction: column;
+  font-family: 'InterNaslovi', sans-serif;
+  font-weight: 200;
+}
+.optionsWrapperInput{
+  border: 0.2px solid black;
+  border-radius: 5px;
+  font-size: 15px;
+  margin-top: 10px;
+  font-family: 'InterNaslovi', sans-serif;
+  font-weight: 200;
+}
+.participateBtn{
+  margin-top: 20px;
+  color: white;
+  background-color: #111827;
+  border-radius: 8px;
+  font-weight: bold;
+  --n-color-hover: #111827 !important;
+  --n-text-color-hover: #ffffff !important;
+}
+
 .pollTitle{
   font-size: 20px;
   margin-top: -10px;
@@ -289,12 +331,16 @@ body,
   display: flex;
   flex-direction: column;
   border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 15px;
+  font-family: 'InterTekst', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
 }
 .rewards-claimed-container{
   display: flex;
   flex-direction: column;
   gap: 15px;
-  
 }
 
 .widgetsWrapper{
@@ -335,4 +381,12 @@ body,
   width: 400px;
   height: 350px;
   border-radius: 10px;
+}
+.announcementModal{
+  font-family: 'InterTekst', sans-serif;
+  font-weight: 500;
+}
+.AdminUserModal{
+  font-family: 'InterTekst', sans-serif;
+  font-weight: 600;
 }

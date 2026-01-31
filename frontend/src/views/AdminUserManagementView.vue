@@ -174,15 +174,13 @@ onMounted(() => {
                     <td>{{ uporabnik.email }}</td>
                     <td>{{ uporabnik.id }}</td>
                     <td>
-                        <n-button text @click="openUserModal(uporabnik)" class="moreinfoBTN">More
-                            Info</n-button>
-
+                    <n-button text @click="openUserModal(uporabnik)" class="moreinfoBTN">More Info</n-button>
                     </td>
                 </tr>
             </tbody>
         </n-table>
     </div>
-    <n-modal v-model:show="showModal" preset="dialog" title="Edit or View User">
+    <n-modal v-model:show="showModal" preset="dialog" title="Edit or View User" class="AdminUserModal">
         <template #default>
             <label for id="firstName"> First Name:
                 <n-input id="fullName" placeholder="" v-model:value="profil.first_name"></n-input>
@@ -212,10 +210,10 @@ onMounted(() => {
             <label for id="admin_state"> Add/Remove Admin?
                 <n-checkbox id="admin_state" v-model:checked="admin_state"></n-checkbox>
             </label>
+            <br>
 
-
-            <n-button @click="update">Update</n-button>
-            <n-button @click="closeModal()">Close</n-button>
+            <n-button @click="update" style="border-radius: 10px; width: 100px;" class="add_btn_announcement">Update</n-button>
+            <n-button @click="closeModal()" style="margin-left: 10px; width: 100px; margin-top: 10px;" class="deleteReward">Close</n-button>
         </template>
     </n-modal>
 

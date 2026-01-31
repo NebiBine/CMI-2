@@ -239,7 +239,6 @@ onMounted(() => {
     v-model:show="modalStatisticsState"
     preset="dialog"
     title="Poll Statistics Overview"
-    content="Are you sure?"
     positive-text="Submit"
     negative-text="Cancel"
     @negative-click="closeModalstatistics">
@@ -272,8 +271,8 @@ onMounted(() => {
 
 
   <!------------------- MODAL ZA DODAJANJE ANKETE ------------------->
-  <n-modal v-model:show="modal_state1" preset="dialog" title="Add Poll" positive-text="Submit" negative-text="Cancel"
-    @positive-click="pollSubmit" @negative-click="closeModal1" :style="{ width: '600px', height: 'auto' }">
+  <n-modal v-model:show="modal_state1" preset="dialog" title="Add Poll"
+    :style="{ width: '600px', height: 'auto' }">
     <template #icon>
       <img src="../assets/icons/add_poll.svg" alt="Add Poll Icon"/>
     </template>
@@ -307,7 +306,7 @@ onMounted(() => {
         <n-input-number id="possible_points" v-model:value="possible_points_value" clearable />
       </label>
     </div>
-    <n-button class="btn_add_questions" @click="open_modal2()">Add questions</n-button>
+    <n-button class="btn_add_questions" @click="open_modal2()">❓ Add questions</n-button>
     <div>
       <label for="added_questions">Added questions:
         <n-list v-if="questions.length > 0" bordered style="margin-top: 10px;">
@@ -344,7 +343,8 @@ onMounted(() => {
         </n-list>
       </label>
     </div>
-
+    <n-button @click="pollSubmit" class="add_btn_announcement" style="border-radius: 10px; width: 100px;">Submit</n-button>
+    <n-button @click="closeModal1" class="deleteReward" style="border-radius: 10px; width: 100px; margin-left: 10px; margin-top: 20px;">Cancel</n-button>
   </n-modal>
 
 

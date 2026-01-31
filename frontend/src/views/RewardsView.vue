@@ -66,14 +66,14 @@ onMounted(() => {
     <p>Look through the available rewards here and redeem them!</p>
     <p>Your current points: {{ userPoints }}</p>
 
-    <n-button @click="claimedRewardsDrawerOpen">View your claimed rewards</n-button>
+    <n-button @click="claimedRewardsDrawerOpen" class="add_btn">View your claimed rewards</n-button>
     <div class = "polls-container">
         <div v-for="reward in rewards" :key="reward.id" class = "EnPoll"> 
             <h2>Reward Title: {{ reward.rewardTitle }}</h2>
             <p>Description: {{ reward.rewardDescription }}</p>
             <p>Points Required: {{ reward.pointsRequired }}</p>
             <p>Expires At: {{ new Date(reward.expirationDate).toLocaleDateString() }}</p>
-            <n-button @click="claimReward(reward)">Claim Reward</n-button>
+            <n-button @click="claimReward(reward)" class="participateBtn">Claim Reward</n-button>
             <!--TODO: SISTEM ZA CLAIM REWARD BUTTON JE NASTAVLJEN FUNCKIJO SE DOPISI-->
         </div>
     </div>
@@ -85,13 +85,14 @@ onMounted(() => {
                     <div v-for="claimedReward in claimedRewards" :key="claimedReward.id" class = "enReward"> 
                         <h2>Reward Title: {{ claimedReward.rewardTitle }}</h2>
                         <p>Description: {{ claimedReward.rewardDescription }}</p>
+                        <p>🎫 Code: {{ claimedReward.code }}</p>
                     </div>
                 </div>
 
             </div>
             <div v-else class = "empty-rewards">
                 <img src = "../assets/icons/no-rewards.png">
-                <p>You haven't claimed any rewards yet</p>
+                <p>You haven't claimed any rewards yet!</p>
             </div>
 
         </n-drawer-content>

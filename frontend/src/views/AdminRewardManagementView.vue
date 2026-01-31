@@ -126,7 +126,7 @@ onMounted(() => {
 <template>
     <h1>Reward Management</h1>
     <p>Here you can manage rewards for citizens.</p>
-    <n-button @click="openModal">Add a reward</n-button>
+    <n-button @click="openModal" class = "add_btn">Add a reward</n-button>
     <div class = "polls-container">
         <div v-for="reward in rewards" :key="reward.id" class = "EnPoll"> 
             <h2>Reward Title: {{ reward.rewardTitle }}</h2>
@@ -141,11 +141,7 @@ onMounted(() => {
     </div>
 
     <!--ADD REWARD MODAL-->
-    <n-modal v-model:show="modalStatus" preset="dialog" title="Add reward"
-    positive-text="Add Reward"
-    negative-text="Cancel"
-    @positive-click="submitReward"
-    @negative-click="closeModal">
+    <n-modal v-model:show="modalStatus" preset="dialog" title="Add reward">
     
     <template #icon>
         <img src="../assets/icons/reward_add_modal.svg" />
@@ -167,14 +163,12 @@ onMounted(() => {
     <label for="expiresAt">Expires at:
         <n-date-picker v-model:value="expiresAt" type="date" placeholder="Select expiration date" />
     </label>
+    <n-button @click="submitReward" style="border-radius: 10px; width: 100px;" class="add_btn_announcement">Add Reward</n-button>
+    <n-button @click="closeModal()" style="margin-left: 10px; width: 100px; margin-top: 10px;" class="deleteReward">Cancel</n-button>
     </n-modal>
 
     <!--EDIT REWARD MODAL-->
-    <n-modal v-model:show="modalEditStatus" preset="dialog" title="Edit Reward"
-    positive-text="Confirm Changes"
-    negative-text="Cancel"
-    @positive-click="editReward"
-    @negative-click="closeModalEdit">
+    <n-modal v-model:show="modalEditStatus" preset="dialog" title="Edit Reward">
     
     <template #icon>
         <img src="../assets/icons/reward_add_modal.svg" />
@@ -202,6 +196,8 @@ onMounted(() => {
             />
             <!--DODAN VALIDATOR V DATETIME PICKER DA NEMORES IZBRAT PRETEKLIH DATUMOV-->
         </label>
+        <n-button @click="editReward" style="border-radius: 10px; width: 150px;" class="add_btn_announcement">Confirm Changes</n-button>
+        <n-button @click="closeModalEdit()" style="margin-left: 10px; width: 100px; margin-top: 10px;" class="deleteReward">Cancel</n-button>
         </n-modal>
 
 </template>

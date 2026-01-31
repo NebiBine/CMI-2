@@ -97,16 +97,16 @@ onMounted(() => {
                     </div>
 
                     <div class="pollPointsInfo">
-                        <p>Possible points: {{ poll.points }}</p>
+                        <p>🏆Possible points: {{ poll.points }}</p>
                     </div>
 
                     <div class="timeLeftInfo">
-                        <p>Time left(in days): {{ new Date(poll.expirationDate).getDate() - new Date().getDate() }}</p>
+                        <p>⏰Time left(in days): {{ new Date(poll.expirationDate).getDate() - new Date().getDate() }}</p>
                     </div>
                 </div>
 
 
-                <n-button @click="openModal(poll)">Participate</n-button>
+                <n-button @click="openModal(poll)" class = "participateBtn">Participate</n-button>
                 <n-modal v-model:show="showModal" preset="dialog" title="Participate in the Poll"
                     @positive-click="pollParticipationSubmit(selectedPoll)" @negative-click="closeModal">
                     <!--IKONA MODALA-->
@@ -122,23 +122,23 @@ onMounted(() => {
 
 
                             <!--VSI CHECKI KATERI TIP JE ZA VSAKO VPRASANJE IN POTEM PRILAGODIM ODGOVORE GLEDE NA TYPE-->
-                            <div v-if="question.type == 'yesno'" class="optionsWrapper">
+                            <div v-if="question.type == 'yesno'" class="question-item-wrapper">
                                 <label>
                                     <input type="radio" :name="`poll-${selectedPoll.id}-q${questionIndex}`" value="Yes" v-model = "question.answer"> Yes
                                 </label>
                                 <label>
-                                    <input type="radio" :name="`poll-${selectedPoll.id}-q${questionIndex}`" value="No" v-model = "question.answer"> No
+                                    <input type="radio" :name="`poll-{{selectedPoll.id}}-q{{questionIndex}}`" value="No" v-model = "question.answer"> No
                                 </label>
                             </div>
 
 
-                            <div v-else-if="question.type == 'input'" class="optionsWrapper">
-                                <input type="text" :name="`poll-${selectedPoll.id}-q${questionIndex}`"
+                            <div v-else-if="question.type == 'input'" class="question-item-wrapper">
+                                <input class = "optionsWrapperInput" type="text" :name="`poll-{{selectedPoll.id}}-{{questionIndex}}`"
                                     placeholder="Your answer here:" v-model="question.answer"/>
                             </div>
 
 
-                            <div v-else-if="question.type == 'radioButtons'" class="optionsWrapper">
+                            <div v-else-if="question.type == 'radioButtons'" class="optionsWrapperCheckbox">
                                 <template v-for="(option, optionIndex) in question.options" :key="optionIndex">
                                     <label v-if="option" class="option-label">
                                         <input type="radio" :name="`poll-${selectedPoll.id}-q${questionIndex}`" :value="option" v-model="question.answer">
@@ -148,7 +148,7 @@ onMounted(() => {
                             </div>
 
 
-                            <div v-else-if="question.type == 'checkbox'" class="optionsWrapper">
+                            <div v-else-if="question.type == 'checkbox'" class="optionsWrapperCheckbox">
                                 <template v-for="(option, optIndex) in question.options" :key="optIndex">
                                     <label v-if="option" class="option-label">
                                         <input type="checkbox" :name="`poll-${selectedPoll.id}-q${questionIndex}-${optIndex}`"
