@@ -1,11 +1,12 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { NAlert, NButton } from 'naive-ui'
 import '../assets/styles/mainStyle.css';
 import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
 import axios from 'axios';
 import { message } from "ant-design-vue";
+import { createSwapy } from 'swapy'
 
 
 
@@ -14,6 +15,9 @@ const username = ref("");
 const admin_state = ref(false);
 const showAlert = ref(true);
 const announcements = ref([]);
+const swapy = ref(null);
+
+
 
 function setGreeting() {
   const hour = new Date().getHours()
@@ -63,12 +67,27 @@ onMounted(() => {
   setGreeting(),
   profilData(),
   getAnnouncement()
+  
+  // Initialize Swapy
+  const container = document.querySelector('.widgetsWrapper')
+  if (container) {
+    swapy.value = createSwapy(container, {
+      animation: 'dynamic'
+    })
+  }
+});
+
+
+onUnmounted(() => {
+  if (swapy.value) {
+    swapy.value.destroy()
+  }
 });
 </script>
 <template>
 
 <div v-for="announcement in announcements" :key="announcement.id">
-    <n-alert :type="announcement.type" closable @close="showAlert = false" :title="announcement.title" >
+    <n-alert :type="announcement.type" closable :title="announcement.title" >
       {{ announcement.content }}
     </n-alert>
   </div>
@@ -79,18 +98,29 @@ onMounted(() => {
     <p>CMI connects you with essential urban services — from traffic updates and public transit to energy info and city guides. 
       Everything you need in one place.</p>
   </div>
-  <div class = "widgetsWrapper">
-    <div class = "PollRewardsWidget">
-      <h2>Polls & Rewards Overview</h2>
+  <div class="widgetsWrapper">
+    <div data-swapy-slot="poll-rewards">
+      <div class="PollRewardsWidget" data-swapy-item="poll-rewards-widget">
+        <h2>Polls & Rewards Overview</h2>
+      </div>
     </div>
-    <div class = "TrafficUpdatesWidget">
-      <h2>Traffic Overview</h2>
+    
+    <div data-swapy-slot="traffic">
+      <div class="TrafficUpdatesWidget" data-swapy-item="traffic-widget">
+        <h2>Traffic Overview</h2>
+      </div>
     </div>
-    <div class = "WeatherWidget">
-      <h2>Weather Overview</h2>
+    
+    <div data-swapy-slot="weather">
+      <div class="WeatherWidget" data-swapy-item="weather-widget">
+        <h2>Weather Overview</h2>
+      </div>
     </div>
-    <div class = "EnergyInfoWidget">
-      <h2>Energy Overview</h2>
+    
+    <div data-swapy-slot="energy">
+      <div class="EnergyInfoWidget" data-swapy-item="energy-widget">
+        <h2>Energy Overview</h2>
+      </div>
     </div>
   </div>
 

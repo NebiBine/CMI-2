@@ -187,6 +187,7 @@ async function PollStatistics(){
     {id:  archivedPollData.value.id},
     { withCredentials: true });
     PollResults.value = response.data;
+    console.log("Fetched poll results:", PollResults.value);
   }
   catch(error){
     console.log(error)
@@ -228,10 +229,12 @@ onMounted(() => {
    <!--PRIKAZAN ARHIV VSEH POLLOV IN NJIHOVE STATISTIKE ODGOVOROV-->
   <h3>Past Due Polls Statistics</h3>
   <div class = "polls-container">
-    <div v-for="archivedPoll in archivedPolls" :key="archivedPoll.id" class = "enPoll">
+    <div v-for="archivedPoll in archivedPolls" :key="archivedPoll.id" class = "EnPoll">
       <!--PRIKAZANI VSI ARHIVIRANI POLLI -->
       <!--GUMB ZA ODPIRANJE MODALA Z REZULTATI-->
-      <n-button @click="openModalstatistics(archivedPoll)">See results (se ne deluje)</n-button>
+      <h2 style = "font-size: 20px;">Poll title: {{ archivedPoll.pollTitle }}</h2>
+      <p>Description: {{ archivedPoll.pollDescription }}</p>
+      <n-button @click="openModalstatistics(archivedPoll)">See results (WORK IN PROGRESS)</n-button>
     </div>
   </div>
   <!--MODAL ZA STATISTIKO VSAKEGA POLLA -- PRIKAZANI BODO ODGOVORI!!! -->
@@ -245,14 +248,13 @@ onMounted(() => {
     <div v-for="question in PollResults" :key="question.id">
       <!--PRIKAZANO VSAKO VPRASANJE IN VSI ODGOVORI KATERI OBSTAJAJO ZA TOCNO TA POLL IN TO VPRASANJE-->
       <!--WORK IN PROGRESS TO SE NE BO DELOVALO-->
-      <h3>{{ question.text }}</h3>
+      <h3>{{ question.questionText }}</h3>
       <div v-if="question.type == 'yesno'">
-        <p>Yes: {{ question.results.yes }}</p>
-        <p>No: {{ question.results.no }}</p>
+        <p>Yes: {{ question.option1.result }}</p>
+        <p>No: {{ question.option2.result }}</p>
       </div>
       <div v-if="question.type == 'input'">
-        <p>Yes: {{ question.results.yes }}</p>
-        <p>No: {{ question.results.no }}</p>
+        <p>Result: {{ question.results }}</p>
       </div>
       <div v-if="question.type == 'checkbox'">
         <div v-if="question.option">

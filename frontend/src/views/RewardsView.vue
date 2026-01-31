@@ -69,11 +69,11 @@ onMounted(() => {
     <n-button @click="claimedRewardsDrawerOpen" class="add_btn">View your claimed rewards</n-button>
     <div class = "polls-container">
         <div v-for="reward in rewards" :key="reward.id" class = "EnPoll"> 
-            <h2>Reward Title: {{ reward.rewardTitle }}</h2>
-            <p>Description: {{ reward.rewardDescription }}</p>
-            <p>Points Required: {{ reward.pointsRequired }}</p>
-            <p>Expires At: {{ new Date(reward.expirationDate).toLocaleDateString() }}</p>
-            <n-button @click="claimReward(reward)" class="participateBtn">Claim Reward</n-button>
+            <h2 style="font-size: 22px;">{{ reward.rewardTitle }}</h2>
+            <p>📘Description: {{ reward.rewardDescription }}</p>
+            <p>🏆Points Required: {{ reward.pointsRequired }}</p>
+            <p>⏳Expires At: {{ new Date(reward.expirationDate).toLocaleDateString() }}</p>
+            <n-button @click="claimReward(reward)" class="participateBtn">🎁 Claim Reward</n-button>
             <!--TODO: SISTEM ZA CLAIM REWARD BUTTON JE NASTAVLJEN FUNCKIJO SE DOPISI-->
         </div>
     </div>

@@ -101,7 +101,7 @@ onMounted(() => {
                     </div>
 
                     <div class="timeLeftInfo">
-                        <p>⏰Time left(in days): {{ new Date(poll.expirationDate).getDate() - new Date().getDate() }}</p>
+                        <p>⏰Time left(in days): {{ Math.ceil((new Date(poll.expirationDate) - new Date()) / (1000 * 60 * 60 * 24)) }}</p>
                     </div>
                 </div>
 
