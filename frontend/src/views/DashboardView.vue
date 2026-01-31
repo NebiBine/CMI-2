@@ -77,7 +77,7 @@ onMounted(() => {
   }
 });
 
-
+//Destroyam swapy ob unmountu
 onUnmounted(() => {
   if (swapy.value) {
     swapy.value.destroy()

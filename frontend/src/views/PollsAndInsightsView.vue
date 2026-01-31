@@ -106,7 +106,7 @@ onMounted(() => {
                 </div>
 
 
-                <n-button @click="openModal(poll)" class = "participateBtn">Participate</n-button>
+                <n-button @click="openModal(poll)" class = "participateBtn">🗳️ Participate</n-button>
                 <n-modal v-model:show="showModal" preset="dialog" title="Participate in the Poll"
                     @positive-click="pollParticipationSubmit(selectedPoll)" @negative-click="closeModal">
                     <!--IKONA MODALA-->

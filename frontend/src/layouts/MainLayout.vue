@@ -25,6 +25,7 @@ const menuOptions = ref([
   {
     label: "Traffic Updates",
     key: "trafficUpdates",
+    disabled:true,
     children: [
       {
         label:'General',
@@ -93,6 +94,7 @@ const menuOptions = ref([
   },
   {
     label: "Settings",
+    disabled:true,
     key: "settings",
   },
   {
