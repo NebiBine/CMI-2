@@ -25,3 +25,9 @@ try:
     router.include_router(dashboard_router, prefix="/dashboard", tags=["dashboard"])
 except Exception as e:
     print(f"[routes] Failed to load dashboardRoutes: {e}")
+
+try:
+    from .guideRoutes import router as guide_router
+    router.include_router(guide_router, prefix="/guide", tags=["guide"])
+except Exception as e:
+    print(f"[routes] Failed to load guideRoutes: {e}")
