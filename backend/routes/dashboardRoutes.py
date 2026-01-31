@@ -37,6 +37,9 @@ async def createAnnouncementRoute(request:Request, announcement: AnnouncementReq
     if not adminId:
         raise HTTPException(status_code=401, detail="Unauthorized, no admin ID")
     city = await getCityId(adminId)
+    ann = await getAnnouncement(city)
+    if len(ann) > 0:
+        return {"statusCode": 400, "message": "Announcement for this city already exists"}
     newAnnouncement = Announcments(
         id = str(uuid4()),
         city = city,
@@ -48,7 +51,7 @@ async def createAnnouncementRoute(request:Request, announcement: AnnouncementReq
     await saveAnnouncement(newAnnouncement)
     return {"statusCode": 200, "message": "Announcement created successfully"}
 
-
+#TODO DELETE ANNOUNCEMENT IF NEEDED
 
 """
 class Announcments(Model):
