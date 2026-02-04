@@ -7,4 +7,19 @@
 <template>
     <h1>Weather</h1>
     <p>Look through the weather forecast and keep an eye on the weather alerts if there are any!</p>
+    <n-tabs type="line" animated class="zavihki_weather">
+      <n-tab-pane name="currentWeather" tab="🌤️ Current Weather">
+        <p>Weather details for today will be displayed here.</p>
+        <!--TRENUTNO VREME PRIDE TUKAJ-->
+      </n-tab-pane>
+      <n-tab-pane name="forecast" tab="📅 Weather Forecast">
+        <p>Weather details for 3 days in advance will be displayed here.</p>
+        <!--NAPOVED VREMENA PRIDE TUKAJ-->
+      </n-tab-pane>
+      <n-tab-pane name="alerts" tab="⚠️ Weather Alerts">
+        <p>Weather alerts will be displayed here.</p>
+        <!--VREMENSKI ALERTI PRIDEJO TUKAJ-->
+      </n-tab-pane>
+    </n-tabs>
+
 </template>

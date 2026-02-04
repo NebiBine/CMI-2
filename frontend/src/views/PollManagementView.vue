@@ -68,12 +68,12 @@ const polltypeOptions = [
 
 
 //FUNKCIJA ZA DODAJANJE VPRASANJA V QUESTIONS ARRAY KI SE KASNEJE NAPOLNI
-const addQuestion = () => {
+function addQuestion(){
   questions.value.push({ text: "", type: "", options: ["", "", "", ""] });
-};
+}
 
 //FUNKCIJA Z  ODSTRANJEVANJE VPRASANJA ... UPORABLJENA FUNKCIJA SPLICE NA DOLOCENEM INDEXU IN ODSTRANI 1 ELEMENT
-const removeQuestion = (index) => {
+function removeQuestion(index) {
   questions.value.splice(index, 1);
 };
 
@@ -84,20 +84,20 @@ const removeQuestion = (index) => {
 
 
 //FUNCKCIJA ZA SPREMEMBO TIPA VPRASANJA IN SPREMINJANJE OPCIJ.. DELUJE NA PRINCIP ON CHANGE V DROPDOWNU
-const handleTypeChange = (question) => {
-  if (question.type === "yesno") {
-    question.options = ["Yes", "No", "", ""];
-  } else if (question.type === "input") {
-    question.options = ["", "", "", ""];
-  } else if (question.type === "radioButtons" || question.type === "checkbox") {
-    question.options = ["", "", "", ""];
+function handleTypeChange1(question) {
+  if (question.type === 'yesno') {
+    question.options = ['Yes', 'No', '', ''];
+  } else if (question.type === 'input') {
+    question.options = ['', '', '', ''];
+  } else if (question.type === 'radioButtons' || question.type === 'checkbox') {
+    question.options = ['', '', '', ''];
   }
-};
+}
 
-const submitQuestions = () => {
+function submitQuestions() {
   console.log("Submitted Questions:", questions.value);
   closeModal();
-};
+}
 
 
 //FUNKCIJA ZA SUBMIT POLLA IN AXIOS POST

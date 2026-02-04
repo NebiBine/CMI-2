@@ -1,6 +1,1 @@
-# To install all dependencies defined in package.json:
-cd frontend
-npm install
-
-# To install dependencies manually (Production):
-npm install @fortawesome/fontawesome-svg-core @fortawesome/free-regular-svg-icons @fortawesome/free-solid-svg-icons @fortawesome/vue-fontawesome @primeuix/themes @sentry/vue @tailwindcss/vite @types/canvas-confetti @types/three ant-design-vue axios canvas-confetti class-variance-authority clsx gsap lucide-vue-next motion-v primevue tailwind-merge three uuid vue vue-router vue-tel-input
+@fortawesome/fontawesome-svg-core @fortawesome/free-regular-svg-icons @fortawesome/free-solid-svg-icons @fortawesome/vue-fontawesome @primeuix/themes @sentry/vue @tailwindcss/vite @types/canvas-confetti @types/three ant-design-vue axios canvas-confetti class-variance-authority clsx gsap lucide-vue-next motion-v primevue swapy tailwind-merge three uuid vue vue-router vue-tel-input @vitejs/plugin-vue autoprefixer naive-ui postcss tailwindcss tw-animate-css vite

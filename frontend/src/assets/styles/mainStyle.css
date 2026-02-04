@@ -390,3 +390,9 @@ body,
   font-family: 'InterTekst', sans-serif;
   font-weight: 600;
 }
+/* WEATHER VIEW CSS */
+.zavihki_weather {
+  --n-bar-color: #1b273f !important; /* Barva premikajoče se črte */
+  --n-tab-text-color-active: #1b273f !important; /* Barva aktivnega teksta */
+  --n-tab-text-color-hover: gray !important; /* Barva teksta ob hoverju */
+}
