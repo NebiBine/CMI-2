@@ -150,3 +150,49 @@ class Announcments(Model):
     content: str
     expirationDate: datetime
     type : str
+
+
+#weather models
+class Current(BaseModel):
+    temp_c: float
+    feelslike_c: float
+    dewpoint_c: float
+    aqi: int
+    icon: str
+    condition: str
+    wind_kph: float
+    humidity: int
+
+class DayForecast(BaseModel):
+    date: str
+    max_temp_c: float
+    min_temp_c: float
+    avg_humidity: float
+    condition: str
+    icon: str
+    total_precip_mm: float
+
+class Forecast(BaseModel):
+    day1: DayForecast
+    day2: DayForecast
+    day3: DayForecast
+
+class Alert(BaseModel):
+    headline: str
+    msgtype: str
+    severity: str
+    urgency: str
+    areas: str
+    category: str
+    event: str
+    instruction: str
+
+class CityWeather(BaseModel):
+    current: Current
+    forecast: Forecast
+    alerts: dict[str, Alert]
+
+class WeatherData(Model):
+    id: str = Field(primary_field=True, default_factory=lambda: str(uuid4()))
+    weatherByCity: dict[str, CityWeather]
+    lastUpdated: datetime = Field(default_factory=datetime.utcnow)

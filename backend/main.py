@@ -2,7 +2,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routes import router
 import sentry_sdk
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from contextlib import asynccontextmanager
+from .services.weather import getWeather
+from .database.servicesDb.databaseServ import getCities
 
+#error catcher sentry
 sentry_sdk.init(
     dsn="https://769027d1fb68562f85f2557cd62e04fa@o4510619949268992.ingest.de.sentry.io/4510619961262160",
     # Add data like request headers and IP for users,
@@ -10,7 +15,27 @@ sentry_sdk.init(
     send_default_pii=True,
 )
 
-app = FastAPI()
+#scheduler za vreme
+scheduler = AsyncIOScheduler()
+async def refreshWeather():
+    cities = await getCities()
+    await getWeather(cities)
+    print("[scheduler] Weather data refreshed")
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    await refreshWeather()
+    print("[lifespan] Initial weather refresh completed")
+    scheduler.add_job(refreshWeather, 'interval', hours=3)
+    scheduler.start()
+    print("[lifespan] Scheduler started")
+    yield
+    scheduler.shutdown()
+    print("[lifespan] Scheduler shut down")
+
+
+
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -52,3 +77,6 @@ Always stop other uvicorn/python servers first (taskkill /F /IM python.exe if ne
 Keep this terminal open; you’ll see logs for every request.
 Point your frontend to the same host/port (http://localhost:8000 or http://127.0.0.1:8000).
 """
+
+
+

@@ -31,3 +31,9 @@ try:
     router.include_router(guide_router, prefix="/guide", tags=["guide"])
 except Exception as e:
     print(f"[routes] Failed to load guideRoutes: {e}")
+
+try:
+    from .weatherRoutes import router as weather_router
+    router.include_router(weather_router, prefix="/weather", tags=["weather"])
+except Exception as e:
+    print(f"[routes] Failed to load weatherRoutes: {e}")

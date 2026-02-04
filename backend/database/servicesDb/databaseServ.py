@@ -1,5 +1,6 @@
 from odmantic import AIOEngine
-from ..creators.models import Announcments, Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive, Reward, UserRewards, RewardArchive, ResultsArchive
+from pydantic import BaseModel
+from ..creators.models import Announcments, Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive, Reward, UserRewards, RewardArchive, ResultsArchive, Current, DayForecast, Forecast, Alert, CityWeather, WeatherData
 from datetime import datetime
 engine = AIOEngine()
 
@@ -187,3 +188,25 @@ async def getAnnouncement(city: str):
 
 async def deleteAnnouncement(announcement: Announcments):
     await engine.delete(announcement)
+
+#weather
+async def saveWeatherData(weatherData: WeatherData):
+    existingData = await engine.find_one(WeatherData)
+    if existingData:
+        existingData.weatherByCity = weatherData.weatherByCity
+        existingData.lastUpdated = datetime.utcnow()
+        await engine.save(existingData)
+    else:
+        await engine.save(weatherData)
+    return
+
+async def getCities():
+    profiles = await engine.find(Profile)
+    cities = []
+    for profile in profiles:
+        if(profile.city not in cities):
+            cities.append(profile.city)
+        else:
+            continue
+    return list(cities)
+
