@@ -186,7 +186,7 @@ async function PollStatistics(){
     const response = await axios.post('http://localhost:8000/poll-reward/getResults',
     {id:  archivedPollData.value.id},
     { withCredentials: true });
-    PollResults.value = response.data;
+    PollResults.value = response.data.answers;
     console.log("Fetched poll results:", PollResults.value);
   }
   catch(error){
@@ -245,27 +245,42 @@ onMounted(() => {
     positive-text="Submit"
     negative-text="Cancel"
     @negative-click="closeModalstatistics">
-    <div v-for="question in PollResults" :key="question.id">
-      <!--PRIKAZANO VSAKO VPRASANJE IN VSI ODGOVORI KATERI OBSTAJAJO ZA TOCNO TA POLL IN TO VPRASANJE-->
-      <!--WORK IN PROGRESS TO SE NE BO DELOVALO-->
-      <h3>{{ question.questionText }}</h3>
-      <div v-if="question.type == 'yesno'">
-        <p>Yes: {{ question.option1.result }}</p>
-        <p>No: {{ question.option2.result }}</p>
+    <div v-for="(question, index) in PollResults" :key="question.questionId || index" style="margin-bottom: 24px;">
+      <h3 style="margin-bottom: 12px; font-weight: bold;">Question: {{ question.questionText }}</h3>
+      <div v-if="question.questionType == 'yesno'">
+        <!--prikazem vrednost odgovorov za yes in za no-->
+        <p>Yes: {{ question.option1.result.length }}</p>
+        <p>No: {{ question.option2.result.length }}</p>
       </div>
-      <div v-if="question.type == 'input'">
-        <p>Result: {{ question.results }}</p>
+
+      <div v-else-if="question.questionType == 'input'">
+        <p>User Responses:</p>
+        <!--PREVERIM CE VPRASANJE IN ODGOVOR SPLOH OBSTAJATA ZA INPUT-->
+        <ul v-if="question.option1 && question.option1.result">
+          <!--Loopam skozi vse te odgovore in jih izpisem-->
+          <li v-for="(answer, respIndex) in question.option1.result" :key="respIndex">
+            {{ answer }}
+          </li>
+        </ul>
       </div>
-      <div v-if="question.type == 'checkbox'">
-        <div v-if="question.option">
-          <div v-for="(option, index) in question.options" :key="index">
-            <p>{{ option }}: {{ question.results[option]}}</p>
-          </div>
-        </div>
-      </div>
-      <div v-if="question.type == 'radioButtons'">
-        <p>Yes: {{ question.results.yes }}</p>
-        <p>No: {{ question.results.no }}</p>
+      <div v-else-if="question.questionType == 'checkbox' || question.questionType == 'radioButtons'">
+        <p>Options Results:</p>
+        <ul>
+          <li v-for="i in 4" :key="i" style="list-style: none;">
+            <!--preverim ce opcija sploh obstaja-->
+            <div v-if="question['option' + i] && question['option' + i].optionText">
+              {{ question['option' + i].optionText }}:
+              <!--ce sploh array ima resulte oziroma je length razlicen od 0--> 
+              <span v-if="question['option' + i].result">
+                  {{ question['option' + i].result.length }}
+              </span>
+              <!--CE NE JE 0-->
+              <span v-else>
+                  0
+              </span>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </n-modal>

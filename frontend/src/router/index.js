@@ -17,6 +17,7 @@ import ProfileCreationView from '../views/ProfileCreationView.vue';
 import DashboardView from '../views/DashboardView.vue';
 import PollsAndInsightsView from '../views/PollsAndInsightsView.vue';
 import RewardsView from '../views/RewardsView.vue';
+import WeatherView from '../views/weatherView.vue';
 
 //admin
 import AdminPanelView from '../views/AdminPanelView.vue';
@@ -73,6 +74,7 @@ const routes = [
       {path:'Dashboard',name:'dashboard',component: DashboardView, meta: { requiresAuth: true }},
       {path:'PollsAndInsights',name:'polls',component: PollsAndInsightsView, meta: { requiresAuth: true }},
       {path:'Rewards',name:'rewards',component: RewardsView, meta: { requiresAuth: true }},
+      {path:'Weather',name:'weather',component: WeatherView, meta: { requiresAuth: true }}
     ]
   },
   {
