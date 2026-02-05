@@ -3,6 +3,23 @@
     import { ref, onMounted } from 'vue';
     import axios from 'axios';
     import { useRouter } from 'vue-router';
+
+    const weatherData = ref([]);
+
+    async function getWeatherData(){
+      try{
+        const response = await axios.get('http://localhost:8000/weather/getWeather',
+        {withCredentials: true});
+        weatherData.value = response.data;
+        console.log("Weather data:", weatherData.value);
+      }
+      catch(error){
+        console.error('Error fetching weather data:', error);
+      }
+    }
+  onMounted(() => {
+      getWeatherData();
+  });
 </script>
 <template>
     <h1>Weather</h1>
