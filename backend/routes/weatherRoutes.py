@@ -1,19 +1,23 @@
-from fastapi import APIRouter, HTTPException, Response, Request, Form
+from fastapi import APIRouter, HTTPException, Response, Request
 from pydantic import BaseModel
+from ..database.creators.models import WeatherData
+from ..database.servicesDb.databaseServ import getWeatherData, getCityId
 
 router = APIRouter()
 
 class WeatherResponse(BaseModel):
-    location: str
-    temperature: float
-    description: str
-
-class WeatherRequest(BaseModel):
-    location: str
+    weather: WeatherData
 
 @router.get('/getWeather', response_model=WeatherResponse)
 async def getWeatherRoute(request:Request):
-    return {"location": "Sample City", "temperature": 25.5, "description": "Sunny"}
+    userId = request.cookies.get("sessionId")
+    if not userId:
+        raise HTTPException(status_code=401, detail="Unauthorized, ni idja")    
+    city = await getCityId(userId)
+    weatherData = await getWeatherData(city)
+    if not weatherData:
+        raise HTTPException(status_code=404, detail="Weather data not found for the city")
+    return {"weather": weatherData}
 
 
 

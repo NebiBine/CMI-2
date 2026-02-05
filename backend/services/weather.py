@@ -19,7 +19,6 @@ async def getWeather(cities):
         )
         data = response.json()
 
-        print(f"[weather] City: {city}, API Response: {data}")
         
         if not data.get("results"):
             print(f"[weather] No results for {city}, skipping...")

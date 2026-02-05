@@ -210,3 +210,9 @@ async def getCities():
             continue
     return list(cities)
 
+
+async def getWeatherData(city: str):
+    weatherData = await engine.find_one(WeatherData, WeatherData.weatherByCity.has_key(city))
+    if weatherData and city in weatherData.weatherByCity:
+        return weatherData.weatherByCity[city]
+    return None
