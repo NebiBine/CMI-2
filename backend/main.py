@@ -7,6 +7,9 @@ from contextlib import asynccontextmanager
 from .services.weather import getWeather
 from .database.servicesDb.databaseServ import getCities
 
+disableWeather = False
+
+
 #error catcher sentry
 sentry_sdk.init(
     dsn="https://769027d1fb68562f85f2557cd62e04fa@o4510619949268992.ingest.de.sentry.io/4510619961262160",
@@ -24,14 +27,15 @@ async def refreshWeather():
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    await refreshWeather()
-    print("[lifespan] Initial weather refresh completed")
-    scheduler.add_job(refreshWeather, 'interval', hours=3)
-    scheduler.start()
-    print("[lifespan] Scheduler started")
-    yield
-    scheduler.shutdown()
-    print("[lifespan] Scheduler shut down")
+    if (disableWeather == False):
+        await refreshWeather()
+        print("[lifespan] Initial weather refresh completed")
+        scheduler.add_job(refreshWeather, 'interval', hours=3)
+        scheduler.start()
+        print("[lifespan] Scheduler started")
+        yield
+        scheduler.shutdown()
+        print("[lifespan] Scheduler shut down")
 
 
 

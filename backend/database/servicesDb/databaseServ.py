@@ -212,7 +212,8 @@ async def getCities():
 
 
 async def getWeatherData(city: str):
-    weatherData = await engine.find_one(WeatherData, WeatherData.weatherByCity.has_key(city))
+    weatherData = await engine.find_one(WeatherData)
+    WeatherDataCity = weatherData.weatherByCity.get(city) if weatherData else None
     if weatherData and city in weatherData.weatherByCity:
         return weatherData.weatherByCity[city]
-    return None
+    return ""
