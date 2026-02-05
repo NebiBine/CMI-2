@@ -2,6 +2,7 @@ from odmantic import AIOEngine
 from pydantic import BaseModel
 from ..creators.models import Announcments, Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive, Reward, UserRewards, RewardArchive, ResultsArchive, Current, DayForecast, Forecast, Alert, CityWeather, WeatherData
 from datetime import datetime
+from typing import Optional
 engine = AIOEngine()
 
 #auth
@@ -214,6 +215,6 @@ async def getCities():
 async def getWeatherData(city: str):
     weatherData = await engine.find_one(WeatherData)
     WeatherDataCity = weatherData.weatherByCity.get(city) if weatherData else None
-    if weatherData and city in weatherData.weatherByCity:
+    if weatherData:
         return weatherData.weatherByCity[city]
     return ""
