@@ -36,6 +36,9 @@ async def lifespan(_: FastAPI):
         yield
         scheduler.shutdown()
         print("[lifespan] Scheduler shut down")
+    else:
+        print("[lifespan] Scheduler turned off, skipping weather refresh")
+        yield
 
 
 

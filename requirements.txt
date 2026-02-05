@@ -10,3 +10,4 @@ python-multipart
 sendgrid==6.9.7
 requests
 apscheduler
+dotenv

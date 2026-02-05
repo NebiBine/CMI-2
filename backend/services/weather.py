@@ -1,11 +1,19 @@
 import requests
+from dotenv import load_dotenv
+from pathlib import Path
 import os
 from ..database.creators.models import WeatherData, CityWeather, Current, DayForecast, Forecast, Alert
 from ..database.servicesDb.databaseServ import saveWeatherData
+
+load_dotenv(Path(r"D:\python\cmi\final\CMI-2\cmi.env"))
+API_KEY_OPENCAGE = os.getenv("OPENCAGE_KEY")
+API_KEY_WEATHER = os.getenv("WEATHERAPI_KEY")
+if not API_KEY_OPENCAGE or not API_KEY_WEATHER:
+    raise RuntimeError("Missing weather API keys in environment")
+
 async def getWeather(cities):
     weather_data = {}
     for city in cities:
-        API_KEY_OPENCAGE = ""
         place = f"{city}, Slovenia"
 
         response = requests.get(
@@ -28,7 +36,6 @@ async def getWeather(cities):
         location = f"{coords['lat']}, {coords['lng']}"
 
 
-        API_KEY_WEATHER = ""
         BASE_URL = "http://api.weatherapi.com/v1/forecast.json"
         params = {
             "key": API_KEY_WEATHER,
@@ -107,3 +114,5 @@ async def getWeather(cities):
     )
     await saveWeatherData(weatherDataModel)
     return weather_data
+
+#todo, dej v bazo list mestou da ne klice usakic sprot kse spremeni ce pride novo mesto not in restarta weather.
