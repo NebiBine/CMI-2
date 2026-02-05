@@ -1,9 +1,16 @@
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, To, DynamicTemplateData
+from dotenv import load_dotenv
+from pathlib import Path
 import os
 
+load_dotenv(Path(r"D:\python\cmi\final\CMI-2\cmi.env"))
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY") 
+if not SENDGRID_API_KEY:
+    raise RuntimeError("Missing SendGrid API key in environment")
+
 def sendEmail(email, link):
-    SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY") 
+
 
     #$env:SENDGRID_API_KEY="APi key"
     #setx SENDGRID_API_KEY "APi key"
