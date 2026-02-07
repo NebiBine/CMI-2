@@ -1,6 +1,6 @@
 from odmantic import AIOEngine
 from pydantic import BaseModel
-from ..creators.models import Announcments, Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive, Reward, UserRewards, RewardArchive, ResultsArchive, Current, DayForecast, Forecast, Alert, CityWeather, WeatherData
+from ..creators.models import Cities, Announcments, Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive, Reward, UserRewards, RewardArchive, ResultsArchive, Current, DayForecast, Forecast, Alert, CityWeather, WeatherData
 from datetime import datetime
 from typing import Optional
 engine = AIOEngine()
@@ -201,7 +201,7 @@ async def saveWeatherData(weatherData: WeatherData):
         await engine.save(weatherData)
     return
 
-async def getCities():
+"""async def getCities():
     profiles = await engine.find(Profile)
     cities = []
     for profile in profiles:
@@ -209,7 +209,7 @@ async def getCities():
             cities.append(profile.city)
         else:
             continue
-    return list(cities)
+    return list(cities)"""
 
 
 async def getWeatherData(city: str):
@@ -218,3 +218,16 @@ async def getWeatherData(city: str):
     if weatherData:
         return weatherData.weatherByCity[city]
     return ""
+
+#cities
+async def saveCity(city: Cities):
+    existingCity = await engine.find_one(Cities, Cities.city == city.city)
+    if not existingCity:
+        await engine.save(city)
+
+async def getAllCities():
+    cities = await engine.find(Cities)
+    return [city.city for city in cities]
+
+async def deleteCity(city: Cities):
+    await engine.delete(city)

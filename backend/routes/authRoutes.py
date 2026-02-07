@@ -7,7 +7,7 @@ import bcrypt
 
 from ..services.email import sendEmail
 from ..database.creators.models import Uporabnik, Reset
-from ..database.servicesDb.databaseServ import getAllUsersDb, getUserId, getUserEmail, getUserUsername, saveUser, saveReset, getResetToken, deleteResetToken, addAdmin, getAdminId
+from ..database.servicesDb.databaseServ import saveCity, getAllUsersDb, getUserId, getUserEmail, getUserUsername, saveUser, saveReset, getResetToken, deleteResetToken, addAdmin, getAdminId
 
 router = APIRouter()
 

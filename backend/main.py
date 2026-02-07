@@ -5,7 +5,7 @@ import sentry_sdk
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from contextlib import asynccontextmanager
 from .services.weather import getWeather
-from .database.servicesDb.databaseServ import getCities
+from .database.servicesDb.databaseServ import getAllCities
 
 disableWeather = False
 
@@ -21,7 +21,7 @@ sentry_sdk.init(
 #scheduler za vreme
 scheduler = AsyncIOScheduler()
 async def refreshWeather():
-    cities = await getCities()
+    cities = await getAllCities()
     await getWeather(cities)
     print("[scheduler] Weather data refreshed")
 
