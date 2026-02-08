@@ -196,3 +196,6 @@ class WeatherData(Model):
     id: str = Field(primary_field=True, default_factory=lambda: str(uuid4()))
     weatherByCity: dict[str, CityWeather]
     lastUpdated: datetime = Field(default_factory=datetime.utcnow)
+
+class Cities(Model):
+    city: str = Field(primary_field=True)

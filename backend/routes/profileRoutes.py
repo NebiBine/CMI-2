@@ -5,8 +5,8 @@ import aiofiles
 import base64
 import sys
 
-from ..database.creators.models import Admins, Uporabnik, Profile
-from ..database.servicesDb.databaseServ import createProfile as saveProfile, deleteAdmin, getProfileId, getAdminId, addAdmin
+from ..database.creators.models import Admins, Cities, Uporabnik, Profile
+from ..database.servicesDb.databaseServ import deleteCity, getAllCities, saveCity, createProfile as saveProfile, deleteAdmin, getProfileId, getAdminId, addAdmin
 
 router = APIRouter()
 
@@ -86,6 +86,7 @@ async def createProfile_endpoint(
         profile_picture_url=pfpSave,
     )
     await saveProfile(profile)
+    await saveCity(Cities(city=city))
     return {"statusCode": 200, "message": "Profile created successfully backend"}
 
 @router.post("/getProfile", response_model=getProfileResponse)
@@ -114,6 +115,10 @@ async def updateProfile(profile: updateProfileRequest):
     existingProfile.country = profile.country
 
     await saveProfile(existingProfile)
+    allCities = await getAllCities()
+    if profile.city not in allCities:
+        await saveCity(Cities(city=profile.city))
+
 
     admin = await getAdminId(profile.id)
     if profile.isAdmin and not admin:
