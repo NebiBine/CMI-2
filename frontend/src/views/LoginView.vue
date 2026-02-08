@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import '../assets/styles/AUTHStyle.css';
 import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
@@ -34,8 +34,30 @@ const rules = {
   },
 };
 
+//FUNKCIJA DA PREVERIM CE JE LOGGED IN TRUE IN CE JE POTEM GA DAM NA DASHBOARD, CE NE JE PA NA LOGIN
+async function checkSession() {
+  try {
+    const response = await axios.get("http://localhost:8000/auth/check", {
+      withCredentials: true
+    });
+    if (response.data.loggedIn==true) {
+      router.push("/app/Dashboard");
+      message.success("Welcome back!",3);
+    }
+  } catch (error) {
+    console.error("❌ CMI Session check error:", error);
+  }
+};
+
+
+
+function remember(checked){
+  rememberState.value = checked;
+  console.log("Remember me stanje:", rememberState.value);
+}
+
 // axios login
-const login = async () => {
+async function login() {
   try {
     const response = await axios.post("http://localhost:8000/auth/login", {
       identifier: formValue.value.user.username,
@@ -48,7 +70,7 @@ const login = async () => {
     if (response.data.statusCode === 200) {
       router.push("/app/Dashboard");
       message.success(response.data.message,3);
-    } 
+    }
   } catch (error) {
     console.error("❌ CMI Login error:", error);
     if (error.response.data.detail) {
@@ -60,16 +82,10 @@ const login = async () => {
     }
 }
 };
-function remember(checked){
-  rememberState.value = checked;
-  console.log("Remember me stanje:", rememberState.value);
-}
-//dodaj da ce user ze ima cookije da direktno pusham na dashboard router.push("/app/Dashboard");
 
-const [messageApi, contextHolder] = message.useMessage();
-const wrongUsername = () => {
-  messageApi.info('Username does not exist!');
-};
+onMounted(() => {
+  checkSession();
+});
 </script>
 
 <template>

@@ -396,3 +396,121 @@ body,
   --n-tab-text-color-active: #1b273f !important; /* Barva aktivnega teksta */
   --n-tab-text-color-hover: gray !important; /* Barva teksta ob hoverju */
 }
+.alerts-container{
+  display: grid;
+  gap: 12px;
+}
+.alert-card{
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  border-radius: 0;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+  border-left: 2px solid #94a3b8;
+}
+.alert-severe{
+  border-left-color: #991b1b;
+  
+}
+.alert-moderate{
+  border-left-color: #b45309;
+}
+.alert-minor{
+  border-left-color: #1f2937;
+}
+.alert-unknown{
+  border-left-color: #94a3b8;
+}
+.alert-collapse{
+  padding: 8px 10px;
+}
+.alert-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+}
+.alert-title{
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: #0f172a;
+}
+.alert-badge{
+  border: 1px solid #cbd5f5;
+  color: #334155;
+  font-size: 11px;
+  padding: 2px 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.alert-desc{
+  color: #1f2937;
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 8px 0 10px;
+}
+.alert-meta{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 16px;
+  margin-bottom: 8px;
+}
+.meta-item{
+  display: grid;
+  gap: 2px;
+}
+.meta-label{
+  font-size: 11px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.meta-value{
+  font-size: 13px;
+  color: #0f172a;
+}
+.alert-instruction{
+  font-size: 13px;
+  color: #0f172a;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 8px;
+}
+.alert-muted{
+  font-size: 12px;
+  color: #94a3b8;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 8px;
+}
+.forecast-container{
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  flex-direction: row;
+  height: 500px;
+}
+.forecast-day{
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  padding: 15px;
+  gap: 30px;
+  font-family: 'InterTekst', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+}
+.temp-range{
+  background: linear-gradient(to bottom right, #fff7ed, #eff6ff);
+}
+#forecast-condition
+{
+  background-color: rgb(179, 149, 149);
+  color: white; 
+  border: 1px solid rgb(107, 103, 103);
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+}
