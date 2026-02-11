@@ -87,6 +87,7 @@ onMounted(() => {
         <p>This is where users can view and participate in polls and insights.</p>
 
         <div class="polls-container">
+            <div v-if="polls.length > 0">
             <div v-for="poll in polls" :key="poll.id" class="EnPoll">
                 <!--OSNOVNI PODATKI -->
                 <h2 class="pollTitle">{{ poll.pollTitle }}</h2>
@@ -165,6 +166,10 @@ onMounted(() => {
                         answers</n-button>
                     <n-button class="cancelpollBtn" @click="closeModal">Cancel</n-button>
                 </n-modal>
+            </div>
+            </div>
+            <div v-else class="noPolls_Found">
+                <p >No active polls available at the moment. Please check back later!</p>
             </div>
         </div>
     </div>

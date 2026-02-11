@@ -153,6 +153,15 @@ body,
   padding: 12px;
   margin-top: 10px;
 }
+.noPolls_Found{
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 300px;
+  margin: 0 auto;
+  display: flex;
+}
 
 /*-------------------------------------*/
 /*----------POPRAVI TA HOVER--------- */
@@ -409,7 +418,7 @@ body,
 }
 .alert-severe{
   border-left-color: #991b1b;
-  
+
 }
 .alert-moderate{
   border-left-color: #b45309;
@@ -513,4 +522,57 @@ body,
   padding: 5px;
   border-radius: 5px;
   text-align: center;
+}
+
+.current_weather{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color: #3eac3a;
+  border-radius: 10px;
+}
+.profile_card{
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 20px;
+  width: 100%;
+}
+.edit_profile{
+  display: flex;
+  justify-content: flex-end;
+}
+.edit_profile_btn{
+  background-color: #111827;
+  color: white;
+  width: 150px;
+  height: 40px;
+  margin-top: 10px;
+  border-radius: 5px;
+  --n-color-hover: #111827 !important;
+  --n-text-color-hover: #ffffff !important;
+  --n-color-selected: #111827 !important;
+  --n-text-color-selected: #ffffff !important;
+  --n-color-active: #111827 !important;
+  --n-text-color-active: #ffffff !important;
+  --n-color-focus: #111827 !important;
+  --n-text-color-focus: #ffffff !important;
+}
+.profile_info{
+  margin-top: 10px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  height: auto;
+  border-radius: 8px;
+  padding: 10px;
+
+}
+.security_info{
+  margin-top: 50px;
+}
+.profile-pic{
+  background-color: yellow;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
 }

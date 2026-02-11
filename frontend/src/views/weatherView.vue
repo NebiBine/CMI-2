@@ -6,7 +6,7 @@
     import { ThermometerSun,ThermometerSnowflake,Droplets } from 'lucide-vue-next';
 
     const weatherData = ref(null);
-    
+
     async function getWeatherData(){
       try{
         const response = await axios.get('http://localhost:8000/weather/getWeather',
@@ -35,7 +35,7 @@
     <p>Look through the weather forecast and keep an eye on the weather alerts if there are any!</p>
     <n-tabs type="line" animated class="zavihki_weather">
       <n-tab-pane name="currentWeather" tab="🌤️ Current Weather">
-        <div v-if="weatherData">
+        <div v-if="weatherData" class ="current_weather">
           <img :src="weatherData.weather.current.icon" alt="Weather Icon" width="70" height="70"/>
           <p>Condition: {{ weatherData.weather.current.condition }}</p>
           <p>Temperature: {{ weatherData.weather.current.temp_c }}°C</p>
