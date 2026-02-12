@@ -20,7 +20,7 @@ function closeModal() {
 
 async function update() {
     const updatedProfile = {
-        id: profil.value.id ?? selectedUser.value.id,
+        id: selectedUser.value.id,
         first_name: profil.value.first_name,
         last_name: profil.value.last_name,
         birthdate: profil.value.birthdate,
@@ -28,7 +28,8 @@ async function update() {
         address: profil.value.address,
         city: profil.value.city,
         country: profil.value.country,
-        isAdmin: admin_state.value
+        isAdmin: admin_state.value,
+        type: 1
     };
     try {
         const response = await axios.post("http://localhost:8000/profile/updateProfile",
