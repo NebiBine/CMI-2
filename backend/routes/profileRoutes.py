@@ -33,6 +33,7 @@ class updateProfileRequest(BaseModel):
     city: str
     country: str
     isAdmin: bool
+    type: int
 
 @router.post("/createProfile", response_model=ProfileResponse)
 async def createProfile_endpoint(
@@ -101,8 +102,15 @@ async def getProfile(user: ProfileRequest):
     return {"statusCode": 200, "message": "Profile fetched successfully", "profile": profile, "admin": isAdmibBool} # dodej za admin level
 
 @router.post("/updateProfile", response_model=ProfileResponse)
-async def updateProfile(profile: updateProfileRequest):
-    existingProfile = await getProfileId(profile.id)
+async def updateProfile(request:Request, profile: updateProfileRequest):
+    userId = request.cookies.get("sessionId")
+    if not userId:
+        raise HTTPException(status_code=401, detail="Unauthorized, no session ID")
+    if profile.type != 1:
+        ids = userId
+    else:
+        ids = profile.id
+    existingProfile = await getProfileId(ids)
     if not existingProfile:
         raise HTTPException(status_code=404, detail="Profile not found")
     
@@ -119,17 +127,17 @@ async def updateProfile(profile: updateProfileRequest):
     if profile.city not in allCities:
         await saveCity(Cities(city=profile.city))
 
-
-    admin = await getAdminId(profile.id)
-    if profile.isAdmin and not admin:
-        newAdmin = Admins(
-            id=profile.id,
-            city=profile.city,
-            admin_level=1
-        )
-        await addAdmin(newAdmin)
-    elif not profile.isAdmin and admin:
-        await deleteAdmin(admin)
+    if profile.type == 1:
+        admin = await getAdminId(profile.id)
+        if profile.isAdmin and not admin:
+            newAdmin = Admins(
+                id=profile.id,
+                city=profile.city,
+                admin_level=1
+            )
+            await addAdmin(newAdmin)
+        elif not profile.isAdmin and admin:
+            await deleteAdmin(admin)
 
     return {"statusCode": 200, "message": "Profile updated successfully"}
 
