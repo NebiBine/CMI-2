@@ -5,8 +5,8 @@
 
     const editModeStandard = ref(false);
     const editModeSecurity = ref(false);
-    const InEdit = ref(false);
     const userProfile = ref({});
+    const userProfilePicture = ref("");
 
     function toggleEditModeStandard() {
         editModeStandard.value = !editModeStandard.value;
@@ -52,7 +52,9 @@
                 type: 0 }, //type 0 ker hocem podatke o trenutnem userju, type 1 je za admin user management view da dobim podatke o userju ki ga admin gleda
             {withCredentials: true});
             userProfile.value = response.data.profile;
+            userProfilePicture.value = response.data.pfp;
             console.log("Profile data retrieved successfully", userProfile.value);
+            console.log("Profile picture URL:", userProfilePicture.value);
         }
         catch(error){
             console.log(error);
@@ -67,7 +69,10 @@ onMounted(() => {
         <p>Manage your profile, security, and preferences.</p>
         <div class = "profile_card">
             <h2 style="font-weight: bolder; font-size: 25px;">Profile Information</h2>
-            <div class="profile-pic" style="align-items: center;"><img :src="userProfile.profile_picture_url" alt="Profile Picture"></div>
+            <!--TODO: V dokumentacijo napisi da so bili razlicne opcije za servanje slike.-->
+            <div class="profile-pic" style="align-items: center; justify-content: center; display: flex;">
+                <img :src="`../../../${userProfilePicture}`" alt="Profile Picture">
+            </div>
             <p id="username"><strong>Username:</strong> {{ userProfile.username }}</p>
             <p id="email"><strong>Email:</strong> {{ userProfile.email }}</p>
         </div>

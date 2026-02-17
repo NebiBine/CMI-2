@@ -5,8 +5,8 @@ import os
 from ..database.creators.models import WeatherData, CityWeather, Current, DayForecast, Forecast, Alert
 from ..database.servicesDb.databaseServ import saveWeatherData
 
-load_dotenv(Path(r"D:\python\cmi\final\CMI-2\cmi.env"))
-#load_dotenv(Path(r"E:\CMI-2\CMI-2\cmi.env"))
+#load_dotenv(Path(r"D:\python\cmi\final\CMI-2\cmi.env"))
+load_dotenv(Path(r"E:\CMI-2\CMI-2\cmi.env"))
 API_KEY_OPENCAGE = os.getenv("OPENCAGE_KEY")
 API_KEY_WEATHER = os.getenv("WEATHERAPI_KEY")
 if not API_KEY_OPENCAGE or not API_KEY_WEATHER:
