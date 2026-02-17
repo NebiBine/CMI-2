@@ -1,4 +1,6 @@
+import mimetypes
 from fastapi import APIRouter, Depends, HTTPException, Response, Request, File, UploadFile, Form
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import os
 import aiofiles
@@ -19,6 +21,7 @@ class getProfileResponse(BaseModel):
     message: str
     profile: Profile
     admin: bool
+    pfp:str
 
 class ProfileRequest(BaseModel):
     userId: str
@@ -91,6 +94,23 @@ async def createProfile_endpoint(
     await saveCity(Cities(city=city))
     return {"statusCode": 200, "message": "Profile created successfully backend"}
 
+@router.get("/pfp/{userId}",name="get_profile_picture")
+async def uploadProfilePicture(request:Request):
+    userId = request.cookies.get("sessionId")
+    profile = await getProfileId(userId)
+    if not userId:
+        raise HTTPException(status_code=401, detail="Unauthorized, no session ID")
+    default_path = "database/data/pfp/default_profile_pic.png"
+    path = default_path
+    if profile and profile.profile_picture_url:
+        path = profile.profile_picture_url
+
+    media_type = mimetypes.guess_type(path)[0] or "application/octet-stream"
+    
+    return FileResponse(path, media_type=media_type)
+
+
+
 @router.post("/getProfile", response_model=getProfileResponse)
 async def getProfile(request:Request, user: ProfileRequest):
     userId = request.cookies.get("sessionId")
@@ -108,9 +128,9 @@ async def getProfile(request:Request, user: ProfileRequest):
     if isAdmin:
         isAdmibBool = True
 
-
-    pfp = File(profile.profile_picture_url)
-    return {"statusCode": 200, "message": "Profile fetched successfully", "profile": profile, "admin": isAdmibBool, "pfp": pfp} # dodej za admin level
+    pfp_url = str(request.url_for("get_profile_picture", user_id=ids))
+    
+    return {"statusCode": 200, "message": "Profile fetched successfully", "profile": profile, "admin": isAdmibBool, "pfp": pfp_url} # dodej za admin level
 
 @router.post("/updateProfile", response_model=ProfileResponse)
 async def updateProfile(request:Request, profile: updateProfileRequest):
