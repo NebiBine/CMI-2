@@ -107,7 +107,10 @@ async def getProfile(request:Request, user: ProfileRequest):
     isAdmin = await getAdminId(ids)
     if isAdmin:
         isAdmibBool = True
-    return {"statusCode": 200, "message": "Profile fetched successfully", "profile": profile, "admin": isAdmibBool} # dodej za admin level
+
+
+    pfp = File(profile.profile_picture_url)
+    return {"statusCode": 200, "message": "Profile fetched successfully", "profile": profile, "admin": isAdmibBool, "pfp": pfp} # dodej za admin level
 
 @router.post("/updateProfile", response_model=ProfileResponse)
 async def updateProfile(request:Request, profile: updateProfileRequest):
