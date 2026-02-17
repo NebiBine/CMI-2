@@ -71,7 +71,7 @@ onMounted(() => {
             <h2 style="font-weight: bolder; font-size: 25px;">Profile Information</h2>
             <!--TODO: V dokumentacijo napisi da so bili razlicne opcije za servanje slike.-->
             <div class="profile-pic" style="align-items: center; justify-content: center; display: flex;">
-                <img :src="`../../../${userProfilePicture}`" alt="Profile Picture">
+                <img :src="userProfilePicture" alt="Profile Picture" class="profile-pic">
             </div>
             <p id="username"><strong>Username:</strong> {{ userProfile.username }}</p>
             <p id="email"><strong>Email:</strong> {{ userProfile.email }}</p>
@@ -103,7 +103,7 @@ onMounted(() => {
         </div>
         <div class="profile_info">
             <h2 style="font-weight: bolder; font-size: 25px;">Security</h2>
-            <p><strong>Password:</strong> <n-input v-model:value="userProfile.password" :disabled="!editModeSecurity"></n-input></p>
+            <p><strong>Password:</strong> <n-input v-model:value="userProfile.password" :disabled="!editModeSecurity" placeholder="Enter new password: "></n-input></p>
             <p><strong>Last Login:</strong> 01/01/2024 12:00 PM</p>
         </div>
         </n-tab-pane>

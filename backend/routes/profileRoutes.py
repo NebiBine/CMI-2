@@ -95,7 +95,7 @@ async def createProfile_endpoint(
     return {"statusCode": 200, "message": "Profile created successfully backend"}
 
 @router.get("/pfp/{userId}",name="get_profile_picture")
-async def uploadProfilePicture(request:Request):
+async def uploadProfilePicture(userId: str, request:Request):
     userId = request.cookies.get("sessionId")
     profile = await getProfileId(userId)
     if not userId:
@@ -128,7 +128,7 @@ async def getProfile(request:Request, user: ProfileRequest):
     if isAdmin:
         isAdmibBool = True
 
-    pfp_url = str(request.url_for("get_profile_picture", user_id=ids))
+    pfp_url = str(request.url_for("get_profile_picture", userId=ids))
     
     return {"statusCode": 200, "message": "Profile fetched successfully", "profile": profile, "admin": isAdmibBool, "pfp": pfp_url} # dodej za admin level
 
