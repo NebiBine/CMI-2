@@ -94,7 +94,7 @@ async def createProfile_endpoint(
     await saveCity(Cities(city=city))
     return {"statusCode": 200, "message": "Profile created successfully backend"}
 
-@router.post("/pfp/{userId}")
+@router.get("/pfp/{userId}",name="get_profile_picture")
 async def uploadProfilePicture(request:Request):
     userId = request.cookies.get("sessionId")
     profile = await getProfileId(userId)
