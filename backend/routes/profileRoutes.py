@@ -22,6 +22,7 @@ class getProfileResponse(BaseModel):
 
 class ProfileRequest(BaseModel):
     userId: str
+    type: int
 
 class updateProfileRequest(BaseModel):
     id: str
@@ -91,12 +92,19 @@ async def createProfile_endpoint(
     return {"statusCode": 200, "message": "Profile created successfully backend"}
 
 @router.post("/getProfile", response_model=getProfileResponse)
-async def getProfile(user: ProfileRequest):
-    profile =  await getProfileId(user.userId)
+async def getProfile(request:Request, user: ProfileRequest):
+    userId = request.cookies.get("sessionId")
+    if not userId:
+        raise HTTPException(status_code=401, detail="Unauthorized, no session ID")
+    if user.type != 1:
+        ids = userId
+    else:
+        ids = user.id
+    profile = await getProfileId(ids)
     isAdmibBool = False
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found")
-    isAdmin = await getAdminId(user.userId)
+    isAdmin = await getAdminId(ids)
     if isAdmin:
         isAdmibBool = True
     return {"statusCode": 200, "message": "Profile fetched successfully", "profile": profile, "admin": isAdmibBool} # dodej za admin level
