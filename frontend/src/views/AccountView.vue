@@ -5,6 +5,7 @@
 
     const editModeStandard = ref(false);
     const editModeSecurity = ref(false);
+    const userProfile = ref({});
 
     function toggleEditModeStandard() {
         editModeStandard.value = !editModeStandard.value;
@@ -12,6 +13,32 @@
 
     function toggleEditModeSecurity() {
         editModeSecurity.value = !editModeSecurity.value;
+        if(editModeSecurity.value == false) {
+            userProfile.value.password = "********";
+        }
+    }
+    async function updateProfile() {
+        try {
+            const response = await axios.post("http://localhost:8000/profile/updateProfile",
+                userProfile.value,
+                { withCredentials: true });
+            console.log("Profile updated successfully", response.data);
+            getProfileData(); //osvežim podatke da se prikaže nova verzija
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function getProfileData(){
+        try{
+            const response = await axios.get('http://localhost:8000/profile/getProfileData',
+                {withCredentials: true});
+            userProfile.value = response.data;
+        }
+        catch(error){
+            console.log(error);
+        }
     }
 </script>
 <template>
@@ -20,8 +47,8 @@
         <div class = "profile_card">
             <h2 style="font-weight: bolder; font-size: 25px;">Profile Information</h2>
             <div class="profile-pic"><!-- TODO: url(${profile_picture}) UPORABI TO V STYLU POTEM KO PRIDEM DO TEGA --></div>
-            <p id="username"><strong>Username:</strong> John Doe</p>
-            <p id="email"><strong>Email:</strong> john.doe@example.com</p>
+            <p id="username"><strong>Username:</strong> {{ userProfile.username }}</p>
+            <p id="email"><strong>Email:</strong> {{ userProfile.email }}</p>
         </div>
     <n-tabs type="line" animated>
         <n-tab-pane name="basicInfo" tab="Basic Information">
@@ -30,15 +57,15 @@
                 <n-button class="edit_profile_btn" @click="toggleEditModeStandard">Edit Profile <img src="../assets/icons/edit_profile.svg" alt="Edit Profile Icon" width="20px" height="20px" style="margin-left: 7px;"></n-button>
             </div>
         <div class="profile_info">
-                <p><strong>First Name:</strong> <n-input value="John" :disabled="!editModeStandard"></n-input></p>
-                <p><strong>Last Name:</strong> <n-input value="Doe" :disabled="!editModeStandard"></n-input></p>
-                <p>Date of Birth: <n-input value="01/01/1990" :disabled="!editModeStandard"></n-input></p>
-                <p>Mobile Number: <n-input value="+386 123 4565" :disabled="!editModeStandard"></n-input></p>
-                <p>Country: <n-input value="SLO" :disabled="!editModeStandard"></n-input></p>
-                <p>City: <n-input value="Škofja Loka" :disabled="!editModeStandard"></n-input></p>
-                <p>Address:<n-input value="Slovenska cesta 12" :disabled="!editModeStandard"></n-input></p>
+                <p><strong>First Name:</strong> <n-input v-model:value="userProfile.firstName" :disabled="!editModeStandard"></n-input></p>
+                <p><strong>Last Name:</strong> <n-input v-model:value="userProfile.lastName" :disabled="!editModeStandard"></n-input></p>
+                <p>Date of Birth: <n-input v-model:value="userProfile.dateOfBirth" :disabled="!editModeStandard"></n-input></p>
+                <p>Mobile Number: <n-input v-model:value="userProfile.mobileNumber" :disabled="!editModeStandard"></n-input></p>
+                <p>Country: <n-input v-model:value="userProfile.country" :disabled="!editModeStandard"></n-input></p>
+                <p>City: <n-input v-model:value="userProfile.city" :disabled="!editModeStandard"></n-input></p>
+                <p>Address:<n-input v-model:value="userProfile.address" :disabled="!editModeStandard"></n-input></p>
                 <div v-if="editModeStandard == true" class="save_changes">
-                    <n-button class="save_changes_btn">Save Changes</n-button>
+                    <n-button class="save_changes_btn" @click="updateProfile">Save Changes</n-button>
                     <n-button class="cancel_changes_btn" @click="toggleEditModeStandard">Cancel</n-button>
                 </div>
             </div>
@@ -50,7 +77,7 @@
         </div>
         <div class="profile_info">
             <h2 style="font-weight: bolder; font-size: 25px;">Security</h2>
-            <p><strong>Password:</strong> <n-input value="*********" :disabled="!editModeSecurity"></n-input></p>
+            <p><strong>Password:</strong> <n-input v-model:value="userProfile.password" :disabled="!editModeSecurity"></n-input></p>
             <p><strong>Last Login:</strong> 01/01/2024 12:00 PM</p>
         </div>
         </n-tab-pane>

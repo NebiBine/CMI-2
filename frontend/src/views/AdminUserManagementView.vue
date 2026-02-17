@@ -37,6 +37,7 @@ async function update() {
             updatedProfile,
             { withCredentials: true });
         console.log("Successfuly updated user", response.data);
+        console.log("Updated profile data sent to backend:", updatedProfile);
         showModal.value = false; //zaprem modal
         await getAllUsers(); //poklicem funkcijo da dobim nove osvežene podatke
     }
@@ -118,7 +119,10 @@ async function getAllUsers() {
 async function userIdSend() {
     try {
         const response = await axios.post("http://localhost:8000/profile/getProfile", //||BACK POSLE ISTO ZADEVO K U DASHBOARD VIEW + ISADMIN, SAM PRKAZ PODATKE, poglej gor||    
-            { userId: selectedUser.value.id },
+            {   
+                userId: selectedUser.value.id,
+                type: 1
+            },
             { withCredentials: true });
         profil.value = response.data.profile;
         admin_state.value = response.data.admin; //dobim vse admine da lahko potem primerjam ce je user admin al ne
