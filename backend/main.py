@@ -7,7 +7,7 @@ from contextlib import asynccontextmanager
 from .services.weather import getWeather
 from .database.servicesDb.databaseServ import getAllCities
 
-disableWeather = False
+disableWeather = True
 
 
 #error catcher sentry
