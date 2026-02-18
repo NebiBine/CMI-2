@@ -8,7 +8,7 @@ import base64
 import sys
 
 from ..database.creators.models import Admins, Cities, Uporabnik, Profile
-from ..database.servicesDb.databaseServ import deleteCity, getAllCities, saveCity, createProfile as saveProfile, deleteAdmin, getProfileId, getAdminId, addAdmin
+from ..database.servicesDb.databaseServ import getUserId, deleteCity, getAllCities, saveCity, createProfile as saveProfile, deleteAdmin, getProfileId, getAdminId, addAdmin
 
 router = APIRouter()
 
@@ -22,6 +22,8 @@ class getProfileResponse(BaseModel):
     profile: Profile
     admin: bool
     pfp:str
+    username: str
+    email: str
 
 class ProfileRequest(BaseModel):
     userId: str
@@ -128,9 +130,15 @@ async def getProfile(request:Request, user: ProfileRequest):
     if isAdmin:
         isAdmibBool = True
 
+    if user.type == 1:
+        uporabnik = await getUserId(ids)
+
+    
+
+
     pfp_url = str(request.url_for("get_profile_picture", userId=ids))
     
-    return {"statusCode": 200, "message": "Profile fetched successfully", "profile": profile, "admin": isAdmibBool, "pfp": pfp_url} # dodej za admin level
+    return {"statusCode": 200, "message": "Profile fetched successfully", "profile": profile, "admin": isAdmibBool, "pfp": pfp_url, "username": uporabnik.username, "email": uporabnik.email} # dodej za admin level
 
 @router.post("/updateProfile", response_model=ProfileResponse)
 async def updateProfile(request:Request, profile: updateProfileRequest):

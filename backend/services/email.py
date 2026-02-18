@@ -4,8 +4,8 @@ from dotenv import load_dotenv
 from pathlib import Path
 import os
 
-#load_dotenv(Path(r"D:\python\cmi\final\CMI-2\cmi.env"))
-load_dotenv(Path(r"E:\CMI-2\CMI-2\cmi.env"))
+load_dotenv(Path(r"D:\python\cmi\final\CMI-2\cmi.env"))
+#load_dotenv(Path(r"E:\CMI-2\CMI-2\cmi.env"))
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY") 
 if not SENDGRID_API_KEY:
     raise RuntimeError("Missing SendGrid API key in environment")
