@@ -40,6 +40,14 @@ class resetPasswordRequest(BaseModel):
     token: str
     newPassword: str
 
+class newPasswordResponse(BaseModel):
+    statusCode: int
+    message: str
+
+class newPasswordRequest(BaseModel):
+    oldPassword: str
+    newPassword: str
+
 @router.post("/register", response_model=UserResponse)
 async def register(user: NewUser, response: Response):
     print("dsjdsdsdsdsdsd")
@@ -188,6 +196,21 @@ async def getProfile(request: Request):
 async def getAllUsers():
     return await getAllUsersDb()
 
-@router.get("/sentry-debug")
-async def trigger_error():
-    division_by_zero = 1 / 0
+@router.post("/newPassword", response_model=newPasswordResponse)
+async def newPasswordRoute(request: Request, passwords: newPasswordRequest):
+    userId = request.cookies.get("sessionId")
+    if not userId:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    user = await getUserId(userId)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    if not bcrypt.checkpw(passwords.oldPassword.encode('utf-8'), user.password.encode('utf-8')):
+        raise HTTPException(status_code=400, detail="Old password is incorrect")
+    if bcrypt.checkpw(passwords.oldPassword.encode('utf-8'), passwords.newPassword.encode('utf-8')):
+        raise HTTPException(status_code=400, detail="New password cannot be the same as the old password")
+    else:
+        hashPass = bcrypt.hashpw(passwords.newPassword.encode('utf-8'), bcrypt.gensalt())
+        user.password = hashPass.decode('utf-8')
+        await saveUser(user)
+        return {"statusCode": 200, "message": "Password has been changed successfully"}
+        
