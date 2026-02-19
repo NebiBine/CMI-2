@@ -155,8 +155,11 @@ async def addAdmin():
 async def check(_: AuthContext = Depends(requireUser)):
     return {"loggedIn": True}
     
-@router.get("/checkAdmin")
-async def checkAdmin():
+class AdminResponse(BaseModel):
+    admin: bool
+
+@router.get("/checkAdmin", response_model=AdminResponse)
+async def checkAdmin(auth: AuthContext = Depends(requireAdmin)):
     return {"admin": True}
     #return {"admin": auth.isAdmin}
     #auth: AuthContext = Depends(requireAdmin)
