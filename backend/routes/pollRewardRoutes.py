@@ -4,6 +4,8 @@ from uuid import uuid4
 from datetime import datetime, timedelta
 from typing import Union
 
+from backend.services.auth import AuthContext, requireAdmin, requireUser
+
 from ..database.creators.models import Option, Poll, Question, QuestionResult, Results, Reward, UserRewards, UserPoints
 from ..database.servicesDb.databaseServ import getAllArchivedPolls, getArchivedResultsId, getClaimeRewardId, savePoll, getCityId, getAllPolls, saveResults, getUserPoints, getPollId,getResultsId, getQuestionId,markCompletedPoll, moveToArchive, saveReward, getAllRewardsCity, getClaimedRewards, getRewardId, claimReward,updatePoints, moveRewardToArchive
 
@@ -58,10 +60,8 @@ class sendResults(BaseModel):
     answers: dict[str, QuestionResult]
 
 @router.post("/addPoll", response_model=PollResponse)
-async def addPollRoute(pollR: PollRequest, request: Request):
-    adminId = request.cookies.get("sessionId")
-    if not adminId:
-        raise HTTPException(status_code=401, detail="Unauthorized, no admin ID")
+async def addPollRoute(pollR: PollRequest, auth: AuthContext = Depends(requireAdmin)):
+    adminId = auth.userId
     userCity = await getCityId(adminId)
     pollId = uuid4()
     expirationDate = datetime.utcnow() + timedelta(days=pollR.pollDuration)
@@ -87,10 +87,8 @@ async def addPollRoute(pollR: PollRequest, request: Request):
     return {"statusCode": 200, "message": "Poll added successfully"}
 
 @router.get("/getPolls", response_model=list[Poll])
-async def getPollsRoute(request: Request):
-    userId = request.cookies.get("sessionId")
-    if not userId:
-        raise HTTPException(status_code=401, detail="Unauthorized, no user ID")
+async def getPollsRoute(auth: AuthContext = Depends(requireUser)):
+    userId = auth.userId
     city = await getCityId(userId)
     polls = await getAllPolls(city)
 
@@ -110,10 +108,8 @@ async def getPollsRoute(request: Request):
 
 
 @router.post("/completePoll", response_model=PollResponse)
-async def completePollRoute(pollreq: PollSubmissionRequest, request: Request):
-    userId = request.cookies.get("sessionId")
-    if not userId:
-        raise HTTPException(status_code=401, detail="Unauthorized, no user ID")
+async def completePollRoute(pollreq: PollSubmissionRequest, auth: AuthContext = Depends(requireUser)):
+    userId = auth.userId
     pollId = pollreq.pollId
     poll = await getPollId(pollId)
     results = await getResultsId(pollId)
@@ -157,18 +153,14 @@ async def completePollRoute(pollreq: PollSubmissionRequest, request: Request):
     return {"statusCode": 200, "message": "Poll completed successfully"}
         
 @router.get("/getUserPoints", response_model=int)
-async def getUserPointsRoute(request: Request):
-    userId = request.cookies.get("sessionId")
-    if not userId:
-        raise HTTPException(status_code=401, detail="Unauthorized, no user ID")
+async def getUserPointsRoute(auth: AuthContext = Depends(requireUser)):
+    userId = auth.userId
     userPoints = await getUserPoints(userId)
     return userPoints.points
 
 @router.post("/addReward", response_model=PollResponse)
-async def addRewardRoute(rewardRequest: RewardRequest, request: Request):
-    adminId = request.cookies.get("sessionId")
-    if not adminId:
-        raise HTTPException(status_code=401, detail="Unauthorized, no admin ID")
+async def addRewardRoute(rewardRequest: RewardRequest, auth: AuthContext = Depends(requireAdmin)):
+    adminId = auth.userId
     userCity = await getCityId(adminId)
     rewardID = uuid4()
     novReward = Reward(
@@ -185,10 +177,10 @@ async def addRewardRoute(rewardRequest: RewardRequest, request: Request):
     return {"statusCode": 200, "message": "Reward added successfully"}
 
 @router.get("/getAllAvailableRewards", response_model=RewardAllResponse)
-async def getAllRewardsRoute(request: Request):
+async def getAllRewardsRoute(auth: AuthContext = Depends(requireUser)):
     avaliableRewards = []
     claimedRewards = []
-    userId = request.cookies.get("sessionId")
+    userId = auth.userId
 
     if not userId:
         raise HTTPException(status_code=401, detail="Unauthorized, no user ID")
@@ -210,19 +202,15 @@ async def getAllRewardsRoute(request: Request):
     return {"avaliableRewards": avaliableRewards, "claimedRewards": claimedRewards}
 
 @router.get("/getAllRewardsAdmin", response_model=list[Reward])
-async def getAllRewardsAdminRoute(request: Request):
-    adminId = request.cookies.get("sessionId") # spremen da realno čekira če je admin
-    if not adminId:
-        raise HTTPException(status_code=401, detail="Unauthorized, no admin ID")
+async def getAllRewardsAdminRoute(auth: AuthContext = Depends(requireAdmin)):
+    adminId = auth.userId
     city = await getCityId(adminId)
     rewards = await getAllRewardsCity(city)
     return rewards
 
 @router.post("/deleteReward", response_model=PollResponse)
-async def deleteRewardRoute(deleteRewardRequest: DeleteClaimRewardRequest, request: Request):
-    adminId = request.cookies.get("sessionId") # spremen da realno čekira če je admin
-    if not adminId:
-        raise HTTPException(status_code=401, detail="Unauthorized, no admin ID")
+async def deleteRewardRoute(deleteRewardRequest: DeleteClaimRewardRequest, auth: AuthContext = Depends(requireAdmin)):
+    adminId = auth.userId
     reward = await getRewardId(deleteRewardRequest.id)
     if not reward:
         raise HTTPException(status_code=404, detail="Reward not found")
@@ -239,8 +227,8 @@ async def deleteRewardRoute(deleteRewardRequest: DeleteClaimRewardRequest, reque
 # 3 razlicna post routa
 
 @router.post("/claimReward", response_model=PollResponse)
-async def claimRewardRoute(claimRewardRequest: DeleteClaimRewardRequest, request:Request):
-    userId = request.cookies.get("sessionId")
+async def claimRewardRoute(claimRewardRequest: DeleteClaimRewardRequest, auth: AuthContext = Depends(requireUser)):
+    userId = auth.userId
     if not userId:
         raise HTTPException(status_code=401, detail="Unauthorized, no user ID")
     reward = await getRewardId(claimRewardRequest.id)
@@ -257,10 +245,7 @@ async def claimRewardRoute(claimRewardRequest: DeleteClaimRewardRequest, request
 
 
 @router.post("/editReward", response_model=PollResponse)
-async def editRewardRoute(rewardRequest: EditRewardRequest, request: Request):
-    adminId = request.cookies.get("sessionId")
-    if not adminId: # spremen da realno čekira če je admin
-        raise HTTPException(status_code=401, detail="Unauthorized, no admin ID")
+async def editRewardRoute(rewardRequest: EditRewardRequest, _: AuthContext = Depends(requireAdmin)):
     reward = await getRewardId(rewardRequest.id)
     if not reward:
         raise HTTPException(status_code=404, detail="Reward not found")
@@ -280,19 +265,14 @@ async def editRewardRoute(rewardRequest: EditRewardRequest, request: Request):
 #STATISTIKA
 #iz arhiva plus results
 @router.get('/getArchivedPolls', response_model=list[Poll])
-async def getArchivedPollsRoute(request:Request):
-    adminId = request.cookies.get("sessionId")
-    if not adminId:
-        raise HTTPException(status_code=401, detail="Unauthorized, no admin ID") 
+async def getArchivedPollsRoute(auth: AuthContext = Depends(requireAdmin)):
+    adminId = auth.userId
     city = await getCityId(adminId)
     polli = await getAllArchivedPolls(city)
     return polli
 
 @router.post('/getResults',response_model=sendResults)
-async def getResultsRoute(request:Request,pollId:getResultsPollRequest):
-    adminId = request.cookies.get("sessionId")
-    if not adminId:
-        raise HTTPException(status_code=401, detail="Unauthorized, no admin ID")
+async def getResultsRoute(_: AuthContext = Depends(requireAdmin), pollId:getResultsPollRequest=None):
     results = await getArchivedResultsId(pollId.id)
     if not results:
         raise HTTPException(status_code=404, detail="Poll or Results not found")

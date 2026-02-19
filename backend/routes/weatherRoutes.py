@@ -1,5 +1,7 @@
-from fastapi import APIRouter, HTTPException, Response, Request
+from fastapi import APIRouter, Depends, HTTPException, Response, Request
 from pydantic import BaseModel
+
+from backend.services.auth import AuthContext, requireUser
 from ..database.creators.models import CityWeather, WeatherData
 from ..database.servicesDb.databaseServ import getWeatherData, getCityId
 
@@ -9,10 +11,8 @@ class WeatherResponse(BaseModel):
     weather: CityWeather
 
 @router.get('/getWeather', response_model=WeatherResponse)
-async def getWeatherRoute(request:Request):
-    userId = request.cookies.get("sessionId")
-    if not userId:
-        raise HTTPException(status_code=401, detail="Unauthorized, ni idja")    
+async def getWeatherRoute(auth: AuthContext = Depends(requireUser)):
+    userId = auth.userId
     city = await getCityId(userId)
     weatherData = await getWeatherData(city)
     if not weatherData:

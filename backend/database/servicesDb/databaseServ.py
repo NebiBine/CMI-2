@@ -1,6 +1,6 @@
 from odmantic import AIOEngine
 from pydantic import BaseModel
-from ..creators.models import Cities, Announcments, Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive, Reward, UserRewards, RewardArchive, ResultsArchive, Current, DayForecast, Forecast, Alert, CityWeather, WeatherData
+from ..creators.models import Cities, Announcments, Session, Uporabnik, Profile, Admins, Reset, Poll, Results, UserPoints, PollArchive, Reward, UserRewards, RewardArchive, ResultsArchive, Current, DayForecast, Forecast, Alert, CityWeather, WeatherData
 from datetime import datetime
 from typing import Optional
 engine = AIOEngine()
@@ -38,6 +38,20 @@ async def getAdminId(admin_id: str):
 
 async def getAllUsersDb():
     return await engine.find(Uporabnik)
+
+async def getSessionHashToken(token: str):
+    return await engine.find_one(Session, Session.token == token)
+
+async def saveSession(session:Session):
+    await engine.save(session)
+
+async def revokeSessionToken(token: str):
+    session = await getSessionHashToken(token)
+    if session:
+        session.revoked = True
+        await engine.save(session)
+    return session
+
 #profile
 
 async def createProfile(profile: Profile):

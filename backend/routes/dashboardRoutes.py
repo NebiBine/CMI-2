@@ -1,5 +1,7 @@
-from fastapi import APIRouter, HTTPException, Response, Request, Form
+from fastapi import APIRouter, Depends, HTTPException, Response, Request, Form
 from pydantic import BaseModel
+
+from backend.services.auth import AuthContext, requireUser
 from ..database.creators.models import Announcments
 from ..database.servicesDb.databaseServ import getCityId, getAnnouncement, saveAnnouncement, deleteAnnouncement
 from uuid import uuid4
@@ -17,10 +19,8 @@ class AnnouncementRequest(BaseModel):
     type : str
 
 @router.get("/getAnnouncement",response_model=list[Announcments])
-async def getAnnouncementRoute(request : Request):
-    userId = request.cookies.get("sessionId")
-    if not userId:
-        raise HTTPException(status_code=401, detail="Unauthorized, no user ID")
+async def getAnnouncementRoute(auth: AuthContext = Depends(requireUser)):
+    userId = auth.userId
     city = await getCityId(userId)
     announcement = await getAnnouncement(city)
     if not announcement:
@@ -32,10 +32,8 @@ async def getAnnouncementRoute(request : Request):
 
 
 @router.post('/createAnnouncement',response_model=AnnouncementResponse)
-async def createAnnouncementRoute(request:Request, announcement: AnnouncementRequest):
-    adminId = request.cookies.get("sessionId")
-    if not adminId:
-        raise HTTPException(status_code=401, detail="Unauthorized, no admin ID")
+async def createAnnouncementRoute(auth: AuthContext = Depends(requireUser), announcement: AnnouncementRequest = None):
+    adminId = auth.userId
     city = await getCityId(adminId)
     ann = await getAnnouncement(city)
     if len(ann) > 0:

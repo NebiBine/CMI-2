@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Response, Request, Form
+from fastapi import APIRouter, Depends, HTTPException, Response, Request, Form
 from pydantic import BaseModel
 from uuid import uuid4
 from datetime import datetime, timedelta
@@ -6,9 +6,9 @@ import re
 import bcrypt
 
 from ..services.email import sendEmail
-from ..database.creators.models import Uporabnik, Reset
-from ..database.servicesDb.databaseServ import saveCity, getAllUsersDb, getUserId, getUserEmail, getUserUsername, saveUser, saveReset, getResetToken, deleteResetToken, addAdmin, getAdminId
-
+from ..database.creators.models import Session, Uporabnik, Reset
+from ..database.servicesDb.databaseServ import saveCity, getAllUsersDb, getUserId, getUserEmail, getUserUsername, saveSession, saveUser, saveReset, getResetToken, deleteResetToken, addAdmin, getAdminId
+from ..services.auth import generateSessionToken, hashSessionToken, AuthContext, requireUser, requireAdmin
 router = APIRouter()
 
 #modeli za requeste
@@ -51,18 +51,24 @@ class newPasswordRequest(BaseModel):
 @router.post("/register", response_model=UserResponse)
 async def register(user: NewUser, response: Response):
     print("dsjdsdsdsdsdsd")
-    existingUser = await getUserUsername(user.username)
-    if existingUser:
-        raise HTTPException(status_code=400, detail="Username already registered")
+    #existingUser = await getUserUsername(user.username)
+    #if existingUser:
+        #raise HTTPException(status_code=400, detail="Username already registered")
     hash = bcrypt.hashpw(user.password.encode("utf-8"), bcrypt.gensalt())
     hashPass = hash.decode("utf-8")
     userId = str(uuid4())
     novUser = Uporabnik(id=userId,username=user.username,email=user.email,password=hashPass)
     await saveUser(novUser)
     print("lala")
+
+    raw = generateSessionToken()
+    token = hashSessionToken(raw)
+    expires = datetime.utcnow() + timedelta(days=1)
+    await saveSession(Session(userId=userId, token=token,createdAt=datetime.utcnow(), expiresAt=expires, revoked=False))
+
     response.set_cookie(
         key="sessionId", 
-        value=userId,
+        value=raw,
         path="/",
         httponly=False, #to spreminjej za production
         secure=False, #to tud
@@ -83,13 +89,22 @@ async def login(user: Tuser, response: Response):
             if not bcrypt.checkpw(user.password.encode('utf-8'), existingUser.password.encode('utf-8')):
                 raise HTTPException(status_code=400, detail="Invalid password")
             userId = existingUser.id
+
+            raw = generateSessionToken()
+            hashToken = hashSessionToken(raw)
+
             if user.remember:
                 maxAge = 3600 * 24 * 7 * 30  # 1 month
             else:
                 maxAge = 3600 * 24  # 1 day
+
+            expires = datetime.utcnow() + timedelta(seconds=maxAge)
+
+            await saveSession(Session(userId=userId, token=hashToken, createdAt=datetime.utcnow(), expiresAt=expires, revoked=False))
+            
             response.set_cookie(
                 key="sessionId", 
-                value=userId,
+                value=raw,
                 path="/",
                 httponly=False, #to spreminjej za production
                 secure=False,
@@ -105,13 +120,21 @@ async def login(user: Tuser, response: Response):
             if not bcrypt.checkpw(user.password.encode('utf-8'), existingUser.password.encode('utf-8')):
                 raise HTTPException(status_code=400, detail="Invalid password")
             userId = existingUser.id
+
+            raw = generateSessionToken()
+            hashToken = hashSessionToken(raw)
+
             if user.remember:
                 maxAge = 3600 * 24 * 7 * 30  # 1 month
             else:
                 maxAge = 3600 * 24  # 1 day
+
+            expires = datetime.utcnow() + timedelta(seconds=maxAge)
+            await saveSession(Session(userId=userId, hashToken=hashToken, expiresAt=expires, revoked=False))
+
             response.set_cookie(
                 key="sessionId", 
-                value=userId,
+                value=raw,
                 path="/",
                 httponly=False, #to spreminjej za production
                 secure=False,
@@ -129,20 +152,14 @@ async def addAdmin():
     pass
 
 @router.get("/check")
-async def check(request: Request):
-    userId = request.cookies.get("sessionId")
-    if userId:
-        return {"loggedIn": True}
-    else:
-        return {"loggedIn": False}
+async def check(_: AuthContext = Depends(requireUser)):
+    return {"loggedIn": True}
     
 @router.get("/checkAdmin")
-async def checkAdmin(request: Request):
-    userId = request.cookies.get("sessionId")
-    if userId:
-        return {"admin": True}
-    #NE DOKONČANO, do productiona dodt še preverjanje če je user admin ds dsds
-    return {"admin": False}
+async def checkAdmin():
+    return {"admin": True}
+    #return {"admin": auth.isAdmin}
+    #auth: AuthContext = Depends(requireAdmin)
 
 @router.post("/forgotPassword")
 async def forgotPassword(email: forgotPasswordRequest): 
@@ -183,10 +200,8 @@ async def testEndpoint():
     return await getUserEmail("bine")
 
 @router.get("/getProfile")
-async def getProfile(request: Request):
-    userId = request.cookies.get("sessionId")
-    if not userId:
-        raise HTTPException(status_code=401, detail="Not authenticated")
+async def getProfile(auth: AuthContext = Depends(requireUser)):
+    userId = auth.userId
     user = await getUserId(userId)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -197,10 +212,8 @@ async def getAllUsers():
     return await getAllUsersDb()
 
 @router.post("/newPassword", response_model=newPasswordResponse)
-async def newPasswordRoute(request: Request, passwords: newPasswordRequest):
-    userId = request.cookies.get("sessionId")
-    if not userId:
-        raise HTTPException(status_code=401, detail="Not authenticated")
+async def newPasswordRoute(auth: AuthContext = Depends(requireUser), passwords: newPasswordRequest = None):
+    userId = auth.userId
     user = await getUserId(userId)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
