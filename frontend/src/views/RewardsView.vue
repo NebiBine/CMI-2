@@ -85,7 +85,7 @@ onMounted(() => {
                     <div v-for="claimedReward in claimedRewards" :key="claimedReward.id" class = "enReward"> 
                         <h2>Reward Title: {{ claimedReward.rewardTitle }}</h2>
                         <p>Description: {{ claimedReward.rewardDescription }}</p>
-                        <p>🎫 Code: {{ claimedReward.code }}</p>
+                        <p>🎫 Code: <span id="reward-code">fafaw</span></p>
                     </div>
                 </div>
 

@@ -168,7 +168,8 @@ onMounted(() => {
                 </n-modal>
             </div>
             </div>
-            <div v-else class="noPolls_Found">
+            <div v-else class="noPolls_Found" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <img src="../assets/icons/no_polls.png" width="300px" height="300px">
                 <p >No active polls available at the moment. Please check back later!</p>
             </div>
         </div>

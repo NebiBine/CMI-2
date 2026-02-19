@@ -1,16 +1,19 @@
 <script setup>
 import { useMessage } from "naive-ui";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import '../assets/styles/AUTHStyle.css'
 import axios from 'axios';
 import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
 import { message } from 'ant-design-vue';
+import checkMark from '../assets/icons/checkMark.png';
+import crossMark from '../assets/icons/crossMark.png';
 
 const router = useRouter();
 const formRef = ref(null);
 const size = ref("medium");
 const gumb_rules = ref(false);
+const showRequirementsState = ref(false);
 
 const formValue = ref({
   user: {
@@ -22,6 +25,7 @@ const formValue = ref({
 
 const rules = {
     //required polja za vsak vnos
+    //vsako polje je REQUIRED in ce ni izpolnjeno pokazem message spodaj pod vnosom
   user: {
     username: {
       required: true,
@@ -40,10 +44,21 @@ const rules = {
     }
   },
 };
+function showRequirements() {
+  showRequirementsState.value = !showRequirementsState.value;;
+}
+const isLengthValid = computed(() => formValue.value.user.password.length >= 8);
+const hasUpperCase = computed(() => /[A-Z]/.test(formValue.value.user.password));
+const hasNumber = computed(() => /[0-9]/.test(formValue.value.user.password));
+const hasSpecialChar = computed(() => /[!@#$%^&*(),.?":{}|<>]/.test(formValue.value.user.password));
 
 //axios
 //try catch ce je error samo catcham z console logom da ne crasha vse skupaj
 const register = async () => {
+  if(isLengthValid.value==false || hasUpperCase.value==false || hasNumber.value==false || hasSpecialChar.value==false){
+    message.warning("Password does not meet the requirements.");
+    return;
+  }
   try {
     const response = await axios.post("http://localhost:8000/auth/register", {
       username: formValue.value.user.username,
@@ -91,8 +106,33 @@ const register = async () => {
           </n-form-item>
 
           <n-form-item path="user.password">
-            <n-input type="password" v-model:value="formValue.user.password" placeholder="Password" />
+            <n-input type="password" v-model:value="formValue.user.password" placeholder="Password" @focus="showRequirements"/>
           </n-form-item>
+          <div class="passRequirements" v-if="showRequirementsState">
+            <div style="display: flex; flex-direction: row; gap: 5px;">
+                <img :src="isLengthValid ? checkMark : crossMark" 
+                    style="width: 20px; height: 20px;">
+                <p :style="{ color: isLengthValid ? 'green' : 'red' }">
+                    Password must be at least 8 characters long
+                </p>
+            </div>
+            <div style="display: flex; flex-direction: row; gap: 5px;">
+                <img :src="hasUpperCase ? checkMark : crossMark" 
+                    style="width: 20px; height: 20px;">
+                <p :style="{ color: hasUpperCase ? 'green' : 'red' }">Password must contain at least one uppercase letter</p>
+            </div>
+            <div style="display: flex; flex-direction: row; gap: 5px;">
+                    <img :src="hasNumber ? checkMark : crossMark" 
+                    style="width: 20px; height: 20px;">
+                <p :style="{ color: hasNumber ? 'green' : 'red' }">Password must contain at least one number</p>
+            </div>
+            <div style="display: flex; flex-direction: row; gap: 5px;">
+                <img :src="hasSpecialChar ? checkMark : crossMark" 
+                    style="width: 20px; height: 20px;">
+                <p :style="{ color: hasSpecialChar ? 'green' : 'red' }">Password must contain at least one special character</p>
+            </div>
+                    
+          </div>
 
           <n-button type="primary"class="log-reg_btn" @click="register">Create Account</n-button>
         </n-form>

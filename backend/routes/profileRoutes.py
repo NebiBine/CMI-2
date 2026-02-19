@@ -130,8 +130,7 @@ async def getProfile(request:Request, user: ProfileRequest):
     if isAdmin:
         isAdmibBool = True
 
-    if user.type == 1:
-        uporabnik = await getUserId(ids)
+    uporabnik = await getUserId(ids)
 
     
 

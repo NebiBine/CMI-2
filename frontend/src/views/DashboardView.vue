@@ -16,6 +16,7 @@ const admin_state = ref(false);
 const showAlert = ref(true);
 const announcements = ref([]);
 const swapy = ref(null);
+const editModeActive = ref(false);
 
 
 
@@ -62,26 +63,33 @@ async function getAnnouncement(){
     console.log(error);
   }
 }
+function editMode(){
+  editModeActive.value = !editModeActive.value;
+  if(editModeActive.value){
+      // Initialize Swapy
+    const container = document.querySelector('.widgetsWrapper')
+    if (container) {
+      swapy.value = createSwapy(container, {
+        animation: 'dynamic'
+      })
+    }
+  }
+  else{
+    if (swapy.value) {
+      swapy.value.destroy()
+    }
+  }
+}
 
 onMounted(() => {
   setGreeting(),
   profilData(),
   getAnnouncement()
-  
-  // Initialize Swapy
-  const container = document.querySelector('.widgetsWrapper')
-  if (container) {
-    swapy.value = createSwapy(container, {
-      animation: 'dynamic'
-    })
-  }
 });
 
 //Destroyam swapy ob unmountu
 onUnmounted(() => {
-  if (swapy.value) {
-    swapy.value.destroy()
-  }
+
 });
 </script>
 <template>
@@ -97,19 +105,26 @@ onUnmounted(() => {
     <h1>{{ greeting }}, {{ username }}!</h1>
     <p>CMI connects you with essential urban services — from traffic updates and public transit to energy info and city guides. 
       Everything you need in one place.</p>
+      <n-button @click="editMode" type="primary">Reorder widgets</n-button>
   </div>
   <div class="widgetsWrapper">
-    <div data-swapy-slot="poll-rewards">
-      <div class="PollRewardsWidget" data-swapy-item="poll-rewards-widget">
-        <h2>Polls & Rewards Overview</h2>
+    <div data-swapy-slot="poll">
+      <div class="PollRewardsWidget" data-swapy-item="poll-widget">
+        <h2>Polls Overview</h2>
       </div>
     </div>
     
-    <div data-swapy-slot="traffic">
+    <div data-swapy-slot="rewards">
+      <div class="PollRewardsWidget" data-swapy-item="rewards-widget">
+        <h2>Rewards Overview</h2>
+      </div>
+    </div>
+    
+    <!-- <div data-swapy-slot="traffic">
       <div class="TrafficUpdatesWidget" data-swapy-item="traffic-widget">
         <h2>Traffic Overview</h2>
       </div>
-    </div>
+    </div> -->
     
     <div data-swapy-slot="weather">
       <div class="WeatherWidget" data-swapy-item="weather-widget">
@@ -117,11 +132,11 @@ onUnmounted(() => {
       </div>
     </div>
     
-    <div data-swapy-slot="energy">
+    <!-- <div data-swapy-slot="energy">
       <div class="EnergyInfoWidget" data-swapy-item="energy-widget">
         <h2>Energy Overview</h2>
       </div>
-    </div>
+    </div> -->
   </div>
 
 

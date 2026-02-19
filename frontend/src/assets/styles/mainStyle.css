@@ -531,21 +531,25 @@ body,
   border-radius: 10px;
 }
 .profile_card{
-  background-color: #f9fafb;
+  background-color: #ffffff;
   border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 20px;
+  border-radius: 12px;
+  padding: 24px;
   width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 .edit_profile{
   display: flex;
   justify-content: space-between;
-  padding-bottom: 0;
+  padding-bottom: 12px;
   align-items: center;
+  border-bottom: 2px solid #f0f0f0;
+  margin-bottom: 20px;
 }
 .edit_profile h2{
-  font-weight: bolder;
-  font-size: 25px;
+  font-weight: 600;
+  font-size: 24px;
+  color: #1a1a1a;
 }
 .edit_profile_btn{
   background-color: #111827;
@@ -565,18 +569,67 @@ body,
 }
 .profile_info{
   margin-top: 10px;
-  background-color: #f9fafb;
+  background-color: #ffffff;
   border: 1px solid #e5e7eb;
   height: auto;
-  border-radius: 8px;
-  padding: 10px;
-
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 .security_info{
   margin-top: 50px;
 }
+
 .profile-pic{
   width: 100px;
   height: 100px;
   border-radius: 50%;
+}
+#reward-code{
+  filter: blur(2px);
+}
+.password-change-user{
+  justify-content: space-between; 
+  display: flex;
+  flex-direction: row;
+  background-color: #f9fafb;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+.passRequirements{
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 15px;
+}
+.n-message,
+.n-message__content {
+  font-family: 'InterTekst', sans-serif;
+  font-weight: bold;
+}
+
+/*account podatki css*/
+.firstLastName, .dobMob, .location{
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+.firstLastName p, .dobMob p, .location p {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.firstLastName p:last-child, .dobMob p:last-child, .location p:last-child {
+  margin-bottom: 0;
+}
+
+.firstLastName p strong, .dobMob p strong, .location p strong {
+  min-width: 140px;
+  display: inline-block;
+  font-weight: 600;
+  color: #333;
 }

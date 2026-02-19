@@ -25,27 +25,31 @@ const menuOptions = ref([
   {
     label: "Traffic Updates",
     key: "trafficUpdates",
-    disabled:true,
     children: [
       {
         label:'General',
-        key:'trafficGeneral'
+        key:'trafficGeneral',
+        disabled:true,
       },
       {
         label:'Jams',
-        key:'trafficJams'
+        key:'trafficJams',
+        disabled:true,
       },
       {
         label:'Accidents',
-        key:'trafficAccidents'
+        key:'trafficAccidents',
+        disabled:true,
       },
       {
         label:'Works',
-        key:'trafficWorks'
+        key:'trafficWorks',
+        disabled:true,
       },
       {
         label:'Blocks',
-        key:'trafficBlocks'
+        key:'trafficBlocks',
+        disabled:true,
       }
 
     ]
@@ -61,6 +65,7 @@ const menuOptions = ref([
   {
     label: "Public Transit",
     key: "publicTransit",
+    disabled:true,
   },
   {
     label: "City Guides",
@@ -68,11 +73,13 @@ const menuOptions = ref([
     children:[
       {
         label:'Reviews',
-        key:'cityReviews'
+        key:'cityReviews',
+        disabled:true
       },
       {
         label:'Points of Interest',
-        key:'cityPointsOfInterest'
+        key:'cityPointsOfInterest',
+        disabled:true
       },
       {
         label:'Local Goods',
@@ -83,6 +90,7 @@ const menuOptions = ref([
   {
     label: "Energy Info",
     key: "energyInfo",
+    disabled:true
   },
   {
     label:"Rewards",
@@ -171,6 +179,7 @@ onMounted(()=>{
 </script>
 
 <template>
+  <n-message-provider class="app-message-provider">
   <n-layout class="app-layout">
     <!-- HEADER -->
     <n-layout-header class="header" bordered>
@@ -202,4 +211,5 @@ onMounted(()=>{
       </n-layout-content>
     </n-layout>
   </n-layout>
+  </n-message-provider>
 </template>
