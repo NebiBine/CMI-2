@@ -7,6 +7,8 @@ import aiofiles
 import base64
 import sys
 
+from backend.services.auth import AuthContext, requireUser
+
 from ..database.creators.models import Admins, Cities, Uporabnik, Profile
 from ..database.servicesDb.databaseServ import getUserId, deleteCity, getAllCities, saveCity, createProfile as saveProfile, deleteAdmin, getProfileId, getAdminId, addAdmin
 
@@ -43,7 +45,7 @@ class updateProfileRequest(BaseModel):
 
 @router.post("/createProfile", response_model=ProfileResponse)
 async def createProfile_endpoint(
-    request: Request,
+    auth: AuthContext = Depends(requireUser),
     first_name: str = Form(...),
     last_name: str = Form(...),
     bio: str = Form(""),
@@ -54,11 +56,7 @@ async def createProfile_endpoint(
     country: str = Form(""),
     profilePicture: UploadFile = File(None),
     ):
-    print("All cookies:", request.cookies, flush=True)
-    userId = request.cookies.get("sessionId")
-    print("Session ID:", userId, flush=True)
-    if not userId:
-        return {"statusCode": 500, "message": "Profile created not successfully, no userId"}
+    userId = auth.userId
         #raise HTTPException(status_code=401, detail="Unauthorized, ni idja")
     
     pfpDir = "database/data/pfp/"
@@ -97,8 +95,8 @@ async def createProfile_endpoint(
     return {"statusCode": 200, "message": "Profile created successfully backend"}
 
 @router.get("/pfp/{userId}",name="get_profile_picture")
-async def uploadProfilePicture(userId: str, request:Request):
-    userId = request.cookies.get("sessionId")
+async def uploadProfilePicture(userId: str, auth: AuthContext = Depends(requireUser)):
+    userId = auth.userId
     profile = await getProfileId(userId)
     if not userId:
         raise HTTPException(status_code=401, detail="Unauthorized, no session ID")
@@ -114,14 +112,12 @@ async def uploadProfilePicture(userId: str, request:Request):
 
 
 @router.post("/getProfile", response_model=getProfileResponse)
-async def getProfile(request:Request, user: ProfileRequest):
-    userId = request.cookies.get("sessionId")
-    if not userId:
-        raise HTTPException(status_code=401, detail="Unauthorized, no session ID")
+async def getProfile(request: Request, user: ProfileRequest, auth: AuthContext = Depends(requireUser)):
+    userId = auth.userId
     if user.type != 1:
         ids = userId
     else:
-        ids = user.id
+        ids = userId
     profile = await getProfileId(ids)
     isAdmibBool = False
     if not profile:
@@ -130,21 +126,17 @@ async def getProfile(request:Request, user: ProfileRequest):
     if isAdmin:
         isAdmibBool = True
 
-    if user.type == 1:
-        uporabnik = await getUserId(ids)
-
     
-
+    uporabnik = await getUserId(ids)
+        
 
     pfp_url = str(request.url_for("get_profile_picture", userId=ids))
     
     return {"statusCode": 200, "message": "Profile fetched successfully", "profile": profile, "admin": isAdmibBool, "pfp": pfp_url, "username": uporabnik.username, "email": uporabnik.email} # dodej za admin level
 
 @router.post("/updateProfile", response_model=ProfileResponse)
-async def updateProfile(request:Request, profile: updateProfileRequest):
-    userId = request.cookies.get("sessionId")
-    if not userId:
-        raise HTTPException(status_code=401, detail="Unauthorized, no session ID")
+async def updateProfile(auth: AuthContext = Depends(requireUser), profile: updateProfileRequest = None):
+    userId = auth.userId
     if profile.type != 1:
         ids = userId
     else:

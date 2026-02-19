@@ -4,6 +4,16 @@ from datetime import datetime
 from typing import Optional, Union
 from pydantic import BaseModel, Field as PydanticField
 
+
+#auth rewowork
+class Session(Model):
+    id: str = Field(primary_field=True, default_factory=lambda: str(uuid4()))
+    token: str  # unique session token
+    userId: str  # foreign key to Uporabnik
+    createdAt: datetime = Field(default_factory=datetime.utcnow)
+    expiresAt: datetime
+    revoked : bool = Field(default=False)
+
 class Question(BaseModel):
     id: str = PydanticField(default_factory=lambda: str(uuid4()))
     text: str
@@ -60,6 +70,7 @@ class Uporabnik(Model):
     email: str
     username: str
     password: str
+    #createdAt
 
 
 class Profile(Model):
