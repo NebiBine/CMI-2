@@ -52,6 +52,7 @@ body,
   box-sizing: border-box;
   color: #000000d9;
   background-color: #d9e3f0;
+  justify-content: space-between;
 }
 
 
@@ -74,7 +75,17 @@ body,
   text-align: left;
   overflow-y: auto;
 }
-
+.userInfo{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.userInfo img{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
 
 /*sidebar*/
 .n-menu .n-menu-item-content .n-menu-item-content-header {
@@ -91,12 +102,36 @@ body,
 }
 
 /*----------------------------- DASHBOARD DODATEN CSS ----------------------*/
-.welcoming-block p {
-  margin-top: 20px;
-  color: gray;
-  font-size: 20px;
-  margin-left: 15px;
+.welcoming-block{
+  display: flex;
+  flex-direction: column;
 }
+.welcoming-block h1 {
+  font-size: 40px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #111827;
+}
+.welcoming-block .reorderBtn{
+  background-color: #111827;
+  color: white;
+  margin-left: auto;
+  width: 150px;
+  height: 40px;
+  margin-top: 10px;
+  border-radius: 5px;
+  --n-color-hover: #111827 !important;
+  --n-text-color-hover: #ffffff !important;
+  --n-bg-color-focus: #111827 !important;
+}
+.welcoming-block p {
+  margin-top: 0;
+  color: #6b7280; 
+  font-size: 20px;
+  line-height: 1.6; 
+  max-width: 80%; 
+}
+
 
 .Announcements {
   margin-top: 10px;
@@ -354,43 +389,57 @@ body,
 
 .widgetsWrapper{
   display: flex;
+  flex-direction: column;
   gap: 30px;
-  margin-top: 20px;
+  margin-top: 40px;
   margin-left: 20px;
   flex-wrap: wrap;
 }
-.widgetsWrapper h2{
-  font-family: 'InterTekst', sans-serif;
-  font-weight: 600;
-  text-align: center;
-  margin-top: 15px;
-  font-size: 20px;
-}
-.PollRewardsWidget{
-  background-color: yellow;
-  width: 400px;
-  height: 350px;
-  border-radius: 10px;
 
+.widget_card{
+  background: #f8fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+  padding: 16px 18px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
-.TrafficUpdatesWidget{
+.widget_card_title{
+  font-family: 'InterTekst', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+  text-align: left;
+}
+
+/* .TrafficUpdatesWidget{
   background-color: orange;
-  width: 400px;
-  height: 350px;
+  width: 100%;
+  height: 300px;
   border-radius: 10px;
-}
+} */
+
 .WeatherWidget{
-  background-color: orange;
-  width: 400px;
-  height: 350px;
-  border-radius: 10px;
+  background-color: #f8fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;        
+  padding: 24px;              
+  width: 100%;
+  height: 300px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
 }
-.EnergyInfoWidget{
+/* .EnergyInfoWidget{
   background-color: orange;
-  width: 400px;
-  height: 350px;
+  width: 100%;
+  height: 300px;
   border-radius: 10px;
-}
+} */
 .announcementModal{
   font-family: 'InterTekst', sans-serif;
   font-weight: 500;
@@ -524,11 +573,62 @@ body,
 }
 
 .current_weather{
+  background: rgba(255,255,255,0.9);
+  border: 1px solid rgba(148,163,184,0.25);
+  border-radius: 16px;
+  padding: 22px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  background-color: #3eac3a;
-  border-radius: 10px;
+  gap: 18px;
+
+  box-shadow: 0 10px 30px rgba(2, 8, 23, 0.06);
+  backdrop-filter: blur(8px);
+}
+.current_weather__icon{
+  width: 64px;
+  height: 64px;
+  flex: 0 0 auto;
+}
+.current_weather__hero{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.current_weather__temp{
+  font-size: 20px;
+  line-height: 1;
+  color: #0f172a;
+}
+.current_weather__condition{
+  margin-top: 6px;
+  font-size: 27px;
+  font-weight: 600;
+  color: #475569;
+}
+.current_weather__stats{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.stat{
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 12px 12px;
+}
+
+.stat__label{
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 6px;
+}
+
+.stat__value{
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
 }
 .profile_card{
   background-color: #ffffff;
@@ -632,4 +732,13 @@ body,
   display: inline-block;
   font-weight: 600;
   color: #333;
+}
+.profile_dropdown{
+  font-weight: 600;
+  font-family: 'InterTekst', sans-serif;
+  margin-top: 50px;
+  
+}
+.n-dropdown-menu {
+  margin-top: 12px !important;
 }

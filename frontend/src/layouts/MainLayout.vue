@@ -1,13 +1,29 @@
 <script setup>
-import { onMounted, ref } from "vue"
+import { onMounted, ref,h } from "vue"
 import "../assets/styles/mainStyle.css"
 import { useRouter } from "vue-router"
 import axios from "axios";
+import logoutIcon from '../assets/icons/logout_icon.png';
 
 const router = useRouter();
 const activeKey = ref("dashboard")
 const admin = ref(false)
-
+const username = ref("");
+const userProfilePicture = ref("");
+const profileOptions = ref([
+  {
+    label:'Profile',
+    key:'profile'
+  },
+  {
+    label:'Logout',
+    key:'logout',
+    icon: () => h('img', { 
+      src: logoutIcon, 
+      style: 'width: 16px; height: 16px;'
+    })
+  }
+])
 const menuOptions = ref([
   {
     label: "Dashboard",
@@ -173,8 +189,35 @@ async function admincheck() {
     console.log("Admin check error: " + error)
   }
 }
+
+async function getProfileData(){
+  try{
+    const response = await axios.post(
+      'http://localhost:8000/profile/getProfile',
+      {
+        userId: "null",
+        type: 1
+      },
+      { withCredentials: true }
+    );
+    if(response.data.statusCode == 200){
+      userProfilePicture.value = response.data.pfp;
+      username.value = response.data.username;
+    }
+    else{
+      userProfilePicture.value = "database/data/pfp/default_profile_pic.png";
+    }
+
+
+  }
+  catch (error) {
+    console.log('Error while fetching profile data');
+    console.log(error);
+  }
+}
 onMounted(()=>{
   admincheck()
+  getProfileData()
 })
 </script>
 
@@ -186,8 +229,12 @@ onMounted(()=>{
       <div class ="logo">
         <img src="../assets/images/logotip_cmi.png" width="140px" height="140px">
     </div>
-    <div class = "test">
+    <div class = "userInfo">
       <!--tukaj pride username itd.-->
+      <img :src="userProfilePicture" alt="Profile Picture">
+      <n-dropdown :options="profileOptions" class="profile_dropdown">
+        <n-button>{{username}}</n-button>
+      </n-dropdown>
     </div>
     </n-layout-header>
 

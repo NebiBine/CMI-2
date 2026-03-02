@@ -63,8 +63,8 @@
     async function getProfileData(){
         try{
             const response = await axios.post('http://localhost:8000/profile/getProfile',
-            { userId: 0,
-                type: 0 }, //type 0 ker hocem podatke o trenutnem userju, type 1 je za admin user management view da dobim podatke o userju ki ga admin gleda
+            { userId: "null",
+                type: 1 }, //type 0 ker hocem podatke o trenutnem userju, type 1 je za admin user management view da dobim podatke o userju ki ga admin gleda
             {withCredentials: true});
             userProfile.value = response.data.profile;
             userProfilePicture.value = response.data.pfp;

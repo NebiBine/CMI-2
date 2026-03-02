@@ -127,9 +127,9 @@ const router = createRouter({
 })
 //requires auth
 
-//to - kam hocem it recimo /app/dashboard
-//from - iz kje prihajam recimo /auth/login
-//next - funkcija ki jo moram klicat da vue routerju povem kaj naj naredi (continue,redirect, cancel)
+//@to - kam hocem it recimo /app/dashboard
+//@from - iz kje prihajam recimo /auth/login
+//@next - funkcija ki jo moram klicat da vue routerju povem kaj naj naredi (continue,redirect, cancel)
 router.beforeEach(async (to, from, next) => {
   if (to.meta.requiresAuth) { //ce to ima meta requiresauth potem preveri ce ne samo dovoli da gre dalje 
     try {

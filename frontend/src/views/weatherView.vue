@@ -36,13 +36,37 @@
     <n-tabs type="line" animated class="zavihki_weather">
       <n-tab-pane name="currentWeather" tab="🌤️ Current Weather">
         <div v-if="weatherData" class ="current_weather">
-          <img :src="weatherData.weather.current.icon" alt="Weather Icon" width="70" height="70"/>
-          <p>Condition: {{ weatherData.weather.current.condition }}</p>
-          <p>Temperature: {{ weatherData.weather.current.temp_c }}°C</p>
-          <p>Feels like: {{ weatherData.weather.current.feelslike_c }}°C</p>
-          <p>Humidity: {{ weatherData.weather.current.humidity }}%</p>
-          <p>Dew Point: {{ weatherData.weather.current.dewpoint_c }}°C</p>
-          <p>Wind speed: {{ weatherData.weather.current.wind_kph }} kph</p>
+          <div class="current_weather__hero">
+              <img :src="weatherData.weather.current.icon" alt="Weather Icon" class="current_weather__icon"/>
+              <p class="current_weather__condition">Condition: {{ weatherData.weather.current.condition }}</p>
+          </div>
+          
+        <div class="current_weather__stats">
+          <div class="stat">
+            <div class="stat__label">Temperature</div>
+            <div class="stat__value">{{ weatherData.weather.current.temp_c }}°C</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat__label">Feels like</div>
+            <div class="stat__value">{{ weatherData.weather.current.feelslike_c }}°C</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat__label">Humidity</div>
+            <div class="stat__value">{{ weatherData.weather.current.humidity }}%</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat__label">Dew point</div>
+            <div class="stat__value">{{ weatherData.weather.current.dewpoint_c }}°C</div>
+          </div>
+
+          <div class="stat">
+            <div class="stat__label">Wind</div>
+            <div class="stat__value">{{ weatherData.weather.current.wind_kph }} kph</div>
+          </div>
+        </div>
         </div>
         
         <!--TRENUTNO VREME PRIDE TUKAJ-->

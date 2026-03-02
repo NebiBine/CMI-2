@@ -17,6 +17,8 @@ const showAlert = ref(true);
 const announcements = ref([]);
 const swapy = ref(null);
 const editModeActive = ref(false);
+const userProfilePicture = ref("");
+
 
 
 
@@ -105,18 +107,18 @@ onUnmounted(() => {
     <h1>{{ greeting }}, {{ username }}!</h1>
     <p>CMI connects you with essential urban services — from traffic updates and public transit to energy info and city guides. 
       Everything you need in one place.</p>
-      <n-button @click="editMode" type="primary">Reorder widgets</n-button>
+      <n-button @click="editMode" type="primary" class = "reorderBtn">Reorder widgets</n-button>
   </div>
   <div class="widgetsWrapper">
     <div data-swapy-slot="poll">
-      <div class="PollRewardsWidget" data-swapy-item="poll-widget">
-        <h2>Polls Overview</h2>
+      <div class="widget_card" data-swapy-item="poll-widget">
+        <h2 class="widget_card_title">Polls Overview</h2>
       </div>
     </div>
     
     <div data-swapy-slot="rewards">
-      <div class="PollRewardsWidget" data-swapy-item="rewards-widget">
-        <h2>Rewards Overview</h2>
+      <div class="widget_card" data-swapy-item="rewards-widget">
+        <h2 class="widget_card_title">Rewards Overview</h2>
       </div>
     </div>
     
@@ -127,8 +129,8 @@ onUnmounted(() => {
     </div> -->
     
     <div data-swapy-slot="weather">
-      <div class="WeatherWidget" data-swapy-item="weather-widget">
-        <h2>Weather Overview</h2>
+      <div class="widget_card" data-swapy-item="weather-widget">
+        <h2 class="widget_card_title">Weather Overview</h2>
       </div>
     </div>
     
