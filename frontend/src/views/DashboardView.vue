@@ -159,11 +159,16 @@ onUnmounted(() => {
             <p style="font-size: 17px; font-weight: 500;">Total points</p>
           </div>
         </div>
-        <div class = "claimed_rewards">
-            <p>{{statistics.getClaimedRewards}}</p>
-            <p style="font-size: 17px; font-weight: 500;">Claimed rewards</p>
+        <div class = "wrapper_meta_number_widgets">
+          <div class = "claimed_rewards">
+              <p>{{statistics.getClaimedRewards}}</p>
+              <p style="font-size: 17px; font-weight: 500;">Claimed rewards</p>
+          </div>
+          <div class = "claimed_rewards" style = "background-color: #111827; cursor: pointer; " @click="router.push('/app/Rewards')">
+                <p>&nbsp;</p>
+                <p style="font-size: 25px;">View Rewards <span style="font-weight: bolder;">→</span></p>
+          </div>
         </div>
-        <n-button class="widgetBtn" @click="router.push('/app/Rewards')">View Rewards</n-button>
       </div>
     </div>
     
