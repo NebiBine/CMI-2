@@ -59,7 +59,7 @@ async def register(user: NewUser, response: Response):
     userId = str(uuid4())
     novUser = Uporabnik(id=userId,username=user.username,email=user.email,password=hashPass)
     await saveUser(novUser)
-    print("lala")
+
 
     raw = generateSessionToken()
     token = hashSessionToken(raw)

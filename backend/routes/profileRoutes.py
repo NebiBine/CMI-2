@@ -126,8 +126,8 @@ async def getProfile(request: Request, user: ProfileRequest, auth: AuthContext =
     if isAdmin:
         isAdmibBool = True
 
-    if user.type == 1:
-        uporabnik = await getUserId(ids)
+
+    uporabnik = await getUserId(ids)
 
     
 
