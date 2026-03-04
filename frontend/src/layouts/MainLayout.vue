@@ -13,7 +13,7 @@ const userProfilePicture = ref("");
 const profileOptions = ref([
   {
     label:'Profile',
-    key:'profile'
+    key:'profile',
   },
   {
     label:'Logout',
@@ -24,6 +24,12 @@ const profileOptions = ref([
     })
   }
 ])
+
+function handleUserOptions(key){
+  if(key === "profile"){
+    router.push('/other/account')
+  }
+}
 const menuOptions = ref([
   {
     label: "Dashboard",
@@ -232,7 +238,7 @@ onMounted(()=>{
     <div class = "userInfo">
       <!--tukaj pride username itd.-->
       <img :src="userProfilePicture" alt="Profile Picture">
-      <n-dropdown :options="profileOptions" class="profile_dropdown">
+      <n-dropdown :options="profileOptions" @select="handleUserOptions" class="profile_dropdown">
         <n-button>{{username}}</n-button>
       </n-dropdown>
     </div>

@@ -9,7 +9,7 @@ import { message } from "ant-design-vue";
 import { createSwapy } from 'swapy'
 
 
-
+const router = useRouter();
 const greeting = ref("");
 const username = ref("");
 const admin_state = ref(false);
@@ -18,6 +18,8 @@ const announcements = ref([]);
 const swapy = ref(null);
 const editModeActive = ref(false);
 const userProfilePicture = ref("");
+const statistics = ref({});
+const weatherData = ref(null);
 
 
 
@@ -35,7 +37,28 @@ function setGreeting() {
     greeting.value = "Good Evening"
   }
 }
-
+async function getStats(){
+  try{
+    const response = await axios.get('http://localhost:8000/dashboard/getStats', 
+      {withCredentials: true});
+      statistics.value = response.data;
+  }
+  catch(error){
+    console.log('Error while fetching stats');
+    console.log(error);
+  }
+}
+async function getWeatherData(){
+  try{
+    const response = await axios.get('http://localhost:8000/weather/getWeather',
+    {withCredentials: true});
+    weatherData.value = response.data.weather;
+    console.log("Weather data:", weatherData.value);
+  }
+  catch(error){
+    console.error('Error fetching weather data:', error);
+  }
+}
 
 async function profilData() {
   try {
@@ -86,7 +109,9 @@ function editMode(){
 onMounted(() => {
   setGreeting(),
   profilData(),
-  getAnnouncement()
+  getAnnouncement(),
+  getStats(),
+  getWeatherData()
 });
 
 //Destroyam swapy ob unmountu
@@ -113,12 +138,32 @@ onUnmounted(() => {
     <div data-swapy-slot="poll">
       <div class="widget_card" data-swapy-item="poll-widget">
         <h2 class="widget_card_title">Polls Overview</h2>
+        <div class="meta_number_widgets">
+          <p>{{statistics.polls}}</p>
+          <p style="font-size: 17px; font-weight: 500;">Poll/s waiting for your vote</p>
+        </div>
+        <n-button class="widgetBtn" @click="router.push('/app/PollsAndInsights')">View Polls</n-button>
       </div>
     </div>
     
     <div data-swapy-slot="rewards">
       <div class="widget_card" data-swapy-item="rewards-widget">
         <h2 class="widget_card_title">Rewards Overview</h2>
+        <div class = "wrapper_meta_number_widgets">
+          <div class="meta_number_widgets_reward">
+            <p>{{statistics.rewards}}</p>
+            <p style="font-size: 17px; font-weight: 500;">Reward/s available</p>
+          </div>
+          <div class = "meta_number_reward_points">
+            <p>{{statistics.userPoints}}</p>
+            <p style="font-size: 17px; font-weight: 500;">Total points</p>
+          </div>
+        </div>
+        <div class = "claimed_rewards">
+            <p>{{statistics.getClaimedRewards}}</p>
+            <p style="font-size: 17px; font-weight: 500;">Claimed rewards</p>
+        </div>
+        <n-button class="widgetBtn" @click="router.push('/app/Rewards')">View Rewards</n-button>
       </div>
     </div>
     
@@ -128,9 +173,12 @@ onUnmounted(() => {
       </div>
     </div> -->
     
-    <div data-swapy-slot="weather">
+    <div data-swapy-slot="weather" v-if="weatherData">
       <div class="widget_card" data-swapy-item="weather-widget">
         <h2 class="widget_card_title">Weather Overview</h2>
+        <img :src="weatherData.current.icon" width="100px" height="100px" alt="Weather Icon">
+        <p>{{ weatherData.current.condition }}</p>
+        <p>{{ weatherData.current.temp_c }}°C</p>
       </div>
     </div>
     
