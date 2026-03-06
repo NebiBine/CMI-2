@@ -7,7 +7,7 @@ import bcrypt
 
 from ..services.email import sendEmail
 from ..database.creators.models import Session, Uporabnik, Reset
-from ..database.servicesDb.databaseServ import saveCity, getAllUsersDb, getUserId, getUserEmail, getUserUsername, saveSession, saveUser, saveReset, getResetToken, deleteResetToken, addAdmin, getAdminId
+from ..database.servicesDb.databaseServ import revokeSessionToken, saveCity, getAllUsersDb, getUserId, getUserEmail, getUserUsername, saveSession, saveUser, saveReset, getResetToken, deleteResetToken, addAdmin, getAdminId
 from ..services.auth import generateSessionToken, hashSessionToken, AuthContext, requireUser, requireAdmin
 router = APIRouter()
 
@@ -144,8 +144,10 @@ async def login(user: Tuser, response: Response):
             return {"statusCode": 200, "message": "Login successful"}
     
 @router.post("/logout",response_model=UserResponse)
-async def logout(response: Response):
-    pass
+async def logout(auth: AuthContext = Depends(requireUser)):
+    token = auth.token
+    await revokeSessionToken(token)
+    return {"statusCode": 200, "message": "Logout successful"}
 
 @router.post("/addAdmin",response_model=UserResponse)
 async def addAdmin():
