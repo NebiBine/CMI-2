@@ -145,7 +145,7 @@ async def login(user: Tuser, response: Response):
     
 @router.post("/logout",response_model=UserResponse)
 async def logout(auth: AuthContext = Depends(requireUser)):
-    token = auth.token
+    token = auth.sessionId
     await revokeSessionToken(token)
     return {"statusCode": 200, "message": "Logout successful"}
 
