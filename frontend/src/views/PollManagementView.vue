@@ -62,8 +62,8 @@ function closeModalstatistics(){
 const polltypeOptions = [
   { label: "Yes/No question", value: "yesno" },
   { label: "Input type question", value: "input" },
-  { label: "Pick one question (radio buttons)", value: "radioButtons" },
-  { label: "Pick multiple questions (checkbox)", value: "checkbox" },
+  { label: "Pick one option (radio buttons)", value: "radioButtons" },
+  { label: "Pick multiple options (checkbox)", value: "checkbox" },
 ];
 
 
@@ -383,7 +383,7 @@ onMounted(() => {
       <label>
         Type:
         <n-select v-model:value="question.type" :options="polltypeOptions" placeholder="Select question type"
-          style="width: 100%; margin-bottom: 10px;" @update:value="() => handleTypeChange(question)" />
+          style="width: 100%; margin-bottom: 10px;" @update:value="() => handleTypeChange1(question)" />
       </label>
 
       <!-- YES / NO -->

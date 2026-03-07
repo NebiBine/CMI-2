@@ -826,3 +826,89 @@ body,
   --n-text-color-focus: #ffffff !important;
   --n-border-color-hover: #111827 !important;
 }
+.weatherWidgetWrapper{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.weatherWidgetBTN{
+  height: 150px;
+  --n-color: #111827 !important;
+  --n-text-color: #ffffff !important;
+  --n-color-hover: #111827 !important;
+  --n-text-color-hover: #ffffff !important;
+  --n-color-focus: #111827 !important;
+  --n-text-color-focus: #ffffff !important;
+  --n-border-color-hover: #111827 !important;
+  border-radius: 8px;
+}
+.weatherWidgetData{
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+}
+.weatherWidgetData p {
+  font-family: 'InterTekst', sans-serif;
+  font-weight: 800;
+
+}
+.mainWeatherDataUpper{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 25px;
+  gap: 12px;
+}
+.otherWeatherData{
+  font-size: 14px;
+  opacity: 0.8;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-right: 80px;
+}
+.InternalWidget{
+  display: flex;
+  flex-direction: column;
+  width: 330px;
+  height: 120px;
+  left: 50px;
+  border-radius: 8px;
+  padding-left: 12px;
+  padding-top: 12px;
+  background-color: #CBD5E0;
+}
+.InternalWidget p{
+  font-family: 'InterTekst', sans-serif;
+  font-weight: 600;
+  color: #2D3748;
+}
+/* MOZNA BARVA ZA BACKGROUND WIDGET  #2C5282 , #A0AEC0 */
+
+
+#widgetWeatherBTN{
+  font-size: 20px;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  --n-color: #111827 !important;
+  --n-text-color: #ffffff !important;
+  --n-color-hover: #111827 !important;
+  --n-text-color-hover: #ffffff !important;
+  --n-color-focus: #111827 !important;
+  --n-text-color-focus: #ffffff !important;
+  --n-border-color-hover: #111827 !important;
+}
+.InternalWidget--cta{
+  padding: 0;
+  overflow: hidden;
+}
+.headerWeatherWidget{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
