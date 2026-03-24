@@ -6,7 +6,8 @@ import { useRouter } from "vue-router";
 import { RouterLink } from "vue-router";
 import axios from 'axios';
 import { message } from "ant-design-vue";
-import { createSwapy } from 'swapy'
+import { createSwapy } from 'swapy';
+import { Droplets,Wind,Droplet } from 'lucide-vue-next';
 
 
 const router = useRouter();
@@ -20,6 +21,22 @@ const editModeActive = ref(false);
 const userProfilePicture = ref("");
 const statistics = ref({});
 const weatherData = ref(null);
+const userData = ref({});
+
+async function getUserData(){
+  try{
+    const response = await axios.post('http://localhost:8000/profile/getProfile',
+      { userId: "null",
+          type: 0 },
+    {withCredentials: true});
+    userData.value = response.data.profile;
+    console.log("User data:", userData.value);
+  }
+  catch(error){
+    console.log('Error while fetching user data');
+    console.log(error);
+  }
+}
 
 
 
@@ -111,7 +128,8 @@ onMounted(() => {
   profilData(),
   getAnnouncement(),
   getStats(),
-  getWeatherData()
+  getWeatherData(),
+  getUserData()
 });
 
 //Destroyam swapy ob unmountu
@@ -156,13 +174,13 @@ onUnmounted(() => {
           </div>
           <div class = "meta_number_reward_points">
             <p>{{statistics.userPoints}}</p>
-            <p style="font-size: 17px; font-weight: 500;">Total points</p>
+            <p style="font-size: 17px; font-weight: 500;">Total point/s</p>
           </div>
         </div>
         <div class = "wrapper_meta_number_widgets">
           <div class = "claimed_rewards">
               <p>{{statistics.getClaimedRewards}}</p>
-              <p style="font-size: 17px; font-weight: 500;">Claimed rewards</p>
+              <p style="font-size: 17px; font-weight: 500;">Claimed reward/s</p>
           </div>
           <div class = "claimed_rewards" style = "background-color: #111827; cursor: pointer; " @click="router.push('/app/Rewards')">
                 <p>&nbsp;</p>
@@ -180,10 +198,56 @@ onUnmounted(() => {
     
     <div data-swapy-slot="weather" v-if="weatherData">
       <div class="widget_card" data-swapy-item="weather-widget">
-        <h2 class="widget_card_title">Weather Overview</h2>
-        <img :src="weatherData.current.icon" width="100px" height="100px" alt="Weather Icon">
-        <p>{{ weatherData.current.condition }}</p>
-        <p>{{ weatherData.current.temp_c }}°C</p>
+        <div class = "headerWeatherWidget">
+          <h2 class="widget_card_title">Weather Overview</h2>
+          <div style="display: flex; flex-direction: column; align-items: end; font-size: 16px;">
+            <p>{{ userData.city }}</p>
+            <p>{{ new Date().toLocaleDateString() }}</p>
+          </div>
+
+        </div>
+        <div class = "weatherWidgetWrapper">
+          <div class= "weatherWidgetData">
+            <div class = "mainWeatherDataUpper">
+              <img :src="weatherData.current.icon" width="100px" height="100px" alt="Weather Icon">
+              <p style="font-size: 40px;">{{ weatherData.current.temp_c }}°C</p>
+
+            </div>
+            <div class = "otherWeatherData">
+              <p style="font-size: 18px;">{{ weatherData.current.condition }}</p>
+              <p>Feels like: {{ weatherData.current.feelslike_c }}°C</p>
+            </div>
+          </div>
+
+        </div>
+        <div style="display: flex; flex-direction: row; gap: 75px;">
+        <div class="InternalWidget InternalWidget--cta">
+          <n-button @click="router.push('/app/Weather')" id="widgetWeatherBTN" >See more</n-button>
+        </div>
+        <div class="InternalWidget">
+          <div style="display: flex; flex-direction: row; align-items: center; gap: 10px; margin-bottom: 15px;">
+            <Droplets color="#2D3748" size="50"></Droplets>
+            <p style="font-size: 25px;">{{ weatherData.current.humidity }}%</p>
+          </div>
+          <p style="font-size: 15px;">Humidity</p>
+        </div>
+        <div class="InternalWidget">
+          <div style="display: flex; flex-direction: row; align-items: center; gap: 10px; margin-bottom: 15px;">
+            <Wind color="#2D3748" size="50"></Wind>
+            <p style="font-size: 25px;">{{ weatherData.current.wind_kph }} kph</p>
+          </div>
+          <p style="font-size: 15px;">Wind Speed</p>
+        </div>
+        <div class="InternalWidget">
+          <div style="display: flex; flex-direction: row; align-items: center; gap: 10px; margin-bottom: 15px;">
+            <Droplet color="#2D3748" size="50"></Droplet>
+            <p style="font-size: 25px;">{{ weatherData.current.dewpoint_c }}°C</p>
+          </div>
+          <p style="font-size: 15px;">Dew Point</p>
+        </div>
+        </div>
+
+
       </div>
     </div>
     

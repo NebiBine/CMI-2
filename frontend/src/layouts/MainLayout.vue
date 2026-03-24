@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref,h } from "vue"
+import { onMounted, ref, h } from "vue"
 import "../assets/styles/mainStyle.css"
 import { useRouter } from "vue-router"
 import axios from "axios";
@@ -24,10 +24,33 @@ const profileOptions = ref([
     })
   }
 ])
+async function LogoutHandler(){
+  try{
+    const response = await axios.post('http://localhost:8000/auth/logout',
+      {},
+      {withCredentials:true}
+    )
+    if(response.data.statusCode === 200){
+      setTimeout(() => {
+        router.push("/auth/login")
+      }, 500)
+    }
+    else{
+      message.error("Logout failed. Please try again.")
+    }
+  }
+  catch(error){
+    console.log("Logout error: " + error)
+    message.error("Logout failed. Please try again.")
+  }
+}
 
 function handleUserOptions(key){
   if(key === "profile"){
     router.push('/other/account')
+  }
+  else if(key === "logout"){
+    LogoutHandler();
   }
 }
 const menuOptions = ref([

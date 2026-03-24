@@ -87,7 +87,7 @@ onMounted(() => {
         <p>This is where users can view and participate in polls and insights.</p>
 
         <div class="polls-container">
-            <div v-if="polls.length > 0">
+            <div v-if="polls.length > 0" class="polls-container">
             <div v-for="poll in polls" :key="poll.id" class="EnPoll">
                 <!--OSNOVNI PODATKI -->
                 <h2 class="pollTitle">{{ poll.pollTitle }}</h2>
