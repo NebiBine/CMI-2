@@ -80,16 +80,6 @@ async function handleFinalStepCompleted() {
         console.log('Full axios error:', error);
         console.log('Response:', error.response);
         console.log('Response data:', error.response?.data);
-
-        if (error.response?.data?.detail) {
-            message.error(error.response.data.detail);
-        } else if (error.response?.data?.message) {
-            message.error(error.response.data.message);
-        } else if (error.response?.status) {
-            message.error(`Error ${error.response.status}: ${error.response.statusText || 'Request failed'}`);
-        } else {
-            message.error('Network error. Please check your connection.');
-        }
     }
 };
 

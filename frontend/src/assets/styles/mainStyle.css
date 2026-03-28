@@ -1136,3 +1136,46 @@ body,
     color: #334155;
     line-height: 1.75;
 }
+.view-results-btn{
+  background-color: #111827;
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+  --n-color: #111827 !important;
+  --n-text-color: #ffffff !important;
+  --n-color-hover: #111827 !important;
+  --n-text-color-hover: #ffffff !important;
+  --n-color-focus: #111827 !important;
+  --n-text-color-focus: #ffffff !important;
+  --n-border-color-hover: #111827 !important;
+}
+.add_questions_modal{
+  font-family: 'InterTekst', sans-serif;
+  font-weight: 600;
+
+}
+#add_question_btn{
+  background-color: #111827;
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+  --n-color: #111827 !important;
+  --n-text-color: #ffffff !important;
+  --n-color-hover: #111827 !important;
+  --n-text-color-hover: #ffffff !important;
+  --n-color-focus: #111827 !important;
+  --n-text-color-focus: #ffffff !important;
+  --n-border-color-hover: #111827 !important;
+}
+.save_changes_btn{
+  background-color: #111827;
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+}
+.cancel_changes_btn{
+  background-color: red;
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+}

@@ -54,7 +54,7 @@ const hasSpecialChar = computed(() => /[!@#$%^&*(),.?":{}|<>]/.test(formValue.va
 
 //axios
 //try catch ce je error samo catcham z console logom da ne crasha vse skupaj
-const register = async () => {
+async function register() {
   if(isLengthValid.value==false || hasUpperCase.value==false || hasNumber.value==false || hasSpecialChar.value==false){
     message.warning("Password does not meet the requirements.");
     return;

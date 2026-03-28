@@ -14,6 +14,10 @@ const profileOptions = ref([
   {
     label:'Profile',
     key:'profile',
+    icon:() => h('img', { 
+      src: userProfilePicture.value,
+      style: 'width: 16px; height: 16px; border-radius: 50%;'
+    })
   },
   {
     label:'Logout',
@@ -66,6 +70,7 @@ const menuOptions = ref([
   {
     label: "Social",
     key: "social",
+    disabled:true
   },
   {
     label: "Traffic Updates",
@@ -128,7 +133,8 @@ const menuOptions = ref([
       },
       {
         label:'Local Goods',
-        key:'cityLocalGoods'
+        key:'cityLocalGoods',
+        disabled:true
       }
     ]
   },

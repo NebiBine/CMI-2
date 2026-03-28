@@ -234,7 +234,7 @@ onMounted(() => {
       <!--GUMB ZA ODPIRANJE MODALA Z REZULTATI-->
       <h2 style = "font-size: 20px;">Poll title: {{ archivedPoll.pollTitle }}</h2>
       <p>Description: {{ archivedPoll.pollDescription }}</p>
-      <n-button @click="openModalstatistics(archivedPoll)">See results (WORK IN PROGRESS)</n-button>
+      <n-button class = "view-results-btn" @click="openModalstatistics(archivedPoll)">View Results</n-button>
     </div>
   </div>
   <!--MODAL ZA STATISTIKO VSAKEGA POLLA -- PRIKAZANI BODO ODGOVORI!!! -->
@@ -367,7 +367,7 @@ onMounted(() => {
 
   <!------------------- MODAL ZA DODAJANJE VPRAŠANJ ------------------->
   <n-modal v-model:show="modal_state2" preset="dialog" title="Create Poll Questions" positive-text="Submit"
-    negative-text="Cancel" @positive-click="submitQuestions" @negative-click="closeModal">
+    negative-text="Cancel" @positive-click="submitQuestions" @negative-click="closeModal" class="add_questions_modal">
     <template #icon>
       <img src="../assets/icons/add_poll.svg" alt="Add Poll Icon"/>
     </template>
@@ -412,7 +412,7 @@ onMounted(() => {
     </div>
 
     <!-- Dodaj novo vprašanje -->
-    <n-button type="primary" @click="addQuestion">
+    <n-button  @click="addQuestion" id ="add_question_btn">
       Add Question
     </n-button>
   </n-modal>

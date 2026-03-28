@@ -73,7 +73,7 @@ onMounted(() => {
             <p>📘Description: {{ reward.rewardDescription }}</p>
             <p>🏆Points Required: {{ reward.pointsRequired }}</p>
             <p>⏳Expires At: {{ new Date(reward.expirationDate).toLocaleDateString() }}</p>
-            <n-button @click="claimReward(reward)" class="participateBtn">🎁 Claim Reward</n-button>
+            <n-button @click="claimReward(reward)" class="participateBtn">Claim Reward</n-button>
             <!--TODO: SISTEM ZA CLAIM REWARD BUTTON JE NASTAVLJEN FUNCKIJO SE DOPISI-->
         </div>
     </div>

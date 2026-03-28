@@ -53,10 +53,7 @@ async function announcementData() {
     <p>Welcome to the CMI Admin Panel. Use the sidebar on the left to manage users, content, and settings.</p>
     <button @click="showAnnouncementModal()" class="add_btn_announcement">Add an announcement</button>
     <div class="Announcements">
-        <h2>A quick overview</h2>
-    </div>
-    <div class="Announcements">
-        <h2>A quick overview</h2>
+        <h2>Administrator statistics for the platform will come here</h2>
     </div>
 
 
