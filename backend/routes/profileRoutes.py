@@ -86,12 +86,12 @@ async def createProfile_endpoint(
         birthdate=birthdate,
         phone=phone,
         address=address,
-        city=city,
+        city=city.lower(),
         country=country,
         profile_picture_url=pfpSave,
     )
     await saveProfile(profile)
-    await saveCity(Cities(city=city))
+    await saveCity(Cities(city=city.lower()))
     return {"statusCode": 200, "message": "Profile created successfully backend"}
 
 @router.get("/pfp/{userId}",name="get_profile_picture")
@@ -158,7 +158,7 @@ async def updateProfile(auth: AuthContext = Depends(requireUser), profile: updat
     await saveProfile(existingProfile)
     allCities = await getAllCities()
     if profile.city not in allCities:
-        await saveCity(Cities(city=profile.city))
+        await saveCity(Cities(city=profile.city.lower()))
 
     if profile.type == 1:
         admin = await getAdminId(profile.id)
